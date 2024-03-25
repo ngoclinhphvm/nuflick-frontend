@@ -1,11 +1,12 @@
 
 import './App.css';
 
+import Movies from './components/Movies.js';
 function App() {
   return (
     <div>
-      Movie web
-      nvnhat04
+      {/* <Button/> */}
+      <Movies/>
     </div>
   );
 }

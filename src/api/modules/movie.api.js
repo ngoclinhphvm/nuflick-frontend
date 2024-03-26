@@ -15,7 +15,31 @@ const MovieApi = {
             );
             return { response };
         } catch (err) { return { err }; }
-    }
+    },
+    getVideos: async (movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/videos/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    getCredits: async (movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/credits/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    search: async (query) => {
+        try {
+            const response = await publicClient.get(
+                `movie/search?query=${query}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
 }
 
 export default MovieApi;

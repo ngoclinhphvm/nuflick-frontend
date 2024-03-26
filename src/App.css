@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.navbar {
+    min-height: 42px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content:space-between;
+}
+.nav_list {
+    padding-left: 0;
+    margin: auto 16px;
+
+}
+.nav_items {
+    color: white;
+    padding: auto;
+    margin: 0px 16px;
+    display: inline-block;
+}

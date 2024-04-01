@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
-const Container = ({header, children}) => {
+const Container = ({ header, children }) => {
   return (
     <Box sx={{ marginTop: "5rem", marginX: "auto", color: "text.primary" }}>
-      <Stack spacing={4}>
+      <Stack spacing={1}>
         {header && (
           <Box
             sx={{
@@ -24,11 +24,9 @@ const Container = ({header, children}) => {
               },
             }}
           >
-            <Typography
-              variant="h5"
-              fontWeight="700"
-              textTransform="uppercase"
-            >{header}</Typography>
+            <Typography variant="h5" fontWeight="700" textTransform="uppercase">
+              {header}
+            </Typography>
           </Box>
         )}
         {children}

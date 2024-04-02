@@ -8,10 +8,10 @@ const MovieApi = {
             return  {response} ;
         } catch (err) { return { err }; }
     },
-    getMovieList: async () => {
+    getMovieList: async ({movieType}) => {
         try {
             const response = await publicClient.get(
-                `movie/popular`
+                `movie/${movieType}`
             );
             return { response };
         } catch (err) { return { err }; }

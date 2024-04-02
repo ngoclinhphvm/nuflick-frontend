@@ -12,12 +12,8 @@ function HomePage() {
       try {
         const popularMovies = await movieAPI.getMovieList({ movieType: "popular"});
         if (popularMovies.response) {
-          let top10 = [];
-          let popularMovieList = popularMovies.response.data.results;
-          for (let i = 1; i <= 10; i++) {
-            top10 = popularMovieList.slice(0, 4);
-          }
-          setPopularMovies(top10);
+          let top4 = popularMovies.response.data.results.slice(0, 4);
+          setPopularMovies(top4);
         } else if (popularMovies.err) {
           console.error("Error fetching popular movies:", popularMovies.err);
         }
@@ -30,12 +26,8 @@ function HomePage() {
       try {
         const topRatedMovies = await movieAPI.getMovieList({ movieType: "top_rated" });
         if (topRatedMovies.response) {
-          let top10 = [];
-          let topRatedMovieList = topRatedMovies.response.data.results;
-          for (let i = 1; i <= 10; i++) {
-            top10 = topRatedMovieList.slice(0, 4);
-          }
-          setTopRatedMovies(top10);
+          let top4 = topRatedMovies.response.data.results.slice(0, 4);
+          setTopRatedMovies(top4);
         } else if (topRatedMovies.err) {
           console.error("Error fetching top rated movies:", topRatedMovies.err);
         }
@@ -48,12 +40,8 @@ function HomePage() {
       try {
         const upcomingMovies = await movieAPI.getMovieList({ movieType: "upcoming" });
         if (upcomingMovies.response) {
-          let top10 = [];
-          let upcomingMovieList = upcomingMovies.response.data.results;
-          for (let i = 1; i <= 10; i++) {
-            top10 = upcomingMovieList.slice(0, 4);
-          }
-          setUpcomingMovies(top10);
+          let top4 = upcomingMovies.response.data.results.slice(0, 4);
+          setUpcomingMovies(top4);
         } else if (upcomingMovies.err) {
           console.error("Error fetching upcoming movies:", upcomingMovies.err);
         }

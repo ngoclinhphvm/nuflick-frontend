@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import MovieGrid from "../components/common/MovieGrid.jsx";
 import movieAPI from "../api/modules/movie.api.js";
-
+import personApi from "../api/modules/person.api.js";
+import PersonItem from "../components/common/PersonItem.jsx";
 function HomePage() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [person, setPerson] = useState(null);
 
   useEffect(() => {
     const getPopularMovies = async () => {
@@ -49,13 +51,31 @@ function HomePage() {
         console.error("Error fetching upcoming movies:", error);
       }
     }
+    const getPerson = async ()=> {
+      try {
+        const personDetail = await personApi.getDetails(52);
+        if(personDetail) {
+          setPerson(personDetail);
+        } else {
+          console.error("Error fetching person:", personDetail.err);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
     getPopularMovies();
     getTopRatedMovies();
     getUpcomingMovies();
-  }, [popularMovies, topRatedMovies, upcomingMovies]);
+    getPerson();
+  }, []);
 
+  
   return (
     <>
+      <PersonItem person={{
+        name:  person ? person.name : "" ,
+        profile_path: person ? person.profile_path : ""
+      }}/>
       <MovieGrid movies={popularMovies} moviesType="popular"/>
       <MovieGrid movies={topRatedMovies} moviesType="top rated"/>
       <MovieGrid movies={upcomingMovies} moviesType="upcoming"/>

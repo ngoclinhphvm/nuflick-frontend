@@ -7,7 +7,7 @@ function HomePage() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
-  const [person, setPerson] = useState([]);
+  const [person, setPerson] = useState(null);
 
   useEffect(() => {
     const getPopularMovies = async () => {
@@ -53,9 +53,11 @@ function HomePage() {
     }
     const getPerson = async ()=> {
       try {
-        const person = await personApi.details(20);
-        if(person.response) {
-          setPerson(person);
+        const personDetail = await personApi.getDetails(52);
+        if(personDetail) {
+          setPerson(personDetail);
+        } else {
+          console.error("Error fetching person:", personDetail.err);
         }
       } catch (error) {
         console.error(error);
@@ -71,14 +73,10 @@ function HomePage() {
   return (
     <>
       <PersonItem person={{
-          "homepage": null,
-          "id": 2,
-          "imdb_id": "nm0000434",
-          "known_for_department": "Acting",
-          "name": "Mark Hamill",
-          "place_of_birth": "Oakland, California, USA",
-          "popularity": 28.93,
-          "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+    
+        name:  person.name ,
+        profile_path:  person.profile_path 
+
       }}/>
       <MovieGrid movies={popularMovies} moviesType="popular"/>
       <MovieGrid movies={topRatedMovies} moviesType="top rated"/>

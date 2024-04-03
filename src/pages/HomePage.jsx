@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import MovieGrid from "../components/common/MovieGrid.jsx";
 import movieAPI from "../api/modules/movie.api.js";
-
+import personApi from "../api/modules/person.api.js";
+import PersonItem from "../components/common/PersonItem.jsx";
 function HomePage() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [person, setPerson] = useState([]);
 
   useEffect(() => {
     const getPopularMovies = async () => {
@@ -49,13 +51,35 @@ function HomePage() {
         console.error("Error fetching upcoming movies:", error);
       }
     }
+    const getPerson = async ()=> {
+      try {
+        const person = await personApi.details(20);
+        if(person.response) {
+          setPerson(person);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
     getPopularMovies();
     getTopRatedMovies();
     getUpcomingMovies();
-  }, [popularMovies, topRatedMovies, upcomingMovies]);
+    getPerson();
+  }, []);
 
+  
   return (
     <>
+      <PersonItem person={{
+          "homepage": null,
+          "id": 2,
+          "imdb_id": "nm0000434",
+          "known_for_department": "Acting",
+          "name": "Mark Hamill",
+          "place_of_birth": "Oakland, California, USA",
+          "popularity": 28.93,
+          "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      }}/>
       <MovieGrid movies={popularMovies} moviesType="popular"/>
       <MovieGrid movies={topRatedMovies} moviesType="top rated"/>
       <MovieGrid movies={upcomingMovies} moviesType="upcoming"/>

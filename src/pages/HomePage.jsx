@@ -73,10 +73,8 @@ function HomePage() {
   return (
     <>
       <PersonItem person={{
-    
-        name:  person.name ,
-        profile_path:  person.profile_path 
-
+        name:  person ? person.name : "" ,
+        profile_path: person ? person.profile_path : ""
       }}/>
       <MovieGrid movies={popularMovies} moviesType="popular"/>
       <MovieGrid movies={topRatedMovies} moviesType="top rated"/>

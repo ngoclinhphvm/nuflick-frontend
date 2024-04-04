@@ -15,12 +15,14 @@ function Movies() {
         const movieInfo = await movieAPI.getInfo(1011985);
             if (movieInfo.response) {
                 setMovie(movieInfo.response.data);
+                console.log(movieInfo.response.data);
             } else if (movieInfo.err) {
                 console.error('Error fetching movie info:', movieInfo.err);
         }
         const videos = await movieAPI.getVideos(1011985);
         if (videos.response) {
             setVideos(videos.response.data.results);
+            console.log(videos.response.data.results);
         } else if (videos.err) {
             console.error('Error fetching movie videos:', videos.err);
         }

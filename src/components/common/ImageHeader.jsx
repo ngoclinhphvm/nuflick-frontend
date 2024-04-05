@@ -1,24 +1,30 @@
 import { Box, useTheme } from "@mui/material";
-import React from "react";
-import Container from "./Container.jsx";
+import uiConfigs from "../../configs/ui.configs";
 
-const ImageHeader = ({ movie }) => {
-    return (
-      <>
-        <Container>
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-            alt="film poster"
-            style={{ width: "15vw" }}
-          />
-          <Typography variant="h2" fontSize={"1rem"}>
-            {movie.title}
-          </Typography>
-          <Typography fontSize={"1rem"}>{movie.release_date}</Typography>
-        </Container>
-      </>
-    );
-  };
-  
-  export default MovieCard;
-  
+const ImageHeader = ({ imgPath }) => {
+  const theme = useTheme();
+
+  return (
+    <Box sx={{
+      zIndex: "-1",
+      position: "relative",
+      paddingTop: { xs: "60%", sm: "40%", md: "35%" },
+      backgroundPosition: "top",
+      backgroundSize: "cover",
+      backgroundImage: `url(${imgPath})`,
+      backgroundAttachment: "fixed",
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        left: 0,
+        bottom: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        ...uiConfigs.style.gradientBgImage[theme.palette.mode]
+      }
+    }} />
+  );
+};
+
+export default ImageHeader;

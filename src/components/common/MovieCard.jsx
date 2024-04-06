@@ -25,6 +25,8 @@ const MovieCard = ({ movie }) => {
       </Container>
     </>
   );
+  
 };
+
 
 export default MovieCard;

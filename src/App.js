@@ -2,6 +2,8 @@
 import './App.css';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import Movies from './components/Movies.js';
+import HomePage from './pages/HomePage.jsx';
+import MovieDetails from './pages/MovieDetails.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -25,8 +27,8 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<h1>Home</h1>}/>
-        <Route path="/details" element={<Movies/>}/>
+        <Route path="/" element={<HomePage>Home</HomePage>}/>
+        <Route path="/details" element={<MovieDetails movieId={1011985}/>}/>
       </Routes>
     </BrowserRouter>
     

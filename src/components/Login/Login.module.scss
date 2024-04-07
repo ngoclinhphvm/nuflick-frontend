@@ -1,0 +1,181 @@
+::placeholder {
+    color: #6a6a6a;
+    font-size: 16px;
+    font-weight: 500;
+
+  }
+  
+  .Login {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 450px;
+    line-height: 0.8rem;
+    margin: 50px auto 100px auto;
+  }
+  
+  .headingLogin {
+    font-size: 2.4rem;
+    margin: 20px 0 20px 0;
+  }
+  
+  .btnLoginFacebook {
+    height: 50px;
+    width: 400px;
+    border-radius: 40px;
+    background-color: #405a93;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border:none;
+  }
+  
+  .btnLoginFacebook:hover {
+    transform: scale(1.02);
+    background-color: #384f81;
+  }
+  
+  .iconLogin {
+      position: relative;
+      margin-right: 16px;
+      font-size: 24px;
+      top: 2px;
+  }
+  
+  .btnLoginGoogle {
+    height: 50px;
+    width: 400px;
+    border-radius: 40px;
+    background-color: white;
+    color: #535353;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border: 2px solid #535353;
+  }
+  
+  .btnLoginGoogle:hover {
+    transform: scale(1.02);
+  }
+  
+  .iconGoogleLogin {
+    position: relative;
+    margin-right: 16px;
+    font-size: 22px;
+    top: 2px;
+  }
+  
+  .spanOr {
+    position: relative;
+    font-size: 16px;
+    color: #7f8387;
+    z-index: 1;
+  }
+  
+  .spanOr::after{
+    content: "";
+    position: absolute;
+    right: -150px;
+    top: 10px;
+    height: 1px;
+    width: 140px;
+    background-color: #7f8387;
+  }
+  
+  .spanOr::before{
+    content: "";
+    position: absolute;
+    left: -150px;
+    top: 10px;
+    height: 1px;
+    width: 140px;
+    background-color: #7f8387;
+  }
+  
+  .formGroup {
+    margin: 20px 0;
+    width: 100%;
+  }
+  
+  .formInput {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 0;
+  }
+  
+  .headInput{
+    display: block;
+    margin-bottom: 16px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .inputData {
+    padding: 0 12px;
+    width: 100%;
+    border-radius: 5px;
+    height: 40px;
+    border: 2px solid #6a6a6a;
+    margin-bottom: 12px;
+  }
+
+  .fogotPassword {
+    display: block;
+    margin: 12px 6px;
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .submitLogin {
+    height: 60px;
+    width: 150px;
+    border-radius: 60px;
+    background-color: #1ed760;
+    color: #111;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 40px;
+    margin: 20px 0;
+    cursor: pointer;
+    border:none;
+  }
+  
+  .submitLogin:hover {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+  
+  .rulesLogin {
+    font-size: 12px;
+    display: block;
+    margin: 20px 12px;
+  }
+  
+  .rulesLoginLink {
+    color:#1c9646;
+    cursor: pointer;
+  }
+  
+  .hasAccount {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .hasAccountLink{
+    color:#1c9646;
+  }
+
+  .login-status {
+    color: red;
+    margin: 12px 0;
+  }

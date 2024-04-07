@@ -3,17 +3,18 @@ import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import uiConfigs from "../configs/ui.configs";
 import ImageHeader from "../components/common/ImageHeader";
 import tmdbConfigs from "../api/configs/tmdb.configs";
-import movieAPI from "../api/modules/movie.api";
+import movieAPI from "../api/modules/movie.api.js";
 import CircularRate from "../components/common/CircularRate";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const MovieDetail = ({ movieId }) => {
+function MovieDetail (){
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState(null);
   const [credits, setCredits] = useState(null);
-
+  const { movieId } = useParams();
   useEffect(() => {
-    const getDetails = async () => {
+    const getDetails = async (movieId) => {
       try {
         const movieInfo = await movieAPI.getInfo(movieId);
         if (movieInfo.response) {
@@ -23,30 +24,30 @@ const MovieDetail = ({ movieId }) => {
           console.error("Error fetching movie info:", movieInfo.err);
         }
 
-        const videos = await movieAPI.getVideos(movieId);
-        if (videos.response) {
-          setVideos(videos.response.data.results);
-          console.log(
-            "videos.response.data.results",
-            videos.response.data.results
-          );
-        } else if (videos.err) {
-          console.error("Error fetching movie videos:", videos.err);
-        }
+      const videos = await movieAPI.getVideos(movieId);
+          if (videos.response) {
+            setVideos(videos.response.data.results);
+            console.log(
+              "videos.response.data.results",
+              videos.response.data.results
+            );
+          } else if (videos.err) {
+            console.error("Error fetching movie videos:", videos.err);
+          }
 
-        const credits = await movieAPI.getCredits(movieId);
-        if (credits.response) {
-          setCredits(credits.response.data.cast);
-          console.log("credits.response.data.cast", credits.response.data.cast);
-        } else if (credits.err) {
-          console.error("Error fetching movie credits:", credits.err);
+          const credits = await movieAPI.getCredits(movieId);
+          if (credits.response) {
+            setCredits(credits.response.data.cast);
+            console.log("credits.response.data.cast", credits.response.data.cast);
+          } else if (credits.err) {
+            console.error("Error fetching movie credits:", credits.err);
+          }
+        } catch (error) {
+          console.error("Error fetching movie:", error);
         }
-      } catch (error) {
-        console.error("Error fetching movie:", error);
-      }
     };
-    getDetails();
-  }, []);
+    getDetails(movieId);
+  }, [movieId]);
 
   return (
     movie && (
@@ -115,12 +116,31 @@ const MovieDetail = ({ movieId }) => {
           </Box>
         </Box>
 
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {/*Credits*/}
+        <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row"}}>
+          {credits &&
+            credits.slice(0, 4).map((credit) => (
+              <div key={credit.id} style={{  margin: "auto 10px auto 20px" }}>
+                <h3>{credit.name}</h3>
+                
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
+                  alt={credit.name}
+                  width="100"  // set the width
+                  height="150" // set the height
+                />
+                <p>{credit.character}</p>
+              </div>
+            ))}
+        </div>
+
+        {/*Trailer*/}
+        <div style={{ display: "flex", flexWrap: "wrap" ,flexDirection: "column"}}>
           {videos &&
-            videos.slice(0, 5).map((video) => (
+            videos.slice(0, 4).map((video) => (
               <div
                 key={video.id}
-                style={{ flex: "0 0 auto", marginRight: "10px" }}
+                style={{ flex: "0 0 auto", margin: "50px auto 10px auto" }}
               >
                 <h3>{video.name}</h3>
                 <iframe
@@ -129,24 +149,13 @@ const MovieDetail = ({ movieId }) => {
                   src={`https://www.youtube.com/embed/${video.key}`}
                   title={video.name}
                   allowFullScreen
-                  style={{ width: "280px", height: "160px" }}
+                  style={{ width: "560px", height: "320px" }}
                 ></iframe>
               </div>
             ))}
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {credits &&
-            credits.slice(0, 5).map((credit) => (
-              <div key={credit.id}>
-                <h3>{credit.name}</h3>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
-                  alt={credit.name}
-                />
-                <p>Character: {credit.character}</p>
-              </div>
-            ))}
-        </div>
+
+       
       </>
     )
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Container from "./Container.jsx";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MediaItem = ({ media, mediaType }) => {
   const [title, setTitle] = useState("");
@@ -28,24 +28,26 @@ const MediaItem = ({ media, mediaType }) => {
             style={{ width: "15vw", height: "22.5vw" }}
           />
           <Link to={`/movie/${media.id}`}>
-          <Typography variant="h2" fontSize={"1rem"}>
-            {title}
-          </Typography>
+            <Typography variant="h2" fontSize={"1rem"}>
+              {title}
+            </Typography>
           </Link>
           <Typography fontSize={"1rem"}>{releaseDate}</Typography>
         </Container>
       )}
 
-      {mediaType === "people" && (
+      {mediaType === "person" && (
         <Container>
           <img
             src={`https://image.tmdb.org/t/p/w500${posterPath}`}
             alt="portrait"
             style={{ width: "15vw" }}
           />
-          <Typography variant="h2" fontSize={"1rem"}>
-            {media.name}
-          </Typography>
+          <Link to={`/person/${media.id}`}>
+            <Typography variant="h2" fontSize={"1rem"}>
+              {media.name}
+            </Typography>
+          </Link>
         </Container>
       )}
     </>

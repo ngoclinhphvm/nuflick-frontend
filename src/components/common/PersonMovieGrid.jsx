@@ -1,7 +1,7 @@
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import personApi from "../../api/modules/person.api.js";
-import MovieGrid from "./MovieGrid.jsx";
+import MediaGrid from "./MediaGrid.jsx";
 const PersonMovieGrid = ({ personId }) => {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -43,7 +43,7 @@ const PersonMovieGrid = ({ personId }) => {
 
   return (
     <>
-      <MovieGrid movies={filteredMovies}/>
+      <MediaGrid medias={filteredMovies} mediaType="movie"/>
       {filteredMovies.length < movies.length && (
         <Button onClick={onLoadMore}>load more</Button>
       )}

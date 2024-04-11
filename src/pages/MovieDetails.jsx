@@ -2,7 +2,6 @@ import Container from "../components/common/Container";
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import uiConfigs from "../configs/ui.configs";
 import ImageHeader from "../components/common/ImageHeader";
-import tmdbConfigs from "../api/configs/tmdb.configs";
 import movieAPI from "../api/modules/movie.api.js";
 import CircularRate from "../components/common/CircularRate";
 import React, { useEffect, useState } from "react";
@@ -49,13 +48,17 @@ function MovieDetail() {
     };
     getDetails(movieId);
   }, [movieId]);
-
+  let posterPath = "";
+  if (movie) {
+    posterPath = movie.backdrop_path || movie.poster_path;
+  }
+  const src =
+    (posterPath && `https://image.tmdb.org/t/p/w500${posterPath}`) ||
+    "/no_image.jpg";
   return (
     movie && (
       <>
-        <ImageHeader
-          imgPath={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-        />
+        <ImageHeader imgPath={src} />
         {/* Poster */}
         <Box
           sx={{
@@ -73,9 +76,7 @@ function MovieDetail() {
             <Box
               sx={{
                 paddingTop: "140%",
-                ...uiConfigs.style.backgroundImage(
-                  tmdbConfigs.posterPath(movie.poster_path)
-                ),
+                ...uiConfigs.style.backgroundImage(src),
               }}
             />
           </Box>
@@ -118,10 +119,8 @@ function MovieDetail() {
         </Box>
 
         {/*Credits*/}
-        
-          {credits && (
-            <MediaGrid medias={credits} mediaType="person"></MediaGrid>
-          )}
+
+        {credits && <MediaGrid medias={credits} mediaType="person"></MediaGrid>}
 
         {/*Trailer*/}
         <div

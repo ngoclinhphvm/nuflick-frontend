@@ -7,12 +7,13 @@ import Container from "../components/common/Container";
 import personApi from "../api/modules/person.api";
 import { useDispatch } from "react-redux";
 
-const PersonDetail = ({ personId }) => {
-  //   const { personId } = useParams();
+const PersonDetail = () => {
+  const { personId } = useParams();
   const [person, setPerson] = useState();
   //const dispatch = useDispatch();
   let biography = "";
   let backGroundImg = "";
+  let birthToDeath = "";
   useEffect(() => {
     const getPerson = async () => {
       try {
@@ -27,14 +28,24 @@ const PersonDetail = ({ personId }) => {
     };
     getPerson();
   }, [personId]);
-  if (person && person.biography) {
+  if (person) {
+    if(person.biography) {
     biography = person.biography.substring(0, 2000);
     const index = biography.lastIndexOf(".");
     biography = biography.substring(0, index + 1);
+    }
     backGroundImg = `https://image.tmdb.org/t/p/w500${
       person && person.profile_path
     }`;
+
+    if(person.birthday) {
+      birthToDeath = `(${person.birthday.split("-")[0]})`
+    }
+    if(person.deathday) {
+      birthToDeath = `-${birthToDeath.slice(0, -1)}${person.deathday.split("-")[0]})`
+    }
   }
+  console.log(biography)
   return (
     <>
       <Toolbar />
@@ -71,12 +82,7 @@ const PersonDetail = ({ personId }) => {
               >
                 <Stack spacing={2}>
                   <Typography variant="h5" fontWeight="700">
-                    {`${person.name} (${
-                      person.birthday && person.birthday.split("-")[0]
-                    }`}
-                    {person.deathday &&
-                      ` - ${person.deathday && person.deathday.split("-")[0]}`}
-                    {")"}
+                    {`${person.name}${birthToDeath}`}
                   </Typography>
                   <Typography sx={{ ...uiConfigs.style.typoLines(15) }}>
                     {biography}

@@ -48,6 +48,7 @@ const MediaItem = ({ media, mediaType }) => {
               {media.name}
             </Typography>
           </Link>
+          <Typography fontSize={"1rem"}>{media.character}</Typography>
         </Container>
       )}
     </>

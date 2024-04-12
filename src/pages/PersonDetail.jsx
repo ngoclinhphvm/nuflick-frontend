@@ -28,23 +28,25 @@ const PersonDetail = () => {
     getPerson( personId );
   }, [personId]);
   if (person) {
-    if(person.biography) {
-    biography = person.biography.substring(0, 2000);
-    const index = biography.lastIndexOf(".");
-    biography = biography.substring(0, index + 1);
+    if (person.biography) {
+      biography = person.biography.substring(0, 2000);
+      const index = biography.lastIndexOf(".");
+      biography = biography.substring(0, index + 1);
     }
-    backGroundImg = `https://image.tmdb.org/t/p/w500${
-      person && person.profile_path
-    }`;
+    backGroundImg = person.profile_path
+      ? `https://image.tmdb.org/t/p/original${person.profile_path}`
+      : "/no_image.jpg";
 
-    if(person.birthday) {
-      birthToDeath = `(${person.birthday.split("-")[0]})`
+    if (person.birthday) {
+      birthToDeath = `(${person.birthday.split("-")[0]})`;
     }
-    if(person.deathday) {
-      birthToDeath = `-${birthToDeath.slice(0, -1)}${person.deathday.split("-")[0]})`
+    if (person.deathday) {
+      birthToDeath = `${birthToDeath.slice(0, -1)}-${
+        person.deathday.split("-")[0]
+      })`;
     }
   }
-  console.log(biography)
+
   return (
     <>
       <Toolbar />
@@ -90,7 +92,10 @@ const PersonDetail = () => {
               </Box>
             </Box>
             <Container header="casts">
-              <PersonMovieGrid personId={personId} />
+              <PersonMovieGrid personId={personId} type="cast" />
+            </Container>
+            <Container header="crews">
+              <PersonMovieGrid personId={personId} type="crew" />
             </Container>
           </Box>
         </>

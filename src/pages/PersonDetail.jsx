@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 const PersonDetail = () => {
   const { personId } = useParams();
   const [person, setPerson] = useState();
-  //const dispatch = useDispatch();
   let biography = "";
   let backGroundImg = "";
   let birthToDeath = "";

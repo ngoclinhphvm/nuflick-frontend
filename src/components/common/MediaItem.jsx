@@ -25,7 +25,7 @@ const MediaItem = ({ media, mediaType }) => {
       setRating(media.vote_average);
     }
   }, [media, mediaType]);
-  if (posterPath != "") {
+  if (posterPath !== "") {
     src =
       (posterPath && `https://image.tmdb.org/t/p/w500${posterPath}`) ||
       "/no_image.jpg";

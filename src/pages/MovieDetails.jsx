@@ -53,7 +53,7 @@ function MovieDetail() {
     posterPath = movie.backdrop_path || movie.poster_path;
   }
   const src =
-    (posterPath && `https://image.tmdb.org/t/p/w500${posterPath}`) ||
+    (posterPath && `https://image.tmdb.org/t/p/original${posterPath}`) ||
     "/no_image.jpg";
   return (
     movie && (
@@ -119,8 +119,10 @@ function MovieDetail() {
         </Box>
 
         {/*Credits*/}
-
-        {credits && <MediaGrid medias={credits} mediaType="person"></MediaGrid>}
+        <Container>
+          {credits && <MediaGrid medias={credits} mediaType="person"></MediaGrid>}
+        </Container>
+        
 
         {/*Trailer*/}
         <div

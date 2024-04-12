@@ -7,14 +7,14 @@ import Container from "../components/common/Container";
 import personApi from "../api/modules/person.api";
 import { useDispatch } from "react-redux";
 
-const PersonDetail = ({ personId }) => {
-  //   const { personId } = useParams();
+const PersonDetail = () => {
+  const { personId } = useParams();
   const [person, setPerson] = useState();
   //const dispatch = useDispatch();
   let biography = "";
   let backGroundImg = "";
   useEffect(() => {
-    const getPerson = async () => {
+    const getPerson = async (personId ) => {
       try {
         const response = await personApi.getDetails(personId);
         if (response) setPerson(response);
@@ -25,7 +25,7 @@ const PersonDetail = ({ personId }) => {
         console.error(error);
       }
     };
-    getPerson();
+    getPerson( personId );
   }, [personId]);
   if (person && person.biography) {
     biography = person.biography.substring(0, 2000);

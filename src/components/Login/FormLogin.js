@@ -2,10 +2,9 @@ import styles from "./Login.module.scss";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import accountApi from "../../api/modules/account.api.js";
-import login from "../../api/modules/login.api.js";
 import {useAuth} from "../../hooks/AuthContext.js";
 
-function FormLogin() {
+function FormLogin({ onLoginSuccess }) {
     console.log("re-render login");
     const [showMess, setShowMess] = useState(false);
     const navigate = useNavigate();
@@ -13,7 +12,7 @@ function FormLogin() {
     const [formData, setFormData] = useState(
         {email: '', password: ''}
     );
-
+   // const onLoginSuccess = () => {  };
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = {
@@ -26,6 +25,12 @@ function FormLogin() {
                 setShowMess(true);
             } else {
                 handleLogin(res);
+                if (typeof onLoginSuccess === 'function') {
+                    onLoginSuccess();
+                }else{
+                    console.log("not function");
+                }
+                
                 navigate('/account/' + username);
             }
         })

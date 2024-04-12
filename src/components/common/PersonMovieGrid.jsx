@@ -2,7 +2,7 @@ import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import personApi from "../../api/modules/person.api.js";
 import MediaGrid from "./MediaGrid.jsx";
-const PersonMovieGrid = ({ personId }) => {
+const PersonMovieGrid = ({ personId, type }) => {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -13,11 +13,19 @@ const PersonMovieGrid = ({ personId }) => {
       try {
         const response = await personApi.getMovieCredits(personId);
         if (response) {
-          const MoviesSorted = response.cast.sort(
+          let MoviesSorted = [];
+          if (type === "cast") {
+          MoviesSorted = response.cast.sort(
             (a, b) => getReleaseDate(b) - getReleaseDate(a)
           );
+          } else if (type === "crew") {
+           MoviesSorted = response.crew.sort(
+            (a, b) => getReleaseDate(b) - getReleaseDate(a)
+          );
+          }
           setMovies([...MoviesSorted]);
           setFilteredMovies([...MoviesSorted].splice(0, skip));
+        
         } else {
           console.error("Error fetching person:", response.err);
         }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import movieAPI from "../api/modules/movie.api.js";
-import MediaGrid from "../components/common/MediaGrid.jsx";
 import Container from "../components/common/Container.jsx";
 import uiConfigs from "../configs/ui.configs.js";
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import ImageHeader from "../components/common/ImageHeader";
 import CircularRate from "../components/common/CircularRate";
 import { Link } from "react-router-dom";
+import MediaSlider from "../components/common/MediaSlider.jsx";
 
 function HomePage() {
   const [popularMovies, setPopularMovies] = useState(null);
@@ -23,9 +23,8 @@ function HomePage() {
         if (popularMoviesResponse.response) {
           const popularMoviesData = popularMoviesResponse.response.data.results;
           const top1 = popularMoviesData[0];
-          const top4 = popularMoviesData.slice(1, 5);
           setMostPopularMovie(top1);
-          setPopularMovies(top4);
+          setPopularMovies(popularMoviesData);
         } else if (popularMoviesResponse.err) {
           console.error(
             "Error fetching popular movies:",
@@ -39,8 +38,7 @@ function HomePage() {
         if (topRatedMoviesResponse.response) {
           const topRatedMoviesData =
             topRatedMoviesResponse.response.data.results;
-          const top4 = topRatedMoviesData.slice(0, 4);
-          setTopRatedMovies(top4);
+          setTopRatedMovies(topRatedMoviesData);
         } else if (topRatedMoviesResponse.err) {
           console.error(
             "Error fetching top rated movies:",
@@ -54,8 +52,7 @@ function HomePage() {
         if (upcomingMoviesResponse.response) {
           const upcomingMoviesData =
             upcomingMoviesResponse.response.data.results;
-          const top4 = upcomingMoviesData.slice(0, 4);
-          setUpcomingMovies(top4);
+          setUpcomingMovies(upcomingMoviesData);
         } else if (upcomingMoviesResponse.err) {
           console.error(
             "Error fetching upcoming movies:",
@@ -138,17 +135,17 @@ function HomePage() {
       )}
       {popularMovies && (
         <Container header="popular">
-          <MediaGrid medias={popularMovies} mediaType="movie" />
+          <MediaSlider mediaList={popularMovies} mediaType="movie" />
         </Container>
       )}
       {topRatedMovies && (
         <Container header="top-rated">
-          <MediaGrid medias={topRatedMovies} mediaType="movie" />
+          <MediaSlider mediaList={topRatedMovies} mediaType="movie" />
         </Container>
       )}
       {upcomingMovies && (
         <Container header="upcoming">
-          <MediaGrid medias={upcomingMovies} mediaType="movie" />
+          <MediaSlider mediaList={upcomingMovies} mediaType="movie" />
         </Container>
       )}
     </div>

@@ -7,6 +7,7 @@ import SignUp from './components/SignUp/index.js';
 import HomePage from './pages/HomePage.jsx';
 import AccountDetail from './pages/AccountDetail.jsx';
 import MovieDetail from './pages/MovieDetails.jsx';
+import PersonDetail from './pages/PersonDetail.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage/>}/>
         <Route path="/movie/:movieId" element={<MovieDetail/>}/>
+        <Route path="/person/:personId" element={<PersonDetail/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/account/:username" element={<AccountDetail/>}/>

@@ -14,7 +14,7 @@ const PersonDetail = () => {
   let backGroundImg = "";
   let birthToDeath = "";
   useEffect(() => {
-    const getPerson = async () => {
+    const getPerson = async (personId ) => {
       try {
         const response = await personApi.getDetails(personId);
         if (response) setPerson(response);
@@ -25,7 +25,7 @@ const PersonDetail = () => {
         console.error(error);
       }
     };
-    getPerson();
+    getPerson( personId );
   }, [personId]);
   if (person) {
     if(person.biography) {

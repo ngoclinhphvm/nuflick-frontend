@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import accountApi from "../api/modules/account.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import { Link, useParams } from "react-router-dom";
-import MovieCard from "../components/common/MovieCard.jsx";
+import MediaItem from "../components/common/MediaItem.jsx";
 import Container from "../components/common/Container.jsx";
 function AccountDetail({onUsername}) {
     const [account, setAccount] = useState(null);
@@ -67,7 +67,7 @@ function AccountDetail({onUsername}) {
             <Container header={"Favorite"}>
                 <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", margin: "auto 10px auto 10px"}}>
                     {favorite.map((movie) => (
-                        <MovieCard movie={movie} />
+                        <MediaItem media={movie} mediaType="movie" />
                     ))}
                 </div>
             </Container>

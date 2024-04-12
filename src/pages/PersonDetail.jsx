@@ -5,7 +5,7 @@ import PersonMovieGrid from "../components/common/PersonMovieGrid";
 import uiConfigs from "../configs/ui.configs";
 import Container from "../components/common/Container";
 import personApi from "../api/modules/person.api";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 
 const PersonDetail = () => {
   const { personId } = useParams();

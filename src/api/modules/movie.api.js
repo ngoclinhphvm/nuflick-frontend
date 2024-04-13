@@ -1,5 +1,5 @@
 
-import { getSimilar } from "../../../../server/src/controllers/MovieController.js";
+
 import publicClient from "../client/public.client.js";
 const MovieApi = {
     getInfo : async (movieId) => {

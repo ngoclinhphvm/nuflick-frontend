@@ -1,4 +1,4 @@
-import { search } from "../../../../server/src/routes/movie.route.js";
+
 import publicClient from "../client/public.client.js";
 
 const personApi = {

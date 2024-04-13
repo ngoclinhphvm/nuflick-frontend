@@ -1,3 +1,5 @@
+
+
 import publicClient from "../client/public.client.js";
 const MovieApi = {
     getInfo : async (movieId) => {
@@ -32,10 +34,26 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
-    search: async (query) => {
+    searchMovie: async (query) => {
         try {
             const response = await publicClient.get(
                 `movie/search?query=${query}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    getDiscover: async () => {
+        try {
+            const response = await publicClient.get(
+                `movie`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    getSimilar: async (movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/similar/${movieId}`
             );
             return { response };
         } catch (err) { return { err }; }

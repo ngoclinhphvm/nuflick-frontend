@@ -39,16 +39,10 @@ function App() {
     setIsLoggedIn(false);
     // Xóa trạng thái đăng nhập khỏi localStorage
     localStorage.removeItem("isLoggedIn");
-    //navigate("/");
-  }
-  // const handleLogin = () => {
-  //   navigate("/login");
-  // }
-  // const handleSignUp = () => {
-  //   navigate("/signup");
-  // }
 
+  }
   return (
+    
     <BrowserRouter>
       <header className="navbar">
         <ul className="nav_list">
@@ -59,7 +53,7 @@ function App() {
           </li>
           <li className="nav_items">
             <Link className="nav_items_name" to="/movie">
-              Detail
+              Discover
             </Link>
           </li>
         </ul>
@@ -94,14 +88,15 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/movie/:movieId" element={<MovieDetail />} />
+        <Route path="/movie" element={<Discover/>} />
         <Route path="/login" element={ <Login handleLogin={handleLoginSuccess}/>} />
         <Route path="/signup" element={ <SignUp />}/>
         <Route path="/account/:username" element={<AccountDetail onUsername={handleLogin}/>} />
         <Route path="/person/:personId" element={<PersonDetail />} />
-        <Route path="/discover" element={<Discover />} />
+        {/* <Route path="/discover" element={<Discover />} /> */}
       </Routes>
 
-      <footer>
+      <footer className="footer">
         <p>© 2021 Movie App</p>
       </footer>
     </BrowserRouter>

@@ -101,7 +101,7 @@ export default function Discover() {
       try {
         const moviesResponse = await movieAPI.getDiscover(28);
         if (moviesResponse.response) {
-          const resultMoviesData = moviesResponse.response.data.results;
+          const resultMoviesData = moviesResponse.response.results;
           setResultMovies(resultMoviesData);
         } else if (moviesResponse.err) {
           console.error("Error fetching top rated movies:", moviesResponse.err);

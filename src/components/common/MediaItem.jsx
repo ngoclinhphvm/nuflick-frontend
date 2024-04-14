@@ -14,6 +14,9 @@ const MediaItem = ({ media, mediaType }) => {
   const [posterPath, setPosterPath] = useState("");
   const [releaseDate, setReleaseDate] = useState(null);
   const [rating, setRating] = useState(null);
+  const [videosName, setVideosName] = useState(null);
+  const [videosKey, setVideosKey] = useState(null);
+  const [videosId, setVideosId] = useState(null);
   let src = "";
   useEffect(() => {
     setTitle(media.title || media.name);
@@ -23,6 +26,12 @@ const MediaItem = ({ media, mediaType }) => {
     if (mediaType === "movie") {
       setReleaseDate(media.release_date);
       setRating(media.vote_average);
+  
+    }
+    if(mediaType === "videos"){
+      setVideosId(media.id);
+      setVideosName(media.name);
+      setVideosKey(media.key);
     }
   }, [media, mediaType]);
   if (posterPath !== "") {
@@ -157,6 +166,24 @@ const MediaItem = ({ media, mediaType }) => {
             </Box>
           </Box>
         </Link>
+      )}
+      {mediaType === "videos" && (
+      
+          <div
+            key={videosId}
+            style={{ flex: "0 0 auto", margin: "50px auto 10px auto" }}
+          >
+          
+            <iframe
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${videosKey}`}
+              title={videosName}
+              allowFullScreen
+              style={{ width: "450px", height: "270px" }}
+            ></iframe>
+          </div>
+        
       )}
     </>
   );

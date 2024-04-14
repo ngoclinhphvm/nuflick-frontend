@@ -42,16 +42,16 @@ function MovieDetail() {
           setVideos(videos.response.data.results);
           console.log(
             "videos.response.data.results",
-            videos.response.data.results
+            videos.response
           );
-        } else if (videos.err) {
-          console.error("Error fetching movie videos:", videos.err);
+        } else  {
+          console.error("Error fetching movie videos:");
         }
 
         const credits = await movieAPI.getCredits(movieId);
         if (credits.response) {
           setCredits(credits.response.data.cast);
-          console.log("credits.response.data.cast", credits.response.data.cast);
+         
         } else if (credits.err) {
           console.error("Error fetching movie credits:", credits.err);
         }
@@ -207,10 +207,10 @@ function MovieDetail() {
               Watch Trailer
             </Button>
           </Stack>
-          <Container header={"Cast"}>
-          {credits && <MediaSlider mediaList={credits} mediaType="person"></MediaSlider>}
-          </Container>
-             </Stack>
+            <Container header={"Cast"}>
+            {credits && <MediaSlider mediaList={credits} mediaType="person"></MediaSlider>}
+            </Container>
+          </Stack>
             </Box>
           </Box>
   

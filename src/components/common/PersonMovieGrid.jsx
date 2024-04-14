@@ -51,7 +51,7 @@ const PersonMovieGrid = ({ personId, type }) => {
 
   return (
     <>
-      <MediaGrid medias={filteredMovies} mediaType="movie"/>
+      <MediaGrid mediaList={filteredMovies} mediaType="movie"/>
       {filteredMovies.length < movies.length && (
         <Button onClick={onLoadMore}>load more</Button>
       )}

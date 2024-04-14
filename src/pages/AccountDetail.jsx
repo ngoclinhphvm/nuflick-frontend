@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import accountApi from "../api/modules/account.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import { Link, useParams } from "react-router-dom";
-import MediaItem from "../components/common/MediaItem.jsx";
 import Container from "../components/common/Container.jsx";
+import MediaGrid from "../components/common/MediaGrid.jsx";
+
 function AccountDetail({onUsername}) {
     const [account, setAccount] = useState(null);
     const [favorite, setFavorite] = useState([]); // [movie1, movie2, ...
@@ -27,6 +28,7 @@ function AccountDetail({onUsername}) {
                 });
                 const favoriteMovies = await Promise.all(movieInfoPromises);
                 setFavorite(favoriteMovies);
+                console.log('Favorite movies:', favoriteMovies)
                 
 
             } catch (error) {
@@ -66,9 +68,7 @@ function AccountDetail({onUsername}) {
             {/* Favorite list */}
             <Container header={"Favorite"}>
                 <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", margin: "auto 10px auto 10px"}}>
-                    {favorite.map((movie) => (
-                        <MediaItem media={movie} mediaType="movie" />
-                    ))}
+                    <MediaGrid mediaList={favorite} mediaType="movie" />
                 </div>
             </Container>
         </div>

@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage.jsx";
 import AccountDetail from "./pages/AccountDetail.jsx";
 import MovieDetail from "./pages/MovieDetails.jsx";
 import PersonDetail from "./pages/PersonDetail.jsx";
+import Discover from "./pages/Discover.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -97,6 +98,7 @@ function App() {
         <Route path="/signup" element={ <SignUp />}/>
         <Route path="/account/:username" element={<AccountDetail onUsername={handleLogin}/>} />
         <Route path="/person/:personId" element={<PersonDetail />} />
+        <Route path="/discover" element={<Discover />} />
       </Routes>
 
       <footer>

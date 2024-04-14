@@ -17,12 +17,15 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import MediaSlider from "../components/common/MediaSlider.jsx";
 import VideosSlide from "../components/common/VideosSlide.jsx";
 import BackdropSlide from "../components/common/BackdropSlide.jsx";
+import PosterSlide from "../components/common/PosterSlide.jsx";
+
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState(null);
   const [credits, setCredits] = useState(null);
   const [backdrops, setBackdrops] = useState(null);
+  const [posters, setPosters] = useState(null);
   const { movieId } = useParams();
   useEffect(() => {
     const getDetails = async (movieId) => {
@@ -63,6 +66,14 @@ function MovieDetail() {
       } else if (backdrops.err) {
         console.error("Error fetching movie images:", backdrops.err);
       }
+      const posters = await movieAPI.getImages(movieId);
+      if (posters.response) {
+        setPosters(posters.response.data.posters);
+        console.log("images.response.data", posters.response.data.posters);
+      } else if (posters.err) {
+        console.error("Error fetching movie images:", posters.err);
+      }
+      
     };
     getDetails(movieId);
   }, [movieId]);
@@ -220,6 +231,14 @@ function MovieDetail() {
           <Container header={"Backdrops"} padding="center">
             {backdrops && 
                 <BackdropSlide backdrops={backdrops}></BackdropSlide>
+            }
+          </Container>
+          </Box>
+
+          <Box padding={10}>
+          <Container header={"Posters"} padding="center">
+            {posters && 
+                <PosterSlide posters={posters}></PosterSlide>
             }
           </Container>
           </Box>

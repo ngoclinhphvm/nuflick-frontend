@@ -1,6 +1,5 @@
 import styles from "./SignUp.module.scss";
 import accountApi from "../../api/modules/account.api.js";
-import signupApi from "../../api/modules/signup.api.js";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
@@ -37,7 +36,8 @@ function FormSignup() {
                 } else {
                     const user = {email: res.email, _id: res._id};
                     localStorage.setItem('user', JSON.stringify(user));
-                    navigate('/account');
+                    
+                    navigate('/login');
                 }
             });
         }

@@ -5,16 +5,16 @@ import PersonMovieGrid from "../components/common/PersonMovieGrid";
 import uiConfigs from "../configs/ui.configs";
 import Container from "../components/common/Container";
 import personApi from "../api/modules/person.api";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 
-const PersonDetail = ({ personId }) => {
-  //   const { personId } = useParams();
+const PersonDetail = () => {
+  const { personId } = useParams();
   const [person, setPerson] = useState();
-  //const dispatch = useDispatch();
   let biography = "";
   let backGroundImg = "";
+  let birthToDeath = "";
   useEffect(() => {
-    const getPerson = async () => {
+    const getPerson = async (personId ) => {
       try {
         const response = await personApi.getDetails(personId);
         if (response) setPerson(response);
@@ -25,16 +25,28 @@ const PersonDetail = ({ personId }) => {
         console.error(error);
       }
     };
-    getPerson();
+    getPerson( personId );
   }, [personId]);
-  if (person && person.biography) {
-    biography = person.biography.substring(0, 2000);
-    const index = biography.lastIndexOf(".");
-    biography = biography.substring(0, index + 1);
-    backGroundImg = `https://image.tmdb.org/t/p/w500${
-      person && person.profile_path
-    }`;
+  if (person) {
+    if (person.biography) {
+      biography = person.biography.substring(0, 2000);
+      const index = biography.lastIndexOf(".");
+      biography = biography.substring(0, index + 1);
+    }
+    backGroundImg = person.profile_path
+      ? `https://image.tmdb.org/t/p/original${person.profile_path}`
+      : "/no_image.jpg";
+
+    if (person.birthday) {
+      birthToDeath = `(${person.birthday.split("-")[0]})`;
+    }
+    if (person.deathday) {
+      birthToDeath = `${birthToDeath.slice(0, -1)}-${
+        person.deathday.split("-")[0]
+      })`;
+    }
   }
+
   return (
     <>
       <Toolbar />
@@ -71,12 +83,7 @@ const PersonDetail = ({ personId }) => {
               >
                 <Stack spacing={2}>
                   <Typography variant="h5" fontWeight="700">
-                    {`${person.name} (${
-                      person.birthday && person.birthday.split("-")[0]
-                    }`}
-                    {person.deathday &&
-                      ` - ${person.deathday && person.deathday.split("-")[0]}`}
-                    {")"}
+                    {`${person.name}${birthToDeath}`}
                   </Typography>
                   <Typography sx={{ ...uiConfigs.style.typoLines(15) }}>
                     {biography}
@@ -85,7 +92,10 @@ const PersonDetail = ({ personId }) => {
               </Box>
             </Box>
             <Container header="casts">
-              <PersonMovieGrid personId={personId} />
+              <PersonMovieGrid personId={personId} type="cast" />
+            </Container>
+            <Container header="crews">
+              <PersonMovieGrid personId={personId} type="crew" />
             </Container>
           </Box>
         </>

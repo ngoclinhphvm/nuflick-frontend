@@ -27,6 +27,15 @@ const accountApi = {
         } catch (err) {
             return { err };
         }
+    },
+    getFavorite: async (username) => {
+        const url = `account/${username}/favorite`;
+        try {
+            const request = await publicClient.get(url);
+            return request;
+        } catch (err) {
+            return { err };
+        }
     }
 
 }

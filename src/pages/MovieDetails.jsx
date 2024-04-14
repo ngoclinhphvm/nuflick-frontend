@@ -36,16 +36,16 @@ function MovieDetail() {
           setVideos(videos.response.data.results);
           console.log(
             "videos.response.data.results",
-            videos.response.data.results
+            videos.response
           );
-        } else if (videos.err) {
-          console.error("Error fetching movie videos:", videos.err);
+        } else  {
+          console.error("Error fetching movie videos:");
         }
 
         const credits = await movieAPI.getCredits(movieId);
         if (credits.response) {
           setCredits(credits.response.data.cast);
-          console.log("credits.response.data.cast", credits.response.data.cast);
+         
         } else if (credits.err) {
           console.error("Error fetching movie credits:", credits.err);
         }
@@ -186,10 +186,10 @@ function MovieDetail() {
               Watch Trailer
             </Button>
           </Stack>
-          <Container header={"Cast"}>
-          {credits && <MediaSlider mediaList={credits} mediaType="person"></MediaSlider>}
-          </Container>
-             </Stack>
+            <Container header={"Cast"}>
+            {credits && <MediaSlider mediaList={credits} mediaType="person"></MediaSlider>}
+            </Container>
+          </Stack>
             </Box>
           </Box>
   
@@ -200,9 +200,10 @@ function MovieDetail() {
           {/* cast */}
   
           {/*Trailer*/}
-          <div
+          {/* <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" }}
           >
+        
             {videos &&
               videos.slice(0, 4).map((video) => (
                 <div
@@ -216,11 +217,20 @@ function MovieDetail() {
                     src={`https://www.youtube.com/embed/${video.key}`}
                     title={video.name}
                     allowFullScreen
-                    style={{ width: "560px", height: "320px" }}
+                    style={{ width: "750px", height: "400px" }}
                   ></iframe>
                 </div>
               ))}
-          </div>
+          </div> */}
+          <Container header={"Trailer"}>
+            {videos && <MediaSlider mediaList={videos} mediaType="videos"></MediaSlider>}
+          </Container>
+          {/*Review */}
+          <Container header={"Review"}>
+            <Typography variant="h5" sx={{ ...uiConfigs.style.typoLines(2) }}>
+              No review available
+            </Typography>
+          </Container>
         </>
       )
     );

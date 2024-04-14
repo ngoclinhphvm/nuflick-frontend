@@ -42,14 +42,15 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
-    getDiscover: async () => {
-        try {
-            const response = await publicClient.get(
-                `movie`
-            );
-            return { response };
-        } catch (err) { return { err }; }
-    },
+    getDiscover: async (with_genres) => {
+    try {
+       
+        const response = await publicClient.get('movie', { params: { with_genres} });
+        return { response };
+    } catch (err) {
+        return { err };
+    }
+},
     getSimilar: async (movieId) => {
         try {
             const response = await publicClient.get(

@@ -14,11 +14,17 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import MediaSlider from "../components/common/MediaSlider.jsx";
+import VideosSlide from "../components/common/VideosSlide.jsx";
+import BackdropSlide from "../components/common/BackdropSlide.jsx";
+import PosterSlide from "../components/common/PosterSlide.jsx";
+
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState(null);
   const [credits, setCredits] = useState(null);
+  const [backdrops, setBackdrops] = useState(null);
+  const [posters, setPosters] = useState(null);
   const { movieId } = useParams();
   useEffect(() => {
     const getDetails = async (movieId) => {
@@ -52,6 +58,21 @@ function MovieDetail() {
       } catch (error) {
         console.error("Error fetching movie:", error);
       }
+      const backdrops = await movieAPI.getImages(movieId);
+      if (backdrops.response) {
+        setBackdrops(backdrops.response.data.backdrops);
+        console.log("images.response.data", backdrops.response.data.backdrops);
+      } else if (backdrops.err) {
+        console.error("Error fetching movie images:", backdrops.err);
+      }
+      const posters = await movieAPI.getImages(movieId);
+      if (posters.response) {
+        setPosters(posters.response.data.posters);
+        console.log("images.response.data", posters.response.data.posters);
+      } else if (posters.err) {
+        console.error("Error fetching movie images:", posters.err);
+      }
+      
     };
     getDetails(movieId);
   }, [movieId]);
@@ -200,37 +221,28 @@ function MovieDetail() {
           {/* cast */}
   
           {/*Trailer*/}
-          {/* <div
-            style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" }}
-          >
-        
-            {videos &&
-              videos.slice(0, 4).map((video) => (
-                <div
-                  key={video.id}
-                  style={{ flex: "0 0 auto", margin: "50px auto 10px auto" }}
-                >
-                  <h3>{video.name}</h3>
-                  <iframe
-                    width="560"
-                    height="315"
-                    src={`https://www.youtube.com/embed/${video.key}`}
-                    title={video.name}
-                    allowFullScreen
-                    style={{ width: "750px", height: "400px" }}
-                  ></iframe>
-                </div>
-              ))}
-          </div> */}
-          <Container header={"Trailer"}>
-            {videos && <MediaSlider mediaList={videos} mediaType="videos"></MediaSlider>}
+          <Box padding={10}>
+          <Container header={"Trailer"} padding="center">
+            {videos && <VideosSlide videos={videos}></VideosSlide>}
           </Container>
-          {/*Review */}
-          <Container header={"Review"}>
-            <Typography variant="h5" sx={{ ...uiConfigs.style.typoLines(2) }}>
-              No review available
-            </Typography>
+          </Box>
+
+          {/*Backdrops*/}
+          <Box padding={10}>
+          <Container header={"Backdrops"} padding="center">
+            {backdrops && 
+                <BackdropSlide backdrops={backdrops}></BackdropSlide>
+            }
           </Container>
+          </Box>
+
+          <Box padding={10}>
+          <Container header={"Posters"} padding="center">
+            {posters && 
+                <PosterSlide posters={posters}></PosterSlide>
+            }
+          </Container>
+          </Box>
         </>
       )
     );

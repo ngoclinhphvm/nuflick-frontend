@@ -34,7 +34,15 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
-    searchMovie: async (query) => {
+    getImages: async (movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/images/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    search: async (query) => {
         try {
             const response = await publicClient.get(
                 `movie/search?query=${query}`

@@ -5,7 +5,12 @@ import FilterBox from "../components/common/FilterBox.jsx";
 import ToggleablePanel from "../components/common/ToggleablePanel.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
 
-function SortPanel() {
+function SortPanel({ onSortOptionChange }) {
+  console.log(
+    "In SortPanel, onSortOptionChange is a ",
+    typeof onSortOptionChange
+  );
+
   let sortOptions = [
     "Popularity Descending",
     "Popularity Ascending",
@@ -19,13 +24,21 @@ function SortPanel() {
   return (
     <Box>
       <ToggleablePanel title="Sort">
-        <FilterBox title="Sort Results by" options={sortOptions} />
+        <FilterBox
+          title="Sort Results by"
+          options={sortOptions}
+          onOptionChange={onSortOptionChange}
+        />
       </ToggleablePanel>
     </Box>
   );
 }
 
-function FilterPanel() {
+function FilterPanel({
+  onGenreOptionChange,
+  onLanguageOptionChange,
+  onReleaseYearOptionChange,
+}) {
   let genres = [
     "Action",
     "Adventure",
@@ -52,15 +65,32 @@ function FilterPanel() {
   return (
     <Box>
       <ToggleablePanel title="filter">
-        <FilterBox title="genre" options={genres} />
-        <FilterBox title="language" options={languages} />
-        <FilterBox title="year" options={years} />
+        <FilterBox
+          title="genre"
+          options={genres}
+          onOptionChange={onGenreOptionChange}
+        />
+        <FilterBox
+          title="language"
+          options={languages}
+          onOptionChange={onLanguageOptionChange}
+        />
+        <FilterBox
+          title="year"
+          options={years}
+          onOptionChange={onReleaseYearOptionChange}
+        />
       </ToggleablePanel>
     </Box>
   );
 }
 
-function SortFilterContainer() {
+function SortFilterContainer({
+  onSortOptionChange,
+  onGenreOptionChange,
+  onLanguageOptionChange,
+  onReleaseYearOptionChange,
+}) {
   return (
     <>
       <Box
@@ -68,11 +98,15 @@ function SortFilterContainer() {
           display: "flex",
           flexDirection: "column",
           margin: "20px",
-          justifyContent: "start"
+          justifyContent: "start",
         }}
       >
-        <SortPanel />
-        <FilterPanel />
+        <SortPanel onSortOptionChange={onSortOptionChange} />
+        <FilterPanel
+          onGenreOptionChange={onGenreOptionChange}
+          onLanguageOptionChange={onLanguageOptionChange}
+          onReleaseYearOptionChange={onReleaseYearOptionChange}
+        />
       </Box>
     </>
   );
@@ -89,10 +123,10 @@ function ResultGridContainer({ movies }) {
 }
 
 export default function Discover() {
-  // const [sortOption, setSortOption] = useState("Popularity Descending");
+  const [sortOption, setSortOption] = useState("Popularity Descending");
   const [genreOption, setGenreOption] = useState(28);
-  // const [languageOption, setLanguageOption] = useState("Any");
-  // const [yearOption, setYearOption] = useState("Any");
+  const [languageOption, setLanguageOption] = useState("Any");
+  const [releaseYearOption, setRealeaseYearOption] = useState("Any");
 
   const [resultMovies, setResultMovies] = useState([]);
 
@@ -117,7 +151,16 @@ export default function Discover() {
   return (
     <>
       <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
-        <SortFilterContainer />
+        <SortFilterContainer
+          onSortOptionChange={setSortOption}
+          onGenreOptionChange={setGenreOption}
+          onLanguageOptionChange={setLanguageOption}
+          onReleaseYearOptionChange={setRealeaseYearOption}
+        />
+        {/* <Box>Sort option: {sortOption}</Box>
+        <Box>Genre option: {genreOption}</Box>
+        <Box>Language option: {languageOption}</Box>
+        <Box>Year option: {releaseYearOption}</Box> */}
         <ResultGridContainer movies={resultMovies} />
       </Box>
     </>

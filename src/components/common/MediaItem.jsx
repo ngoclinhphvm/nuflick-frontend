@@ -26,9 +26,8 @@ const MediaItem = ({ media, mediaType }) => {
     if (mediaType === "movie") {
       setReleaseDate(media.release_date);
       setRating(media.vote_average);
-  
     }
-    if(mediaType === "videos"){
+    if (mediaType === "videos") {
       setVideosId(media.id);
       setVideosName(media.name);
       setVideosKey(media.key);
@@ -56,16 +55,6 @@ const MediaItem = ({ media, mediaType }) => {
             }}
           >
             <>
-              <FavoriteIcon
-                sx={{
-                  position: "absolute",
-                  top: 2,
-                  right: 2,
-                  fontSize: "2rem",
-                  color: "none",
-                }}
-              />
-
               <Box
                 className="media-back-drop"
                 sx={{
@@ -168,22 +157,19 @@ const MediaItem = ({ media, mediaType }) => {
         </Link>
       )}
       {mediaType === "videos" && (
-      
-          <div
-            key={videosId}
-            style={{ flex: "0 0 auto", margin: "50px auto 10px auto" }}
-          >
-          
-            <iframe
-              width="560"
-              height="315"
-              src={`https://www.youtube.com/embed/${videosKey}`}
-              title={videosName}
-              allowFullScreen
-              style={{ width: "450px", height: "270px" }}
-            ></iframe>
-          </div>
-        
+        <div
+          key={videosId}
+          style={{ flex: "0 0 auto", margin: "50px auto 10px auto" }}
+        >
+          <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${videosKey}`}
+            title={videosName}
+            allowFullScreen
+            style={{ width: "450px", height: "270px" }}
+          ></iframe>
+        </div>
       )}
     </>
   );

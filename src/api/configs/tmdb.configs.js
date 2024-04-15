@@ -215,6 +215,17 @@ const movieLanguageTags = {
   Zulu: 'zu'
 };
 
+const discoverSortOptions = {
+  "Popularity Descending": "popularity.desc",
+    "Popularity Ascending": "popularity.asc",
+    "Rating Descending": "vote_average.desc",
+    "Rating Ascending": "vote_average.asc",
+    "Release Year Descending": "primary_release_date.desc",
+    "Release Year Ascending": "primary_release_date.desc",
+    "Title (A-Z)": "orginal_title.desc",
+    "Title (Z-A)": "original_title.asc"
+}
+
 const backdropPath = (imgEndpoint) =>
   `https://image.tmdb.org/t/p/original${imgEndpoint}`;
 
@@ -231,6 +242,7 @@ const tmdbConfigs = {
   backdropPath,
   posterPath,
   youtubePath,
+  discoverSortOptions
 };
 
 export default tmdbConfigs;

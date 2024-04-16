@@ -1,5 +1,4 @@
 
-
 import publicClient from "../client/public.client.js";
 const MovieApi = {
     getInfo : async (movieId) => {
@@ -67,6 +66,22 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
+    getImages: async(movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/images/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
+    getReviews: async (movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/reviews/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    }
 }
 
 export default MovieApi;

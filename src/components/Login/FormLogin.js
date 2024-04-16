@@ -5,7 +5,7 @@ import accountApi from "../../api/modules/account.api.js";
 import {useAuth} from "../../hooks/AuthContext.js";
 
 function FormLogin({ onLoginSuccess }) {
-    console.log("re-render login");
+    // console.log("re-render login");
     const [showMess, setShowMess] = useState(false);
     const navigate = useNavigate();
     const { handleLogin } = useAuth();
@@ -21,10 +21,13 @@ function FormLogin({ onLoginSuccess }) {
         }
         const username = data.email.substring(0, data.email.indexOf('@'));
         accountApi.login(data).then((res) => {
-            if (res === 0) {
+            console.log(res);
+            if (!res.success) {
                 setShowMess(true);
             } else {
-                handleLogin(res);
+                localStorage.setItem('token', res.token);
+                handleLogin(res.user);
+
                 if (typeof onLoginSuccess === 'function') {
                     onLoginSuccess();
                 }else{

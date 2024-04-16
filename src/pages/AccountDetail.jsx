@@ -4,25 +4,29 @@ import movieAPI from "../api/modules/movie.api.js";
 import { Link, useParams } from "react-router-dom";
 import Container from "../components/common/Container.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
+import {useAuth } from "../hooks/AuthContext.js";
 
-function AccountDetail({onUsername}) {
+function AccountDetail() {
     const [account, setAccount] = useState(null);
     const [favorite, setFavorite] = useState([]); // [movie1, movie2, ...
     const { username } = useParams();
-
+    const token = localStorage.getItem('token');
+    // console.log('Token:', token);
     useEffect(() => {
         const getInfo = async (username) => {
             try {
-                const [accountInfo] = await accountApi.getInfo(username);
-               // console.log('Account info:', accountInfo);
+                //console.log('Token:', token);
+                const accountInfo = await accountApi.getInfo(username);
+                console.log('Account info:', accountInfo);
                 if (accountInfo) {
                     setAccount(accountInfo);
                 } else {
                     console.error('Account info is null');
                 }
-                const favoriteList = await accountApi.getFavorite(username);
+                //console.log('Token:', token);
+                //const favoriteList = await accountApi.getFavorite(username);
                 // Use Promise.all to wait for all movieInfo requests to complete
-                const movieInfoPromises = favoriteList.map(async (movieId) => {
+                const movieInfoPromises = accountInfo.favoriteFilm.map(async (movieId) => {
                     const movieInfo = await movieAPI.getInfo(movieId);
                     return movieInfo.response.data;
                 });
@@ -36,8 +40,8 @@ function AccountDetail({onUsername}) {
             }
         };
         getInfo(username);
-        onUsername(username);
-    }, [username, onUsername]);
+       
+    }, [username]);
     return (
         <div >
             <Container header={'Account Detail'}>

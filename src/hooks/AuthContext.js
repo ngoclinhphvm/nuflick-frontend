@@ -8,14 +8,15 @@ export const AuthProvider = ({children}) => {
     );
 
     const handleLogin = (data) => {
-        console.log(data);
-        const user = {email: data.email, id: data._id};
+        // console.log(data);
+        const user = data;
         localStorage.setItem("user", JSON.stringify(user));
         setIsLoggedIn(true);
     };
 
     const handleLogout = () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         setIsLoggedIn(false);
     };
 

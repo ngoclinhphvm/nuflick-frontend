@@ -117,7 +117,7 @@ export default function Discover() {
     fetchData();
   }, []);
 
-  const onLoadMore = () => {
+  const handleLoadMore = () => {
     setFilteredMovies([
       ...filteredMovies,
       ...[...resultMovies].splice(page * skip, skip),
@@ -149,7 +149,7 @@ export default function Discover() {
         >
           <ResultGrid movies={filteredMovies} />
           {filteredMovies.length < resultMovies.length && (
-            <Button variant="contained" sx={{width: "20%", alignSelf: "center", marginTop: "10px"}} onClick={onLoadMore}>
+            <Button variant="contained" sx={{width: "20%", alignSelf: "center", marginTop: "10px"}} onClick={handleLoadMore}>
               load more
             </Button>
           )}

@@ -4,30 +4,17 @@ import { Box } from "@mui/material";
 import FilterBox from "../components/common/FilterBox.jsx";
 import ToggleablePanel from "../components/common/ToggleablePanel.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
+import tmdbConfigs from "../api/configs/tmdb.configs.js";
 
-function SortPanel({ onSortOptionChange }) {
-  console.log(
-    "In SortPanel, onSortOptionChange is a ",
-    typeof onSortOptionChange
-  );
-
-  let sortOptions = [
-    "Popularity Descending",
-    "Popularity Ascending",
-    "Rating Descending",
-    "Rating Ascending",
-    "Release Year Descending",
-    "Release Year Ascending",
-    "Title (A-Z)",
-    "Title (Z-A)",
-  ];
+function SortPanel({ onOptionChange }) {
+  let sortOptions = Object.keys(tmdbConfigs.discoverSortOptions);
   return (
     <Box>
       <ToggleablePanel title="Sort">
         <FilterBox
           title="Sort Results by"
           options={sortOptions}
-          onOptionChange={onSortOptionChange}
+          onOptionChange={onOptionChange}
         />
       </ToggleablePanel>
     </Box>
@@ -39,28 +26,8 @@ function FilterPanel({
   onLanguageOptionChange,
   onReleaseYearOptionChange,
 }) {
-  let genres = [
-    "Action",
-    "Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Fantasy",
-    "History",
-    "Horror",
-    "Music",
-    "Mystery",
-    "Romance",
-    "Science Fiction",
-    "Thriller",
-    "TV Movie",
-    "War",
-    "Western",
-  ];
-  let languages = ["vietnamese", "english"];
+  let genres = Object.keys(tmdbConfigs.movieGenreIds);
+  let languages = Object.keys(tmdbConfigs.movieLanguageTags);
   let years = [2002, 2024];
   return (
     <Box>
@@ -101,7 +68,7 @@ function SortFilterContainer({
           justifyContent: "start",
         }}
       >
-        <SortPanel onSortOptionChange={onSortOptionChange} />
+        <SortPanel onOptionChange={onSortOptionChange} />
         <FilterPanel
           onGenreOptionChange={onGenreOptionChange}
           onLanguageOptionChange={onLanguageOptionChange}

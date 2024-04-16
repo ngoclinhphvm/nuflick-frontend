@@ -18,21 +18,22 @@ import VideosSlide from "../components/common/VideosSlide.jsx";
 import BackdropSlide from "../components/common/BackdropSlide.jsx";
 import PosterSlide from "../components/common/PosterSlide.jsx";
 
-
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
-  const [videos, setVideos] = useState(null);
-  const [credits, setCredits] = useState(null);
-  const [backdrops, setBackdrops] = useState(null);
-  const [posters, setPosters] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [credits, setCredits] = useState([]);
+  const [backdrops, setBackdrops] = useState([]);
+  const [posters, setPosters] = useState([]);
+  const [similars, setSimilars] = useState([]);
   const { movieId } = useParams();
+  let poster_path = "";
+  let backdrop_path = "";
   useEffect(() => {
     const getDetails = async (movieId) => {
       try {
         const movieInfo = await movieAPI.getInfo(movieId);
         if (movieInfo.response) {
           setMovie(movieInfo.response.data);
-          console.log("movieInfo.response.data", movieInfo.response.data);
         } else if (movieInfo.err) {
           console.error("Error fetching movie info:", movieInfo.err);
         }
@@ -40,18 +41,13 @@ function MovieDetail() {
         const videos = await movieAPI.getVideos(movieId);
         if (videos.response) {
           setVideos(videos.response.data.results);
-          console.log(
-            "videos.response.data.results",
-            videos.response
-          );
-        } else  {
-          console.error("Error fetching movie videos:");
+        } else if (videos.err) {
+          console.error("Error fetching movie videos:", videos.err);
         }
 
         const credits = await movieAPI.getCredits(movieId);
         if (credits.response) {
           setCredits(credits.response.data.cast);
-         
         } else if (credits.err) {
           console.error("Error fetching movie credits:", credits.err);
         }
@@ -61,32 +57,39 @@ function MovieDetail() {
       const backdrops = await movieAPI.getImages(movieId);
       if (backdrops.response) {
         setBackdrops(backdrops.response.data.backdrops);
-        console.log("images.response.data", backdrops.response.data.backdrops);
       } else if (backdrops.err) {
         console.error("Error fetching movie images:", backdrops.err);
       }
       const posters = await movieAPI.getImages(movieId);
       if (posters.response) {
         setPosters(posters.response.data.posters);
-        console.log("images.response.data", posters.response.data.posters);
       } else if (posters.err) {
         console.error("Error fetching movie images:", posters.err);
       }
-      
+      const similars = await movieAPI.getSimilar(movieId);
+      if (similars.response) {
+        setSimilars(similars.response.data.results);
+      } else if (similars.err) {
+        console.error("Error fetching movie images:", similars.err);
+      }
     };
     getDetails(movieId);
   }, [movieId]);
-  let posterPath = "";
   if (movie) {
-    posterPath = movie.backdrop_path || movie.poster_path;
+    poster_path =
+      (movie.poster_path &&
+        `https://image.tmdb.org/t/p/original${movie.poster_path}`) ||
+      "/no_image.jpg";
+    backdrop_path =
+      (movie.backdrop_path &&
+        `https://image.tmdb.org/t/p/original${movie.backdrop_path}`) ||
+      "/no_image.jpg";
   }
-  const src =
-    (posterPath && `https://image.tmdb.org/t/p/original${posterPath}`) ||
-    "/no_image.jpg";
+
   return (
     movie && (
       <>
-        <ImageHeader imgPath={src} />
+        <ImageHeader imgPath={backdrop_path} />
         {/* Poster */}
         <Box
           sx={{
@@ -97,13 +100,14 @@ function MovieDetail() {
         >
           <Box
             sx={{
-              width: { xs: "70%", sm: "50%", md: "35%" },margin: { xs: "0 auto 2rem", md: "0 4rem 0 5rem" },
+              width: { xs: "70%", sm: "50%", md: "35%" },
+              margin: { xs: "0 auto 2rem", md: "2 4rem 0 0" },
             }}
           >
             <Box
               sx={{
                 paddingTop: "140%",
-                ...uiConfigs.style.backgroundImage(src),
+                ...uiConfigs.style.backgroundImage(poster_path),
               }}
             />
           </Box>
@@ -111,140 +115,153 @@ function MovieDetail() {
             sx={{
               width: { xs: "100%", md: "60%" },
               color: "text.primary",
-              padding: { xs: "1rem", md: "2rem" },   
+              padding: { xs: "1rem", md: "2rem" },
             }}
           >
-           <Stack spacing={4}>
-             {/* title */}
-             <Typography
-              variant="h4"
-              fontSize={{ xs: "2rem", md: "2rem", lg: "4rem" }}
-              fontWeight="700"
-              sx={{ ...uiConfigs.style.typoLines(2, "left") }}
-            >
-              {`${movie.title || movie.name} (${
-                movie.release_date.split("-")[0]
-              })
+            <Stack spacing={4}>
+              {/* title */}
+              <Typography
+                variant="h4"
+                fontSize={{ xs: "2rem", md: "2rem", lg: "4rem" }}
+                fontWeight="700"
+                sx={{ ...uiConfigs.style.typoLines(2, "left") }}
+              >
+                {`${movie.title || movie.name} (${
+                  movie.release_date.split("-")[0]
+                })
               `}
-            </Typography>
-            {/* title */}
+              </Typography>
+              {/* title */}
 
-            {/* rate and genres */}
-            <Stack direction="row" spacing={1} alignItems="center">
-              {/* rate */}
-              <CircularRate value={movie.vote_average} />
-              {/* rate */}
-              <Divider orientation="vertical" />
-              {/* genres */}
-              {movie.genres.map((genre) => (
-                <Chip
-                  key={genre.id}
-                  label={genre.name} //genre.name
-                  variant="filled"
-                  color="warning"
-                  clickable="true"
+              {/* rate and genres */}
+              <Stack direction="row" spacing={1} alignItems="center">
+                {/* rate */}
+                <CircularRate value={movie.vote_average} />
+                {/* rate */}
+                <Divider orientation="vertical" />
+                {/* genres */}
+                {movie.genres.map((genre) => (
+                  <Chip
+                    key={genre.id}
+                    label={genre.name} //genre.name
+                    variant="filled"
+                    color="warning"
+                    clickable="true"
+                    sx={{
+                      fontWeight: "5", // Thiết lập độ đậm cho kiểu chữ
+                      color: "white", // Thiết lập màu sắc cho kiểu chữ
+                      backgroundColor: "darkred", // Thiết lập màu sắc cho nền
+                    }}
+                  />
+                ))}
+                {/* genres */}
+              </Stack>
+              {/* rate and genres */}
+
+              {/* overview */}
+              <Typography
+                variant="body1"
+                sx={{ ...uiConfigs.style.typoLines(5) }}
+              >
+                {movie.overview}
+              </Typography>
+
+              <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+                <LoadingButton
+                  variant="none"
                   sx={{
-                    fontWeight: "5", // Thiết lập độ đậm cho kiểu chữ
-                    color: "white", // Thiết lập màu sắc cho kiểu chữ
-                    backgroundColor: "darkred", // Thiết lập màu sắc cho nền
+                    width: "fit-content",
+                    minWidth: 0,
+                    p: 0,
                   }}
-                />
-              ))}
-              {/* genres */}
+                  size="large"
+                  startIcon={<FavoriteBorderOutlinedIcon />}
+                  onClick={() => console.log("Add to favorite")}
+                  loadingPosition="start"
+                  loading={false}
+                >
+                  {/* Không có văn bản */}
+                </LoadingButton>
+
+                <Button
+                  variant="none"
+                  sx={{
+                    width: "fit-content",
+                    minWidth: 0,
+                    p: 0,
+                  }}
+                  startIcon={<BookmarkBorderOutlinedIcon />}
+                  size="large"
+                  loadingPosition="start"
+                  loading={false}
+                  onClick={() => console.log("Add to watchlist")}
+                >
+                  {/* Không có văn bản */}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: { xs: "50%", md: "auto" },
+                    backgroundColor: "darkred",
+                  }}
+                  startIcon={<PlayArrowIcon />}
+                  size="large"
+                  onClick={() => console.log("Watch trailer")}
+                >
+                  Watch Trailer
+                </Button>
+              </Stack>
+              <Container header={"Cast"}>
+                {credits && (
+                  <MediaSlider
+                    mediaList={credits}
+                    mediaType="person"
+                  ></MediaSlider>
+                )}
+              </Container>
             </Stack>
-            {/* rate and genres */}
+          </Box>
+        </Box>
 
-            {/* overview */}
-            <Typography
-              variant="body1"
-              sx={{ ...uiConfigs.style.typoLines(5) }}
-            >
-              {movie.overview}
-            </Typography>
+        {/*action buttons*/}
 
-            <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-          <LoadingButton
-            variant="none"
-            sx={{
-              width: "fit-content", 
-              minWidth: 0, 
-              p: 0, 
-            }}
-            size="large"
-            startIcon={<FavoriteBorderOutlinedIcon />}
-            onClick={() => console.log("Add to favorite")}
-            loadingPosition="start"
-            loading={false}
-          >
-            {/* Không có văn bản */}
-          </LoadingButton>
+        {/*Credits*/}
+        {/* cast */}
 
-          <Button
-            variant="none"
-            sx={{
-              width: "fit-content",
-              minWidth: 0,
-              p: 0,
-            }}
-            startIcon={<BookmarkBorderOutlinedIcon />}
-            size="large"
-            loadingPosition="start"
-            loading={false}onClick={() => console.log("Add to watchlist")}
-            >
-              {/* Không có văn bản */}
-            </Button>
-  
-            <Button
-              variant="contained"
-              sx={{ width: { xs: "50%", md: "auto" },
-              backgroundColor: "darkred",
-              
-            }}
-              startIcon={<PlayArrowIcon />}
-              size="large"
-              onClick={() => console.log("Watch trailer")}
-            >
-              Watch Trailer
-            </Button>
-          </Stack>
-            <Container header={"Cast"}>
-            {credits && <MediaSlider mediaList={credits} mediaType="person"></MediaSlider>}
+        {/*Trailer*/}
+        {videos.length !== 0 && (
+          <Box padding={4}>
+            <Container header={"Videos"} padding="center">
+              <VideosSlide videos={videos}></VideosSlide>
             </Container>
-          </Stack>
-            </Box>
           </Box>
-  
-          {/*action buttons*/}
-  
-        
-          {/*Credits*/}
-          {/* cast */}
-  
-          {/*Trailer*/}
-          <Box padding={10}>
-          <Container header={"Trailer"} padding="center">
-            {videos && <VideosSlide videos={videos}></VideosSlide>}
-          </Container>
-          </Box>
+        )}
 
-          {/*Backdrops*/}
-          <Box padding={10}>
-          <Container header={"Backdrops"} padding="center">
-            {backdrops && 
-                <BackdropSlide backdrops={backdrops}></BackdropSlide>
-            }
-          </Container>
+        {/*Backdrops*/}
+        {backdrops.length !== 0 && (
+          <Box padding={4}>
+            <Container header={"Backdrops"} padding="center">
+              <BackdropSlide backdrops={backdrops}></BackdropSlide>
+            </Container>
           </Box>
-
-          <Box padding={10}>
-          <Container header={"Posters"} padding="center">
-            {posters && 
-                <PosterSlide posters={posters}></PosterSlide>
-            }
-          </Container>
+        )}
+        {posters.length !== 0 && (
+          <Box padding={4}>
+            <Container header={"Posters"} padding="center">
+              <PosterSlide posters={posters}></PosterSlide>
+            </Container>
           </Box>
-        </>
-      )
-    );
-  }
-  export default MovieDetail;
+        )}
+        {similars.length !== 0 && (
+          <Box padding={4}>
+            <Container header={"You may also like"} padding="center">
+              <MediaSlider mediaList={similars} mediaType="movie"></MediaSlider>
+            </Container>
+          </Box>
+        )}
+      </>
+    )
+  );
+}
+export default MovieDetail;

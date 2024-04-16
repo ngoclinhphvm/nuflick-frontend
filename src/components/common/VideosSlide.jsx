@@ -14,7 +14,7 @@ const VideoItem = ({video}) => {
         <Box>
             <iframe
                 width="100%"
-                height="600px"
+                height="550vw"
                 src={`https://www.youtube.com/embed/${video.key}`}
                 title={video.name}
                 allowFullScreen

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import movieAPI from "../api/modules/movie.api.js";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FilterBox from "../components/common/FilterBox.jsx";
 import ToggleablePanel from "../components/common/ToggleablePanel.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
@@ -96,14 +96,18 @@ export default function Discover() {
   const [releaseYearOption, setRealeaseYearOption] = useState("Any");
 
   const [resultMovies, setResultMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const skip = 12;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const moviesResponse = await movieAPI.getDiscover(28);
         if (moviesResponse.response) {
-          const resultMoviesData = moviesResponse.response.results;
-          setResultMovies(resultMoviesData);
+          const allMovies = moviesResponse.response.results;
+          setResultMovies([...allMovies]);
+          setFilteredMovies([...allMovies].splice(0, skip));
         } else if (moviesResponse.err) {
           console.error("Error fetching top rated movies:", moviesResponse.err);
         }
@@ -114,6 +118,14 @@ export default function Discover() {
 
     fetchData();
   }, []);
+
+  const onLoadMore = () => {
+    setFilteredMovies([
+      ...filteredMovies,
+      ...[...resultMovies].splice(page * skip, skip),
+    ]);
+    setPage(page + 1);
+  };
 
   return (
     <>
@@ -128,7 +140,10 @@ export default function Discover() {
         <Box>Genre option: {genreOption}</Box>
         <Box>Language option: {languageOption}</Box>
         <Box>Year option: {releaseYearOption}</Box> */}
-        <ResultGridContainer movies={resultMovies} />
+        <ResultGridContainer movies={filteredMovies} />
+        {filteredMovies.length < resultMovies.length && (
+          <Button sx={{right: -145}} onClick={onLoadMore}>load more</Button>
+        )}
       </Box>
     </>
   );

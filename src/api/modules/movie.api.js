@@ -66,6 +66,14 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
+    getImages: async(movieId) => {
+        try {
+            const response = await publicClient.get(
+                `movie/images/${movieId}`
+            );
+            return { response };
+        } catch (err) { return { err }; }
+    },
     getReviews: async (movieId) => {
         try {
             const response = await publicClient.get(

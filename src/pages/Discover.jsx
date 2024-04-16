@@ -79,12 +79,10 @@ function SortFilterContainer({
   );
 }
 
-function ResultGridContainer({ movies }) {
+function ResultGrid({ movies }) {
   return (
     <>
-      <Box sx={{ flex: "1" }}>
-        <MediaGrid mediaList={movies} mediaType="movie"></MediaGrid>
-      </Box>
+      <MediaGrid mediaList={movies} mediaType="movie"></MediaGrid>
     </>
   );
 }
@@ -140,10 +138,22 @@ export default function Discover() {
         <Box>Genre option: {genreOption}</Box>
         <Box>Language option: {languageOption}</Box>
         <Box>Year option: {releaseYearOption}</Box> */}
-        <ResultGridContainer movies={filteredMovies} />
-        {filteredMovies.length < resultMovies.length && (
-          <Button sx={{right: -145}} onClick={onLoadMore}>load more</Button>
-        )}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "20px",
+            justifyContent: "start",
+            flexGrow: "1",
+          }}
+        >
+          <ResultGrid movies={filteredMovies} />
+          {filteredMovies.length < resultMovies.length && (
+            <Button variant="contained" sx={{width: "20%", alignSelf: "center", marginTop: "10px"}} onClick={onLoadMore}>
+              load more
+            </Button>
+          )}
+        </Box>
       </Box>
     </>
   );

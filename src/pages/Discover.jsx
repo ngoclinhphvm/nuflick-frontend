@@ -1,67 +1,63 @@
 import React, { useState, useEffect } from "react";
 import movieAPI from "../api/modules/movie.api.js";
-import { Box } from "@mui/material";
-import { Button, Stack } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FilterBox from "../components/common/FilterBox.jsx";
 import ToggleablePanel from "../components/common/ToggleablePanel.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
+import tmdbConfigs from "../api/configs/tmdb.configs.js";
 
-function SortPanel() {
-  let sortOptions = [
-    "Popularity Descending",
-    "Popularity Ascending",
-    "Rating Descending",
-    "Rating Ascending",
-    "Release Year Descending",
-    "Release Year Ascending",
-    "Title (A-Z)",
-    "Title (Z-A)",
-  ];
+function SortPanel({ onOptionChange }) {
+  let sortOptions = Object.keys(tmdbConfigs.discoverSortOptions);
   return (
     <Box>
       <ToggleablePanel title="Sort">
-        <FilterBox title="Sort Results by" options={sortOptions} />
+        <FilterBox
+          title="Sort Results by"
+          options={sortOptions}
+          onOptionChange={onOptionChange}
+        />
       </ToggleablePanel>
     </Box>
   );
 }
 
-function FilterPanel() {
-  let genres = [
-    "Action",
-    "Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Fantasy",
-    "History",
-    "Horror",
-    "Music",
-    "Mystery",
-    "Romance",
-    "Science Fiction",
-    "Thriller",
-    "TV Movie",
-    "War",
-    "Western",
-  ];
-  let languages = ["vietnamese", "english"];
+function FilterPanel({
+  onGenreOptionChange,
+  onLanguageOptionChange,
+  onReleaseYearOptionChange,
+}) {
+  let genres = Object.keys(tmdbConfigs.movieGenreIds);
+  let languages = Object.keys(tmdbConfigs.movieLanguageTags);
   let years = [2002, 2024];
   return (
     <Box>
       <ToggleablePanel title="filter">
-        <FilterBox title="genre" options={genres} />
-        <FilterBox title="language" options={languages} />
-        <FilterBox title="year" options={years} />
+        <FilterBox
+          title="genre"
+          options={genres}
+          onOptionChange={onGenreOptionChange}
+        />
+        <FilterBox
+          title="language"
+          options={languages}
+          onOptionChange={onLanguageOptionChange}
+        />
+        <FilterBox
+          title="year"
+          options={years}
+          onOptionChange={onReleaseYearOptionChange}
+        />
       </ToggleablePanel>
     </Box>
   );
 }
 
-function SortFilterContainer() {
+function SortFilterContainer({
+  onSortOptionChange,
+  onGenreOptionChange,
+  onLanguageOptionChange,
+  onReleaseYearOptionChange,
+}) {
   return (
     <>
       <Box
@@ -72,8 +68,12 @@ function SortFilterContainer() {
           justifyContent: "start",
         }}
       >
-        <SortPanel />
-        <FilterPanel />
+        <SortPanel onOptionChange={onSortOptionChange} />
+        <FilterPanel
+          onGenreOptionChange={onGenreOptionChange}
+          onLanguageOptionChange={onLanguageOptionChange}
+          onReleaseYearOptionChange={onReleaseYearOptionChange}
+        />
       </Box>
     </>
   );
@@ -90,10 +90,10 @@ function ResultGridContainer({ movies }) {
 }
 
 export default function Discover() {
-  // const [sortOption, setSortOption] = useState("Popularity Descending");
+  const [sortOption, setSortOption] = useState("Popularity Descending");
   const [genreOption, setGenreOption] = useState(28);
-  // const [languageOption, setLanguageOption] = useState("Any");
-  // const [yearOption, setYearOption] = useState("Any");
+  const [languageOption, setLanguageOption] = useState("Any");
+  const [releaseYearOption, setRealeaseYearOption] = useState("Any");
 
   const [resultMovies, setResultMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -104,16 +104,12 @@ export default function Discover() {
     const fetchData = async () => {
       try {
         const moviesResponse = await movieAPI.getDiscover(28);
-        if (moviesResponse) {
-          let MoviesSorted = [];
-          MoviesSorted = moviesResponse.response.results.sort(
-            (a, b) => getReleaseDate(b) - getReleaseDate(a)
-          );
-          console.log(moviesResponse.response.results);
-          setResultMovies([...MoviesSorted]);
-          setFilteredMovies([...MoviesSorted].splice(0, skip));
-        } else {
-          console.error("Error fetching person:", moviesResponse.err);
+        if (moviesResponse.response) {
+          const allMovies = moviesResponse.response.results;
+          setResultMovies([...allMovies]);
+          setFilteredMovies([...allMovies].splice(0, skip));
+        } else if (moviesResponse.err) {
+          console.error("Error fetching top rated movies:", moviesResponse.err);
         }
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -122,11 +118,6 @@ export default function Discover() {
 
     fetchData();
   }, []);
-
-  const getReleaseDate = (movie) => {
-    const date = new Date(movie.release_date);
-    return date.getTime();
-  };
 
   const onLoadMore = () => {
     setFilteredMovies([
@@ -138,15 +129,22 @@ export default function Discover() {
 
   return (
     <>
-      <Stack>
-        <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
-          <SortFilterContainer />
-          <ResultGridContainer movies={filteredMovies} />
-        </Box>
+      <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
+        <SortFilterContainer
+          onSortOptionChange={setSortOption}
+          onGenreOptionChange={setGenreOption}
+          onLanguageOptionChange={setLanguageOption}
+          onReleaseYearOptionChange={setRealeaseYearOption}
+        />
+        {/* <Box>Sort option: {sortOption}</Box>
+        <Box>Genre option: {genreOption}</Box>
+        <Box>Language option: {languageOption}</Box>
+        <Box>Year option: {releaseYearOption}</Box> */}
+        <ResultGridContainer movies={filteredMovies} />
         {filteredMovies.length < resultMovies.length && (
           <Button sx={{right: -145}} onClick={onLoadMore}>load more</Button>
         )}
-      </Stack>
+      </Box>
     </>
   );
 }

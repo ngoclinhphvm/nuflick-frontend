@@ -8,6 +8,8 @@ import AccountDetail from "./pages/AccountDetail.jsx";
 import MovieDetail from "./pages/MovieDetails.jsx";
 import PersonDetail from "./pages/PersonDetail.jsx";
 import Discover from "./pages/Discover.jsx";
+import MovieSearch from "./pages/MediaSearch.jsx";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,7 +44,7 @@ function App() {
 
   }
   return (
-    
+  
     <BrowserRouter>
       <header className="navbar">
         <ul className="nav_list">
@@ -56,6 +58,14 @@ function App() {
               Discover
             </Link>
           </li>
+
+
+          <li className="nav_items">
+            <Link className="nav_items_name" to="/search">
+              Search
+            </Link>
+          </li>
+          
         </ul>
         <ul className="nav_list">
         {!isLoggedIn ? (
@@ -93,13 +103,14 @@ function App() {
         <Route path="/signup" element={ <SignUp />}/>
         <Route path="/account/:username" element={<AccountDetail onUsername={handleLogin}/>} />
         <Route path="/person/:personId" element={<PersonDetail />} />
-        {/* <Route path="/discover" element={<Discover />} /> */}
+        <Route path="/search" element={<MovieSearch />} />
       </Routes>
 
       <footer className="footer">
         <p>© 2021 Movie App</p>
       </footer>
     </BrowserRouter>
+  
   );
 }
 

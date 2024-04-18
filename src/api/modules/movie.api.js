@@ -49,10 +49,19 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
-    getDiscover: async (with_genres) => {
+    getDiscover: async (page, with_genres, primary_release_year, language ) => {
     try {
        
-        const response = await publicClient.get('movie', { params: { with_genres} });
+        const response = await publicClient.get('movie', {
+            params: {
+                page,
+                with_genres,
+                // 'primary_release_date.gte': primary_release_date,
+                primary_release_year,
+                language
+                //sort_by: popularity.desc
+            }
+        });
         return { response };
     } catch (err) {
         return { err };

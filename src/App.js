@@ -9,6 +9,8 @@ import MovieDetail from "./pages/MovieDetails.jsx";
 import PersonDetail from "./pages/PersonDetail.jsx";
 import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
+import MovieSearch from "./pages/MediaSearch.jsx";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,7 +22,7 @@ function App() {
   }
 
   return (
-    
+  
     <BrowserRouter>
     
       <NavBar/>
@@ -32,13 +34,14 @@ function App() {
         <Route path="/signup" element={ <SignUp />}/>
         <Route path="/account/:username" element={<AccountDetail/>} />
         <Route path="/person/:personId" element={<PersonDetail />} />
-        {/* <Route path="/discover" element={<Discover />} /> */}
+        <Route path="/search" element={<MovieSearch />} />
       </Routes>
 
       <footer className="footer">
         <p>© 2021 Movie App</p>
       </footer>
     </BrowserRouter>
+  
   );
 }
 

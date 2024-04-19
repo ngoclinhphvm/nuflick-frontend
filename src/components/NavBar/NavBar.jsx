@@ -27,6 +27,16 @@ const NavBar = () => {
                     Discover
                     </Link>
                 </li>
+                <li className="nav_items">
+                    <Link className="nav_items_name" to="/reviews">
+                    Reviews
+                    </Link>
+                </li>
+                <li className="nav_items">
+                    <Link className="nav_items_name" to="/search">
+                    Search
+                    </Link>
+                </li>
             </ul>
             <ul className="nav_list">
             {!user ? (

@@ -18,6 +18,9 @@ import VideosSlide from "../components/common/VideosSlide.jsx";
 import BackdropSlide from "../components/common/BackdropSlide.jsx";
 import PosterSlide from "../components/common/PosterSlide.jsx";
 
+import ReviewItem from "../components/common/ReviewItem.jsx";
+import reviewApi from "../api/modules/review.api.js";
+
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState([]);
@@ -25,6 +28,7 @@ function MovieDetail() {
   const [backdrops, setBackdrops] = useState([]);
   const [posters, setPosters] = useState([]);
   const [similars, setSimilars] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   let poster_path = "";
   let backdrop_path = "";
@@ -54,18 +58,29 @@ function MovieDetail() {
       } catch (error) {
         console.error("Error fetching movie:", error);
       }
-      const backdrops = await movieAPI.getImages(movieId);
-      if (backdrops.response) {
-        setBackdrops(backdrops.response.data.backdrops);
-      } else if (backdrops.err) {
-        console.error("Error fetching movie images:", backdrops.err);
+
+      const reviewList = await reviewApi.getReviews(movieId);
+     
+      if(reviewList){
+        console.log(reviewList.length);
+        setReviews(reviewList);
+      }else{
+
+        console.log("Error fetching reviews");
       }
-      const posters = await movieAPI.getImages(movieId);
-      if (posters.response) {
-        setPosters(posters.response.data.posters);
-      } else if (posters.err) {
-        console.error("Error fetching movie images:", posters.err);
-      }
+
+      // const backdrops = await movieAPI.getImages(movieId);
+      // if (backdrops.response) {
+      //   setBackdrops(backdrops.response.data.backdrops);
+      // } else if (backdrops.err) {
+      //   console.error("Error fetching movie images:", backdrops.err);
+      // }
+      // const posters = await movieAPI.getImages(movieId);
+      // if (posters.response) {
+      //   setPosters(posters.response.data.posters);
+      // } else if (posters.err) {
+      //   console.error("Error fetching movie images:", posters.err);
+      // }
       const similars = await movieAPI.getSimilar(movieId);
       if (similars.response) {
         setSimilars(similars.response.data.results);
@@ -237,15 +252,22 @@ function MovieDetail() {
             </Container>
           </Box>
         )}
-
+        {/*Reviews*/}
+        <Box padding={4}>
+          <Container header={"Reviews"} padding="center">
+          {reviews && reviews.map((review, index) => (
+            <ReviewItem key={index} review={review}></ReviewItem>
+          ))}
+          </Container>
+        </Box>
         {/*Backdrops*/}
-        {backdrops.length !== 0 && (
+        {/* {backdrops.length !== 0 && (
           <Box padding={4}>
             <Container header={"Backdrops"} padding="center">
               <BackdropSlide backdrops={backdrops}></BackdropSlide>
             </Container>
           </Box>
-        )}
+        )} */}
         {posters.length !== 0 && (
           <Box padding={4}>
             <Container header={"Posters"} padding="center">

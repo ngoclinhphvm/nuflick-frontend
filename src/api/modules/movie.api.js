@@ -49,7 +49,7 @@ const MovieApi = {
             return { response };
         } catch (err) { return { err }; }
     },
-    getDiscover: async (page, with_genres, primary_release_year, language, sort_by ) => {
+    getDiscover: async (page, with_genres, primary_release_year, with_original_language, sort_by ) => {
     try {
        
         const response = await publicClient.get('movie', {
@@ -57,7 +57,7 @@ const MovieApi = {
                 page,
                 with_genres,
                 primary_release_year,
-                language,
+                with_original_language,
                 sort_by
             }
         });

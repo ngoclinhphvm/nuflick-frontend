@@ -16,8 +16,9 @@ export default function FilterBox({ title, options, onOptionChange }) {
       <FormHelperText>{title}</FormHelperText>
       <Select
         MenuProps={MenuProps}
-        onChange={(event) => onOptionChange(event.target.value)}
+        onChange={(event) => onOptionChange(event.target.value !== "Any" ? event.target.value : "")}
       >
+        <MenuItem value="Any">Any</MenuItem>
         {options.map((option, index) => (
           <MenuItem key={index} value={option}>
             {option}

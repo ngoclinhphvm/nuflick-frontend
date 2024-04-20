@@ -222,8 +222,8 @@ const discoverSortOptions = {
     "Rating Ascending": "vote_average.asc",
     "Release Year Descending": "primary_release_date.desc",
     "Release Year Ascending": "primary_release_date.desc",
-    "Title (A-Z)": "orginal_title.desc",
-    "Title (Z-A)": "original_title.asc"
+    "Title (A-Z)": "title.desc",
+    "Title (Z-A)": "title.asc"
 }
 
 const backdropPath = (imgEndpoint) =>

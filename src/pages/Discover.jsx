@@ -26,9 +26,9 @@ function FilterPanel({
   onLanguageOptionChange,
   onReleaseYearOptionChange,
 }) {
-  let genres = Object.keys(tmdbConfigs.movieGenreIds);
-  let languages = Object.keys(tmdbConfigs.movieLanguageTags);
-  let years = [2002, 2024];
+  let genres = ["Any", ...Object.keys(tmdbConfigs.movieGenreIds)];
+  let languages = ["Any", ...Object.keys(tmdbConfigs.movieLanguageTags)];
+  let years = ["Any", 2002, 2024];
   return (
     <Box>
       <ToggleablePanel title="filter">
@@ -94,16 +94,14 @@ export default function Discover() {
     year: "",
   });
 
-  // const [filteredMovies, setFilteredMovies] = useState([]);
   const [resultMovies, setResultMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const skip = 12;
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const moviesResponse = await movieAPI.getDiscover(
-          page,
+          currentPage,
           searchParams.genre,
           searchParams.year,
           searchParams.language,
@@ -111,7 +109,7 @@ export default function Discover() {
         );
         if (moviesResponse.response) {
           const allMovies = moviesResponse.response.results;
-          setResultMovies(allMovies);
+          setResultMovies((resultMovies) => [...resultMovies, ...allMovies]);
         } else if (moviesResponse.err) {
           console.error("Error fetching top rated movies:", moviesResponse.err);
         }
@@ -121,19 +119,25 @@ export default function Discover() {
     };
 
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
   function handleSearchButtonClick() {
     setSearchParams({
-      sort_by:
-        sortOption === "" ? "" : tmdbConfigs.discoverSortOptions[sortOption],
-      genre: genreOption === "" ? "" : tmdbConfigs.movieGenreIds[genreOption],
+      sort_by: tmdbConfigs.discoverSortOptions[sortOption],
+      genre:
+        genreOption === "Any" ? "" : tmdbConfigs.movieGenreIds[genreOption],
       language:
-        languageOption === ""
+        languageOption === "Any"
           ? ""
           : tmdbConfigs.movieLanguageTags[languageOption],
-      year: releaseYearOption,
+      year: releaseYearOption === "Any" ? "" : releaseYearOption,
     });
+    setResultMovies([]);
+    setCurrentPage(1);
+  }
+
+  function handleLoadMoreButtonClick() {
+    setCurrentPage(currentPage + 1);
   }
 
   return (
@@ -157,13 +161,7 @@ export default function Discover() {
           }}
         >
           <MediaGrid mediaList={resultMovies} mediaType="movie"></MediaGrid>
-          {/* {filteredMovies.length < resultMovies.length && (
-            <Button
-              variant="contained"
-              sx={{ width: "20%", alignSelf: "center", marginTop: "10px" }}
-            >
-              load more
-            </Button> */}
+          <Button onClick={handleLoadMoreButtonClick}>Load More</Button>
         </Box>
       </Box>
     </>

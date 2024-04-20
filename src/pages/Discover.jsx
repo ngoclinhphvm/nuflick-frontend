@@ -57,6 +57,7 @@ function SortFilterContainer({
   onGenreOptionChange,
   onLanguageOptionChange,
   onReleaseYearOptionChange,
+  onSearch,
 }) {
   return (
     <>
@@ -74,38 +75,43 @@ function SortFilterContainer({
           onLanguageOptionChange={onLanguageOptionChange}
           onReleaseYearOptionChange={onReleaseYearOptionChange}
         />
+        <button onClick={onSearch}>Search</button>
       </Box>
-    </>
-  );
-}
-
-function ResultGrid({ movies }) {
-  return (
-    <>
-      <MediaGrid mediaList={movies} mediaType="movie"></MediaGrid>
     </>
   );
 }
 
 export default function Discover() {
   const [sortOption, setSortOption] = useState("Popularity Descending");
-  const [genreOption, setGenreOption] = useState(28);
-  const [languageOption, setLanguageOption] = useState("Any");
-  const [releaseYearOption, setRealeaseYearOption] = useState("Any");
+  const [genreOption, setGenreOption] = useState("");
+  const [languageOption, setLanguageOption] = useState("");
+  const [releaseYearOption, setRealeaseYearOption] = useState("");
 
+  const [searchParams, setSearchParams] = useState({
+    sort_by: "",
+    genre: "",
+    language: "",
+    year: "",
+  });
+
+  // const [filteredMovies, setFilteredMovies] = useState([]);
   const [resultMovies, setResultMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
   const [page, setPage] = useState(1);
   const skip = 12;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const moviesResponse = await movieAPI.getDiscover(28);
+        const moviesResponse = await movieAPI.getDiscover(
+          page,
+          searchParams.genre,
+          searchParams.year,
+          searchParams.language,
+          searchParams.sort_by
+        );
         if (moviesResponse.response) {
           const allMovies = moviesResponse.response.results;
-          setResultMovies([...allMovies]);
-          setFilteredMovies([...allMovies].splice(0, skip));
+          setResultMovies(allMovies);
         } else if (moviesResponse.err) {
           console.error("Error fetching top rated movies:", moviesResponse.err);
         }
@@ -115,15 +121,20 @@ export default function Discover() {
     };
 
     fetchData();
-  }, []);
+  }, [searchParams]);
 
-  const handleLoadMore = () => {
-    setFilteredMovies([
-      ...filteredMovies,
-      ...[...resultMovies].splice(page * skip, skip),
-    ]);
-    setPage(page + 1);
-  };
+  function handleSearchButtonClick() {
+    setSearchParams({
+      sort_by:
+        sortOption === "" ? "" : tmdbConfigs.discoverSortOptions[sortOption],
+      genre: genreOption === "" ? "" : tmdbConfigs.movieGenreIds[genreOption],
+      language:
+        languageOption === ""
+          ? ""
+          : tmdbConfigs.movieLanguageTags[languageOption],
+      year: releaseYearOption,
+    });
+  }
 
   return (
     <>
@@ -133,11 +144,9 @@ export default function Discover() {
           onGenreOptionChange={setGenreOption}
           onLanguageOptionChange={setLanguageOption}
           onReleaseYearOptionChange={setRealeaseYearOption}
+          onSearch={handleSearchButtonClick}
         />
-        {/* <Box>Sort option: {sortOption}</Box>
-        <Box>Genre option: {genreOption}</Box>
-        <Box>Language option: {languageOption}</Box>
-        <Box>Year option: {releaseYearOption}</Box> */}
+
         <Box
           sx={{
             display: "flex",
@@ -147,12 +156,14 @@ export default function Discover() {
             flexGrow: "1",
           }}
         >
-          <ResultGrid movies={filteredMovies} />
-          {filteredMovies.length < resultMovies.length && (
-            <Button variant="contained" sx={{width: "20%", alignSelf: "center", marginTop: "10px"}} onClick={handleLoadMore}>
+          <MediaGrid mediaList={resultMovies} mediaType="movie"></MediaGrid>
+          {/* {filteredMovies.length < resultMovies.length && (
+            <Button
+              variant="contained"
+              sx={{ width: "20%", alignSelf: "center", marginTop: "10px" }}
+            >
               load more
-            </Button>
-          )}
+            </Button> */}
         </Box>
       </Box>
     </>

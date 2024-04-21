@@ -1,13 +1,20 @@
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import tmdbConfigs from "../../api/configs/tmdb.configs";
 import uiConfigs from "../../configs/ui.configs";
-import { routesGen } from "../../routes/routes";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CircularRate from "./CircularRate";
-import Container from "./Container";
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+  typography: {
+    title: {
+      fontSize: '2rem',
+      fontWeight: '400',
+      fontFamily: "TiemposTextWeb-Regular,Georgia,serif",
+    },
+  },
+});
+
 
 const MediaItem = ({ media, mediaType }) => {
   const [title, setTitle] = useState("");
@@ -41,6 +48,7 @@ const MediaItem = ({ media, mediaType }) => {
   return (
     <>
       {mediaType === "movie" && (
+        <ThemeProvider theme={theme}>
         <Link to={`/movie/${media.id}`}>
           <Box
             sx={{
@@ -51,7 +59,9 @@ const MediaItem = ({ media, mediaType }) => {
               "&:hover .media-back-drop, &:hover .media-play-btn": {
                 opacity: 1,
               },
+              "&:hover": { border: "3px solid green" },
               color: "primary.contrastText",
+              borderRadius: "5px"
             }}
           >
             <>
@@ -67,21 +77,6 @@ const MediaItem = ({ media, mediaType }) => {
                   left: 0,
                   backgroundImage:
                     "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-                }}
-              />
-              <Button
-                className="media-play-btn"
-                variant="contained"
-                startIcon={<PlayArrowIcon />}
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  opacity: 0,
-                  transition: "all 0.3s ease",
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  "& .MuiButton-startIcon": { marginRight: "-4px" },
                 }}
               />
               <Box
@@ -109,7 +104,7 @@ const MediaItem = ({ media, mediaType }) => {
 
                   <Typography
                     className="title"
-                    variant="body1"
+                    variant="title"
                     fontWeight="700"
                     sx={{
                       fontSize: "1rem",
@@ -124,6 +119,7 @@ const MediaItem = ({ media, mediaType }) => {
             </>
           </Box>
         </Link>
+        </ThemeProvider>
       )}
 
       {mediaType === "person" && (

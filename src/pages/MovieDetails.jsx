@@ -17,9 +17,12 @@ import MediaSlider from "../components/common/MediaSlider.jsx";
 import VideosSlide from "../components/common/VideosSlide.jsx";
 import BackdropSlide from "../components/common/BackdropSlide.jsx";
 import PosterSlide from "../components/common/PosterSlide.jsx";
+import { common } from "@mui/material/colors";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import reviewApi from "../api/modules/review.api";
 
-import ReviewItem from "../components/common/ReviewItem.jsx";
-import reviewApi from "../api/modules/review.api.js";
+
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
@@ -28,8 +31,15 @@ function MovieDetail() {
   const [backdrops, setBackdrops] = useState([]);
   const [posters, setPosters] = useState([]);
   const [similars, setSimilars] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
+  const [reviews, setReviews] = useState([]);
+
+  const [value, setValue] = React.useState('one');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   let poster_path = "";
   let backdrop_path = "";
   useEffect(() => {
@@ -69,18 +79,18 @@ function MovieDetail() {
         console.log("Error fetching reviews");
       }
 
-      // const backdrops = await movieAPI.getImages(movieId);
-      // if (backdrops.response) {
-      //   setBackdrops(backdrops.response.data.backdrops);
-      // } else if (backdrops.err) {
-      //   console.error("Error fetching movie images:", backdrops.err);
-      // }
-      // const posters = await movieAPI.getImages(movieId);
-      // if (posters.response) {
-      //   setPosters(posters.response.data.posters);
-      // } else if (posters.err) {
-      //   console.error("Error fetching movie images:", posters.err);
-      // }
+      const backdrops = await movieAPI.getImages(movieId);
+      if (backdrops.response) {
+        setBackdrops(backdrops.response.backdrops);
+      } else if (backdrops.err) {
+        console.error("Error fetching movie images:", backdrops.err);
+      }
+      const posters = await movieAPI.getImages(movieId);
+      if (posters.response) {
+        setPosters(posters.response.posters);
+      } else if (posters.err) {
+        console.error("Error fetching movie images:", posters.err);
+      }
       const similars = await movieAPI.getSimilar(movieId);
       if (similars.response) {
         setSimilars(similars.response.data.results);
@@ -245,36 +255,71 @@ function MovieDetail() {
         {/* cast */}
 
         {/*Trailer*/}
-        {videos.length !== 0 && (
+        {/* {videos.length !== 0 && (
           <Box padding={4}>
             <Container header={"Videos"} padding="center">
               <VideosSlide videos={videos}></VideosSlide>
             </Container>
           </Box>
-        )}
-        {/*Reviews*/}
-        <Box padding={4}>
-          <Container header={"Reviews"} padding="center">
-          {reviews && reviews.map((review, index) => (
-            <ReviewItem key={index} review={review}></ReviewItem>
-          ))}
-          </Container>
-        </Box>
-        {/*Backdrops*/}
-        {/* {backdrops.length !== 0 && (
+        )} */}
+
+        {/* Backdrops
+         {backdrops.length !== 0 && (
           <Box padding={4}>
             <Container header={"Backdrops"} padding="center">
               <BackdropSlide backdrops={backdrops}></BackdropSlide>
             </Container>
           </Box>
-        )} */}
+        )}
         {posters.length !== 0 && (
           <Box padding={4}>
             <Container header={"Posters"} padding="center">
               <PosterSlide posters={posters}></PosterSlide>
             </Container>
           </Box>
-        )}
+        )} */}
+        <Box padding={4}>
+          <Box sx={{ width: '100%' }}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        textColor="black"
+        indicatorColor="primary"
+        aria-label="secondary tabs example"
+        sx={{ marginBottom: '0px' }} // Thêm một khoảng cách dưới Tabs
+      >
+        <Tab value="zero" label={<Typography variant="h5" fontWeight="700" text-decoration="underline">MEDIAS</Typography>} disabled="true"  />
+        <Tab value="one" label={<Typography variant="h6" fontWeight="bold">VIDEOS</Typography>} />
+        <Tab value="two" label={<Typography variant="h6" fontWeight="bold">POSTERS</Typography>} />
+        <Tab value="three" label={<Typography variant="h6" fontWeight="bold">BACKDROPS</Typography>} />
+      </Tabs>
+
+      {value === 'one' && (
+        videos.length !== 0 && (
+          <Box padding={4}>
+              <VideosSlide videos={videos}></VideosSlide>
+          </Box>
+        )
+      )}
+
+      {value === 'two' && (
+        posters.length !== 0 && (
+          <Box padding={4}>
+              <PosterSlide posters={posters}></PosterSlide>
+          </Box>
+        )
+      )}
+
+      {value === 'three' && (
+        backdrops.length !== 0 && (
+          <Box padding={4}>
+              <BackdropSlide backdrops={backdrops}></BackdropSlide>
+          </Box>
+        )
+      )}
+    </Box>
+        </Box>
+       
         {similars.length !== 0 && (
           <Box padding={4}>
             <Container header={"You may also like"} padding="center">
@@ -283,6 +328,7 @@ function MovieDetail() {
           </Box>
         )}
       </>
+
     )
   );
 }

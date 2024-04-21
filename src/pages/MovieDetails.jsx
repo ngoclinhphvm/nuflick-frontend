@@ -26,7 +26,6 @@ import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
-import { TabPanel } from "@mui/lab";
 import IconButton from '@mui/material/IconButton';
 
 

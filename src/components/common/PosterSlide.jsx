@@ -14,30 +14,36 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import tmdbConfigs from "../../api/configs/tmdb.configs";
 
-const PosterSlide = ({ posters }) => {
-  return (
-    <Swiper
-      navigation={true}
-      slidesPerView={5}
-      slidesPerGroup={2}
-      grabCursor={true}
-      direction="horizontal"
-      observer={true}
-      modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
-    >
-      {posters.map((poster, index) => (
-        <SwiperSlide key={index}>
-          <Box
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/w500${poster.file_path}`}
-              style={{ width: "100%", height: "50%" }}
-            />
-          </Box>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  );
-};
+const PosterSlide = ({posters}) => {
+    return (
+        <Swiper
+            pagination={{clickable: true}}
+            navigation={true}
+            slidesPerView={5}
+            slidesPerGroup={5}
+            grabCursor={true}
+            direction="horizontal"
+            observer={true}
+            resizeObserver={true}
+            modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
+        >
+            {posters.map((poster, index) => (
+                <SwiperSlide key={index}>
+                    <Box style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}>
+                        <img
+                            src={`https://image.tmdb.org/t/p/original${poster.file_path}`}
+                            style={{width: "600px", height: "400px", objectFit: "cover",margin: "auto" }}
+                        />
+                    </Box>
+                </SwiperSlide>
+            ))}
+        </Swiper>
+    );
+}
 
 export default PosterSlide;

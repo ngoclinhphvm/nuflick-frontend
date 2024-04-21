@@ -13,8 +13,8 @@ const BackdropSlide = ({backdrops}) => {
         <Swiper
             pagination={{clickable: true}}
             navigation={true}
-            slidesPerView={1}
-            slidesPerGroup={1}
+            slidesPerView={2}
+            slidesPerGroup={2}
             grabCursor={true}
             direction="horizontal"
             observer={true}
@@ -23,10 +23,15 @@ const BackdropSlide = ({backdrops}) => {
         >
             {backdrops.map((backdrop, index) => (
                 <SwiperSlide key={index}>
-                    <Box>
+                   <Box style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}>
                         <img
-                            src={`https://image.tmdb.org/t/p/w500${backdrop.file_path}`}
-                            style={{width: "100%", height: "100%"}}
+                            src={`https://image.tmdb.org/t/p/original${backdrop.file_path}`}
+                            style={{width: "600px", height: "400px", objectFit: "cover",margin: "auto" }}
                         />
                     </Box>
                 </SwiperSlide>

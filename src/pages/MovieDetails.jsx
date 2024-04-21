@@ -3,7 +3,7 @@ import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import uiConfigs from "../configs/ui.configs";
 import ImageHeader from "../components/common/ImageHeader";
 import CircularRate from "../components/common/CircularRate";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import MediaGrid from "../components/common/MediaGrid.jsx";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -24,6 +24,12 @@ import { useNavigate} from "react-router-dom";
 import reviewApi from "../api/modules/review.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
+import { Tab } from "@mui/material";
+import { Tabs } from "@mui/material";
+import { TabPanel } from "@mui/lab";
+import IconButton from '@mui/material/IconButton';
+
+
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
@@ -34,10 +40,14 @@ function MovieDetail() {
   const [similars, setSimilars] = useState([]);
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
-  const { movieId } = useParams();
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
+  const [value, setValue] = React.useState('one');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
   const user = localStorage.getItem("user") ?  localStorage.getItem("user") : null;
@@ -47,7 +57,10 @@ function MovieDetail() {
 
   let poster_path = "";
   let backdrop_path = "";
+  const videoRef = useRef(null);
+
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getDetails = async (movieId) => {
       try {
         const movieInfo = await movieAPI.getInfo(movieId);
@@ -210,16 +223,13 @@ function MovieDetail() {
               </Typography>
 
               <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                <LoadingButton
+                <IconButton
                   variant="none"
                   sx={{
-                    width: "fit-content",
-                    minWidth: 0,
-                    p: 0,
+                   
                     color: isFavorite ? "red" : "inherit",
                   }}
                   size="large"
-                  startIcon={<FavoriteBorderOutlinedIcon />}
                   onClick={ async () =>{
                     if(token){
                       if(!isFavorite){
@@ -239,24 +249,18 @@ function MovieDetail() {
                   loadingPosition="start"
                   loading={false}
                 >
-                  {/* Không có văn bản */}
-                </LoadingButton>
+                <FavoriteBorderOutlinedIcon />
 
-                <Button
-                  variant="none"
-                  sx={{
-                    width: "fit-content",
-                    minWidth: 0,
-                    p: 0,
-                  }}
-                  startIcon={<BookmarkBorderOutlinedIcon />}
+                  {/* Không có văn bản */}
+                </IconButton>
+
+                <IconButton
                   size="large"
-                  loadingPosition="start"
-                  loading={false}
+                  color="inherit"
                   onClick={() => console.log("Add to watchlist")}
                 >
-                  {/* Không có văn bản */}
-                </Button>
+                  <BookmarkBorderOutlinedIcon />
+                </IconButton>
 
                 <Button
                   variant="contained"
@@ -266,7 +270,8 @@ function MovieDetail() {
                   }}
                   startIcon={<PlayArrowIcon />}
                   size="large"
-                  onClick={() => console.log("Watch trailer")}
+                  onClick={() => videoRef.current.scrollIntoView()}
+                 // onClick={() => console.log("Watch trailer")}
                 >
                   Watch Trailer
                 </Button>
@@ -295,10 +300,56 @@ function MovieDetail() {
               <VideosSlide videos={videos}></VideosSlide>
             </Container>
           </Box>
-        )}
+        )}} */}
+        <Box padding={4}>
+          <Box sx={{ width: '100%' }}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        textColor="black"
+        indicatorColor="primary"
+        aria-label="secondary tabs example"
+        sx={{ marginBottom: '0px' }} // Thêm một khoảng cách dưới Tabs
+      >
+        <Tab value="zero" label={<Typography variant="h5" fontWeight="700" text-decoration="underline">MEDIAS</Typography>} disabled="true"  />
+        <Tab value="one" label={<Typography variant="h6" fontWeight="bold">VIDEOS</Typography>} />
+        <Tab value="two" label={<Typography variant="h6" fontWeight="bold">POSTERS</Typography>} />
+        <Tab value="three" label={<Typography variant="h6" fontWeight="bold">BACKDROPS</Typography>} />
+      </Tabs>
+
+      {value === 'one' && (
+        videos.length !== 0 && (
+          <div ref={videoRef}>
+            <Box padding={4}>
+              <VideosSlide videos={videos}></VideosSlide>
+            </Box>
+          </div>
+        )
+      )}
+
+      {value === 'two' && (
+        posters.length !== 0 && (
+          <Box padding={4}>
+              <PosterSlide posters={posters}></PosterSlide>
+          </Box>
+        )
+      )}
+
+      {value === 'three' && (
+        backdrops.length !== 0 && (
+          <Box padding={4}>
+              <BackdropSlide backdrops={backdrops}></BackdropSlide>
+          </Box>
+        )
+      )}
+    </Box>
+        </Box>
+        
+
+
         {/*Reviews*/}
         <Box padding={4}>
-          <Container header={"Reviews"} padding="center">
+          <Container header={"Reviews"} padding="center" >
           {reviews && reviews.map((review, index) => (
             <ReviewItem key={index} review={review}></ReviewItem>
           ))}
@@ -327,63 +378,8 @@ function MovieDetail() {
                   {/* Không có văn bản */}
                 </Button>
 
-        </Box>
-        {/*Backdrops*/}
-        {backdrops.length !== 0 && (
-          <Box padding={4}>
-            <Container header={"Backdrops"} padding="center">
-              <BackdropSlide backdrops={backdrops}></BackdropSlide>
-            </Container>
-          </Box>
-        )}
-        {posters.length !== 0 && (
-          <Box padding={4}>
-            <Container header={"Posters"} padding="center">
-              <PosterSlide posters={posters}></PosterSlide>
-            </Container>
-          </Box>
-        )} */}
-        <Box padding={4}>
-          <Box sx={{ width: '100%' }}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        textColor="black"
-        indicatorColor="primary"
-        aria-label="secondary tabs example"
-        sx={{ marginBottom: '0px' }} // Thêm một khoảng cách dưới Tabs
-      >
-        <Tab value="zero" label={<Typography variant="h5" fontWeight="700" text-decoration="underline">MEDIAS</Typography>} disabled="true"  />
-        <Tab value="one" label={<Typography variant="h6" fontWeight="bold">VIDEOS</Typography>} />
-        <Tab value="two" label={<Typography variant="h6" fontWeight="bold">POSTERS</Typography>} />
-        <Tab value="three" label={<Typography variant="h6" fontWeight="bold">BACKDROPS</Typography>} />
-      </Tabs>
-
-      {value === 'one' && (
-        videos.length !== 0 && (
-          <Box padding={4}>
-              <VideosSlide videos={videos}></VideosSlide>
-          </Box>
-        )
-      )}
-
-      {value === 'two' && (
-        posters.length !== 0 && (
-          <Box padding={4}>
-              <PosterSlide posters={posters}></PosterSlide>
-          </Box>
-        )
-      )}
-
-      {value === 'three' && (
-        backdrops.length !== 0 && (
-          <Box padding={4}>
-              <BackdropSlide backdrops={backdrops}></BackdropSlide>
-          </Box>
-        )
-      )}
-    </Box>
-        </Box>
+        </Box>       
+        
        
         {similars.length !== 0 && (
           <Box padding={4}>

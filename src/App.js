@@ -11,6 +11,7 @@ import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import MovieSearch from "./pages/MediaSearch.jsx";
 
+import Review from "./components/Review/Review.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,11 +36,22 @@ function App() {
         <Route path="/account/:username" element={<AccountDetail/>} />
         <Route path="/person/:personId" element={<PersonDetail />} />
         <Route path="/search" element={<MovieSearch />} />
+        <Route path="/reviews/:movieId" element={<Review />} />
       </Routes>
 
-      <footer className="footer">
-        <p>© 2021 Movie App</p>
-      </footer>
+    <footer className="footer">
+        <p>© {new Date().getFullYear()} Movie App</p>
+        {/* <div className="footer_legal">
+          <h3>Legal</h3>
+          <ul>
+            <li><a>Terms of Use</a></li>
+            <li><a>API Terms of Use</a></li>
+            <li><a>Privacy Policy</a></li>
+            <li><a>DMCA Policy</a></li>
+          </ul>
+      </div> */}
+    </footer>
+   
     </BrowserRouter>
   
   );

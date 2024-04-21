@@ -13,8 +13,8 @@ const PosterSlide = ({posters}) => {
         <Swiper
             pagination={{clickable: true}}
             navigation={true}
-            slidesPerView={1}
-            slidesPerGroup={1}
+            slidesPerView={5}
+            slidesPerGroup={5}
             grabCursor={true}
             direction="horizontal"
             observer={true}
@@ -23,10 +23,15 @@ const PosterSlide = ({posters}) => {
         >
             {posters.map((poster, index) => (
                 <SwiperSlide key={index}>
-                    <Box>
+                    <Box style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}>
                         <img
-                            src={`https://image.tmdb.org/t/p/w500${poster.file_path}`}
-                            style={{width: "100%", height: "100%"}}
+                            src={`https://image.tmdb.org/t/p/original${poster.file_path}`}
+                            style={{width: "600px", height: "400px", objectFit: "cover",margin: "auto" }}
                         />
                     </Box>
                 </SwiperSlide>

@@ -1,4 +1,6 @@
 import publicClient from "../client/public.client.js";
+import privateClient from "../client/private.client.js";
+import axios from "axios";
 
 const accountApi = {
     login : async (data) => {
@@ -20,19 +22,55 @@ const accountApi = {
         }
     },
     getInfo: async (username) => {
-        const url = `account/${username}`;
+    const url = `account/${username}`;
+    try {
+        const response = await publicClient.get(url);
+        return response;
+    } catch (err) {
+        return { err };
+    }
+    },
+    getFavorite: async (username) => {
+    const url = `account/${username}/favorite`;
+    try {
+        const response = await publicClient.get(url);
+        return response;
+    } catch (err) {
+        return { err };
+    }
+    },
+    addFavorite: async (username, movieId, accessToken) => {
+        const url = `account/${username}/addfavorite/${movieId}`;
+        console.log(url);
         try {
-            const request = await publicClient.get(url);
-            return request;
-        } catch (err) {
+            const response = await publicClient.post(
+                url,
+                {},
+                {
+                    headers: {
+                        token: `Bearer ${accessToken}`
+                    }
+                }
+            );
+            return response;
+        } catch (err) { 
+            console.log(err);
             return { err };
         }
     },
-    getFavorite: async (username) => {
-        const url = `account/${username}/favorite`;
+    removeFavorite: async (username, movieId, accessToken) => {
+        const url = `account/${username}/removefavorite/${movieId}`;
         try {
-            const request = await publicClient.get(url);
-            return request;
+            const response = await publicClient.post(
+                url,
+                {},
+                {
+                    headers: {
+                        token: `Bearer ${accessToken}`
+                    }
+                }
+            );
+            return response;
         } catch (err) {
             return { err };
         }

@@ -10,6 +10,7 @@ import PersonDetail from "./pages/PersonDetail.jsx";
 import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import MovieSearch from "./pages/MediaSearch.jsx";
+import Footer from "./components/common/Footer/Footer.jsx";
 
 import Review from "./components/Review/Review.jsx";
 
@@ -39,18 +40,7 @@ function App() {
         <Route path="/reviews/:movieId" element={<Review />} />
       </Routes>
 
-    <footer className="footer">
-        <p>© {new Date().getFullYear()} Movie App</p>
-        {/* <div className="footer_legal">
-          <h3>Legal</h3>
-          <ul>
-            <li><a>Terms of Use</a></li>
-            <li><a>API Terms of Use</a></li>
-            <li><a>Privacy Policy</a></li>
-            <li><a>DMCA Policy</a></li>
-          </ul>
-      </div> */}
-    </footer>
+    <Footer></Footer>
    
     </BrowserRouter>
   

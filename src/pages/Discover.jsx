@@ -5,6 +5,7 @@ import FilterBox from "../components/common/FilterBox.jsx";
 import ToggleablePanel from "../components/common/ToggleablePanel.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
 import tmdbConfigs from "../api/configs/tmdb.configs.js";
+import { toast } from "react-toastify";
 
 function SortPanel({ onOptionChange }) {
   let sortOptions = Object.keys(tmdbConfigs.discoverSortOptions);
@@ -98,27 +99,24 @@ export default function Discover() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const moviesResponse = await movieAPI.getDiscover(
-          currentPage,
-          searchParams.genre,
-          searchParams.year,
-          searchParams.language,
-          searchParams.sort_by
-        );
-        if (moviesResponse.response) {
-          const allMovies = moviesResponse.response.results;
-          setResultMovies((resultMovies) => [...resultMovies, ...allMovies]);
-        } else if (moviesResponse.err) {
-          console.error("Error fetching top rated movies:", moviesResponse.err);
-        }
-      } catch (error) {
-        console.error("Error fetching movies:", error);
+    const getMovies = async () => {
+      const { response, err } = await movieAPI.getDiscover(
+        currentPage,
+        searchParams.genre,
+        searchParams.year,
+        searchParams.language,
+        searchParams.sort_by
+      );
+      if (response) {
+        const allMovies = response.results;
+        setResultMovies((resultMovies) => [...resultMovies, ...allMovies]);
+      }
+      if (err) {
+        toast.error(err.message);
       }
     };
 
-    fetchData();
+    getMovies();
   }, [searchParams, currentPage]);
 
   function handleSearchButtonClick() {

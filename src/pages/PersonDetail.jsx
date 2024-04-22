@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PersonMovieGrid from "../components/common/PersonMovieGrid";
 import uiConfigs from "../configs/ui.configs";
-import Container from "../components/common/Container";
+import Container from "../components/common/Container/Container.jsx";
 import personApi from "../api/modules/person.api";
 //import { useDispatch } from "react-redux";
 

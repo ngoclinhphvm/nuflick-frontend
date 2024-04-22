@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import accountApi from "../api/modules/account.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import { Link, useParams } from "react-router-dom";
-import Container from "../components/common/Container.jsx";
+import Container from "../components/common/Container/Container.jsx";
 import MediaGrid from "../components/common/MediaGrid.jsx";
 import {useAuth } from "../hooks/AuthContext.js";
 

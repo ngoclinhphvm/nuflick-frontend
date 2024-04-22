@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
 import {Swiper, SwiperSlide} from "swiper/react";
-import Container from "./Container";
+import Container from "./Container/Container.jsx";
 import "swiper/swiper-bundle.css";
 import {Navigation, Pagination, Scrollbar, A11y, EffectFade} from "swiper/modules";
 import 'swiper/css';

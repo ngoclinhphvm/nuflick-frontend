@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import movieAPI from "../api/modules/movie.api.js";
-import Container from "../components/common/Container.jsx";
+import Container from "../components/common/Container/Container.jsx";
 import uiConfigs from "../configs/ui.configs.js";
-import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import ImageHeader from "../components/common/ImageHeader";
 import CircularRate from "../components/common/CircularRate";
 import { Link } from "react-router-dom";
@@ -134,17 +134,17 @@ function HomePage() {
         </>
       )}
       {popularMovies && (
-        <Container header="popular">
+        <Container header="popular movies">
           <MediaSlider mediaList={popularMovies} mediaType="movie" />
         </Container>
       )}
       {topRatedMovies && (
-        <Container header="top-rated">
+        <Container header="top-rated movies">
           <MediaSlider mediaList={topRatedMovies} mediaType="movie" />
         </Container>
       )}
       {upcomingMovies && (
-        <Container header="upcoming">
+        <Container header="upcoming movies">
           <MediaSlider mediaList={upcomingMovies} mediaType="movie" />
         </Container>
       )}

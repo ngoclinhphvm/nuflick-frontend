@@ -38,7 +38,7 @@ const NavBar = () => {
                     </Link>
                 </li>
             </ul>
-            <ul className="nav_list">
+            <ul className="nav_list auth">
             {!user ? (
                 <>
                 <li className="nav_items">

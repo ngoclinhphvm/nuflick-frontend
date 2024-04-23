@@ -1,11 +1,17 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Box } from "@mui/material";
 import "swiper/swiper-bundle.css";
-import {Navigation, Pagination, Scrollbar, A11y, EffectFade} from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import 'swiper/css/effect-fade';
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  EffectFade,
+} from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/effect-fade";
 import tmdbConfigs from "../../api/configs/tmdb.configs";
 
 const PosterSlide = ({posters}) => {

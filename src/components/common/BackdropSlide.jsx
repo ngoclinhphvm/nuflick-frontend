@@ -30,8 +30,8 @@ const BackdropSlide = ({backdrops}) => {
                         height: "100vh",
                     }}>
                         <img
-                            src={`https://image.tmdb.org/t/p/original${backdrop.file_path}`}
-                            style={{width: "600px", height: "400px", objectFit: "cover",margin: "auto" }}
+                            src={`https://image.tmdb.org/t/p/w500${backdrop.file_path}`}
+                            style={{width: "100%", height: "80%"}}
                         />
                     </Box>
                 </SwiperSlide>

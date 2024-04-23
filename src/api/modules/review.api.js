@@ -34,6 +34,18 @@ const reviewApi = {
         }catch(err) {
             return { err };
         }
+    },
+    async deleteReview(id, accessToken) {
+        try {
+            const response = await publicClient.delete(`reviews/delete/${id}`, {
+                headers: {
+                    token: `Bearer ${accessToken}`
+                }
+            });
+            return response;
+        } catch (err) {
+            return { err };
+        }
     }
 }
 

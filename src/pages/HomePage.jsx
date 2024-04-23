@@ -77,7 +77,7 @@ function HomePage() {
   }
 
   return (
-    <div style={{ width: "99%" }}>
+    <Box sx={{ display: "flex", flexFlow: "column nowrap", gap: "50px"}}>
       {mostPopularMovie && (
         <>
           <Link to={`/movie/${mostPopularMovie.id}`}>
@@ -133,22 +133,32 @@ function HomePage() {
           </Box>
         </>
       )}
-      {popularMovies && (
-        <Container header="popular movies">
-          <MediaSlider mediaList={popularMovies} mediaType="movie" />
-        </Container>
-      )}
-      {topRatedMovies && (
-        <Container header="top-rated movies">
-          <MediaSlider mediaList={topRatedMovies} mediaType="movie" />
-        </Container>
-      )}
-      {upcomingMovies && (
-        <Container header="upcoming movies">
-          <MediaSlider mediaList={upcomingMovies} mediaType="movie" />
-        </Container>
-      )}
-    </div>
+      <Box
+        sx={{
+          width: "950px",
+          margin: "0 auto 0 auto",
+          display: "flex",
+          flexFlow: "column nowrap",
+          gap: "50px",
+        }}
+      >
+        {popularMovies && (
+          <Container header="popular movies">
+            <MediaSlider mediaList={popularMovies} mediaType="movie" />
+          </Container>
+        )}
+        {topRatedMovies && (
+          <Container header="top-rated movies">
+            <MediaSlider mediaList={topRatedMovies} mediaType="movie" />
+          </Container>
+        )}
+        {upcomingMovies && (
+          <Container header="upcoming movies">
+            <MediaSlider mediaList={upcomingMovies} mediaType="movie" />
+          </Container>
+        )}
+      </Box>
+    </Box>
   );
 }
 

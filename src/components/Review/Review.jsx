@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { TextField, Stack, Divider } from "@mui/material";
+import { toast } from "react-toastify";
 function Review() {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
@@ -56,6 +57,7 @@ function Review() {
     reviewApi.createReview(data, token).then((res) => {
       console.log(res);
       if (res.success) {
+        toast.success("Review created successfully");
         console.log("success");
         setShowReviewForm(false);
         setNewReview({
@@ -64,10 +66,10 @@ function Review() {
           text: "",
           create_at: "",
         });
-        // onNewReview(newReview);
-        navigate(`/movie/${movieId}`);
+
+       // navigate(`/movie/${movieId}`);
       } else {
-        
+        toast.error("Failed to create review");
         console.log("error");
       }
     });

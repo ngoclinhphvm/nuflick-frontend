@@ -14,15 +14,73 @@ import React from 'react';
 import { Avatar, Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import TextAvatar from './TextAvatar';
+import reviewApi from '../../api/modules/review.api';
+import movieApi from "../../api/modules/movie.api.js";
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ReviewItem = ({ review }) => {
+    const [onRequest, setOnRequest] = useState(false);
+    const token = localStorage.getItem("token")
+    ? localStorage.getItem("token")
+    : null;
+
+   // console.log("token in ReviewItem",token);
+
+  const user = localStorage.getItem("user")
+    ? localStorage.getItem("user")
+    : null;
+
+  //  console.log("user in ReviewItem",user);
+
+  const username = user ? JSON.parse(user).username : "null";
+    const navigate = useNavigate();
+    const { movieId } = useParams();
+    const [movie, setMovie] = useState({});
+    // useEffect(() => {
+    //     const getDetails = async (movieId) => {
+    //       const movieData = await movieApi.getInfo(movieId);
+    //       if (movieData.response) {
+    //         setMovie(movieData.response.data);
+    //       } else {
+    //         console.log(movieData.err);
+    //       }
+    //     };
+    //     getDetails(movieId);
+    //   }, []);
+    const onRemoved = (id) => {
+        console.log("id", id);
+        // setReviews(reviews.filter((review) => review._id !== id));
+    };
+    const onRemove = async () => {
+        setOnRequest(true);
+        const response = await reviewApi.deleteReview(review._id, token);
+        console.log("response", response);
+        console.log("response sucess", response.success);
+        if (response.success) {
+            toast.success("Review deleted successfully");
+            navigate(`/movie/${movieId}`);
+            setOnRequest(false);
+        } else {
+            toast.error("Failed to delete review");
+            console.log(response.err);
+            setOnRequest(false);
+        }
+    };
+
     return (
+        
         <Box sx={{
             padding: 2,
             borderRadius: "5px",
             position: "relative",
             opacity: 1,
-            "&:hover": { backgroundColor: "background.paper" }
+            "&:hover": { backgroundColor: "lightgray" }
         }}>
             <Stack direction="row" spacing={2}>
                 <TextAvatar text={review.username} />
@@ -32,12 +90,31 @@ const ReviewItem = ({ review }) => {
                             {review.username}
                         </Typography>
                         <Typography variant="caption">
-                        {dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
+                        {dayjs(review.created_at).format("DD-MM-YYYY HH:mm:ss")}
                         </Typography>
                     </Stack>
                     <Typography variant="body1" textAlign="justify">
                         {review.text}
                     </Typography>
+                   {username === review.username && (
+                    <LoadingButton
+                    variant="contained"
+                    startIcon={<DeleteIcon />}
+                    loadingPosition="start"
+                    loading={onRequest}
+                    onClick={onRemove}
+                    sx={{
+                      position: { xs: "relative", md: "absolute" },
+                      right: { xs: 0, md: "10px" },
+                      marginTop: { xs: 2, md: 0 },
+                      width: "max-content"
+                    }}
+                  >
+                    remove
+                  </LoadingButton>
+                )
+                    }
+
                 </Stack>
             </Stack>
         </Box>

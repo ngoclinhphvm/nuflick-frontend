@@ -27,6 +27,7 @@ import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
+import { ToastContainer } from "react-toastify";
 
 
 
@@ -354,29 +355,6 @@ function MovieDetail() {
           ))}
           <Review movieId={movieId} reviews={reviews}></Review>
           </Container>
-          <Button
-                  variant="none"
-                  sx={{
-                    width: "fit-content",
-                    minWidth: 0,
-                    p: 0,
-                  }}
-                  startIcon={<AddIcon/>}
-                  size="large"
-                  loadingPosition="start"
-                  loading={false}
-                  onClick={() => {
-                    if(token){
-                      navigate('/reviews/' + movieId);
-                    }else {
-                      navigate('/login');
-                    
-                  }}
-                }
-                >
-                  {/* Không có văn bản */}
-                </Button>
-
         </Box>       
         
        
@@ -387,6 +365,7 @@ function MovieDetail() {
             </Container>
           </Box>
         )}
+      <ToastContainer />
       </>
 
     )

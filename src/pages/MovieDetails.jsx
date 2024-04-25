@@ -350,10 +350,11 @@ function MovieDetail() {
         {/*Reviews*/}
         <Box padding={4}>
           <Container header={"Reviews"} padding="center" >
-          {reviews && reviews.map((review, index) => (
-            <ReviewItem key={index} review={review}></ReviewItem>
-          ))}
-          <Review movieId={movieId} reviews={reviews}></Review>
+          {reviews &&  
+            // <ReviewItem key={index} review={review}></ReviewItem>
+            <Review reviews={reviews}></Review>
+
+          }
           </Container>
         </Box>       
         

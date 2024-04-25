@@ -24,7 +24,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, onRemoved }) => {
     const [onRequest, setOnRequest] = useState(false);
     const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
@@ -42,29 +42,19 @@ const ReviewItem = ({ review }) => {
     const navigate = useNavigate();
     const { movieId } = useParams();
     const [movie, setMovie] = useState({});
-    // useEffect(() => {
-    //     const getDetails = async (movieId) => {
-    //       const movieData = await movieApi.getInfo(movieId);
-    //       if (movieData.response) {
-    //         setMovie(movieData.response.data);
-    //       } else {
-    //         console.log(movieData.err);
-    //       }
-    //     };
-    //     getDetails(movieId);
-    //   }, []);
-    const onRemoved = (id) => {
-        console.log("id", id);
-        // setReviews(reviews.filter((review) => review._id !== id));
-    };
+    
+    // const onRemoved = (id) => {
+    //     console.log("id", id);
+    // };
     const onRemove = async () => {
         setOnRequest(true);
         const response = await reviewApi.deleteReview(review._id, token);
         console.log("response", response);
         console.log("response sucess", response.success);
         if (response.success) {
-            toast.success("Review deleted successfully");
-            navigate(`/movie/${movieId}`);
+            // toast.success("Review deleted successfully");
+            // navigate(`/movie/${movieId}`);
+            onRemoved(review._id);
             setOnRequest(false);
         } else {
             toast.error("Failed to delete review");

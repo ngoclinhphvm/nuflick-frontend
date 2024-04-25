@@ -1,4 +1,4 @@
-
+//test
 import publicClient from '../client/public.client.js';
 const reviewApi = {
     async getDetails(id) {

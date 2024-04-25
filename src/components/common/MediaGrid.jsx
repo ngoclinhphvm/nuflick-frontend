@@ -6,7 +6,7 @@ const MediaGrid = ({ mediaList, mediaType }) => {
     <>
       <Grid container spacing={1}>
         {mediaList.map((media, index) => (
-          <Grid item key={index} xs={5} sm={4} md={3}>
+          <Grid item key={index} xs={4} sm={3} md={2}>
             <MediaItem media={media} mediaType={mediaType} />
           </Grid>
         ))}

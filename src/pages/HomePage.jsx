@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import movieAPI from "../api/modules/movie.api.js";
 import Container from "../components/common/Container/Container.jsx";
 import uiConfigs from "../configs/ui.configs.js";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import ImageHeader from "../components/common/ImageHeader";
-import CircularRate from "../components/common/CircularRate";
-import { Link } from "react-router-dom";
 import MediaSlider from "../components/common/MediaSlider.jsx";
 
 function HomePage() {
@@ -13,7 +11,7 @@ function HomePage() {
   const [topRatedMovies, setTopRatedMovies] = useState(null);
   const [upcomingMovies, setUpcomingMovies] = useState(null);
   const [mostPopularMovie, setMostPopularMovie] = useState(null);
-
+  const webQuote = "Track films you’ve watched.\nSave those you want to see.\nTell your friends what’s good. "
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,71 +75,77 @@ function HomePage() {
   }
 
   return (
-    <Box sx={{ display: "flex", flexFlow: "column nowrap", gap: "50px"}}>
+    <Box sx={{ width: "99%" }}>
       {mostPopularMovie && (
         <>
-          <Link to={`/movie/${mostPopularMovie.id}`}>
+          <Box
+            sx={{
+               height: "100vh",
+            }}
+          >
             <ImageHeader imgPath={src} />
-          </Link>
+          </Box>
+
           <Box
             sx={{
               display: "flex",
-              flexDirection: { md: "row", xs: "column" },
-              marginTop: { xs: "-10rem", md: "-15rem", lg: "-20rem" },
+              flexDirection: "row-reverse",
+              alignItems: "center",
+              marginTop: { xs: "-25rem", md: "-26.25rem", lg: "-33rem" },
             }}
           >
             <Box
               sx={{
-                width: { xs: "70%", sm: "40%", md: "20%" },
-                margin: { xs: "0 auto 2rem", md: "0 4rem 0 5rem" },
-              }}
-            >
-              <Box
-                sx={{
-                  paddingTop: "140%",
-                  ...uiConfigs.style.backgroundImage(src),
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                width: { xs: "100%", md: "60%" },
+                width: { xs: "3%", md: "2%" },
+                height: "55vh",
                 color: "text.primary",
               }}
             >
               <Typography
                 variant="h4"
-                fontSize={{ xs: "2rem", md: "2rem", lg: "4rem" }}
+                fontSize={{ xs: "0.75rem", md: "1rem", lg: "1rem" }}
                 fontWeight="700"
-                sx={{ ...uiConfigs.style.typoLines(2, "left") }}
+                sx={{
+                  ...uiConfigs.style.typoLines(2, "left"),
+                  writingMode: "vertical-rl",
+                  margin: "0",
+                  color: "rgba(20, 20, 20, 0.7)",
+                }}
               >
                 {`${mostPopularMovie.title || mostPopularMovie.name} ${
                   mostPopularMovie.release_date.split("-")[0]
                 }`}
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <CircularRate value={mostPopularMovie.vote_average} />
-                <Divider orientation="vertical" />
-              </Stack>
-              <Typography
-                variant="body1"
-                sx={{ ...uiConfigs.style.typoLines(5) }}
-              >
-                {mostPopularMovie.overview}
-              </Typography>
             </Box>
+            <Box
+                sx={{
+                  margin: { xs: "0 auto 2rem", md: "0 4rem 0 5rem" },
+                  flexGrow:2,
+                  color: "text.primary",
+                }}
+              >
+                <Typography
+                variant="h1"
+                fontSize={{ xs: "2.2rem", md: "2.5rem", lg: "3rem" }}
+                fontWeight="900"
+                sx={{
+                   ...uiConfigs.style.typoLines(3, "center"),
+                  margin: "0",
+                  color: "rgba(5, 5, 5)",
+                  fontFamily: "'Times New Roman', sans-serif", // Sử dụng font 'Roboto'
+                  whiteSpace: "pre-line", 
+                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.4)", // Bóng đổ
+                  
+                }}
+              >
+                {`${webQuote}`}
+              </Typography>
+               </Box>
           </Box>
         </>
       )}
-      <Box
-        sx={{
-          width: "950px",
-          margin: "0 auto 0 auto",
-          display: "flex",
-          flexFlow: "column nowrap",
-          gap: "50px",
-        }}
-      >
+
+      <Stack spacing={7} sx={{ margin: "0 0rem 0 2rem" }}>
         {popularMovies && (
           <Container header="popular movies">
             <MediaSlider mediaList={popularMovies} mediaType="movie" />
@@ -157,7 +161,7 @@ function HomePage() {
             <MediaSlider mediaList={upcomingMovies} mediaType="movie" />
           </Container>
         )}
-      </Box>
+      </Stack>
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Container from "./Container/Container.jsx";
+import Container from "./Container.jsx";
 import MediaItem from "./MediaItem";
 import "swiper/swiper-bundle.css";
 

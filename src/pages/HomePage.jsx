@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import movieAPI from "../api/modules/movie.api.js";
-import Container from "../components/common/Container/Container.jsx";
+import Container from "../components/common/Container.jsx";
 import uiConfigs from "../configs/ui.configs.js";
 import { Box, Stack, Typography } from "@mui/material";
 import ImageHeader from "../components/common/ImageHeader";

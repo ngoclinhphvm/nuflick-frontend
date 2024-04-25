@@ -1,4 +1,4 @@
-import Container from "../components/common/Container/Container.jsx";
+import Container from "../components/common/Container.jsx";
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import uiConfigs from "../configs/ui.configs";
 import ImageHeader from "../components/common/ImageHeader";

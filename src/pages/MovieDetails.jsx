@@ -21,7 +21,11 @@ import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import IconButton from '@mui/material/IconButton';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+//test
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
@@ -421,6 +425,7 @@ function MovieDetail() {
             </Container>
           </Box>
         )}
+      <ToastContainer />
       </>
     )
   );

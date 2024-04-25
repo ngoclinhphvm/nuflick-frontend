@@ -1,3 +1,4 @@
+//test
 import "./review.css";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -9,12 +10,22 @@ import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { TextField, Stack, Divider } from "@mui/material";
-function Review() {
-  const [reviews, setReviews] = useState([]);
+import { toast } from "react-toastify";
+import ReviewItem from "../common/ReviewItem";
+
+
+const Review = ({reviews}) => {
+ // const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const navigate = useNavigate();
   const [showReviewForm, setShowReviewForm] = useState(false);
+
+  const [listReviews, setListReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const skip = 5;
   useEffect(() => {
     const getDetails = async (movieId) => {
       const movieData = await movieApi.getInfo(movieId);
@@ -26,6 +37,12 @@ function Review() {
     };
     getDetails(movieId);
   }, []);
+
+  useEffect(() => {
+    setListReviews([...reviews]);
+    setFilteredReviews([...reviews].splice(0,skip));
+  }, [reviews]);
+
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
@@ -56,6 +73,7 @@ function Review() {
     reviewApi.createReview(data, token).then((res) => {
       console.log(res);
       if (res.success) {
+        toast.success("Review created successfully");
         console.log("success");
         setShowReviewForm(false);
         setNewReview({
@@ -64,13 +82,31 @@ function Review() {
           text: "",
           create_at: "",
         });
-        // onNewReview(newReview);
-        navigate(`/movie/${movieId}`);
+        setFilteredReviews([...reviews, res.review]);
+
+       // navigate(`/movie/${movieId}`);
       } else {
-        
+        toast.error("Failed to create review");
         console.log("error");
       }
     });
+  };
+
+  const onLoadMore = () => {
+    setFilteredReviews([...filteredReviews, ...[...listReviews].splice(page * skip, skip)]);
+    setPage(page + 1);
+  };
+
+  const onRemoved = (id) => {
+    if (listReviews.findIndex(e => e._id === id) !== -1) {
+      const newListReviews = [...listReviews].filter(e => e._id !== id);
+      setListReviews(newListReviews);
+      setFilteredReviews([...newListReviews].splice(0, page * skip));
+    } else {
+      setFilteredReviews([...filteredReviews].filter(e => e._id !== id));
+    }
+
+    toast.success("Remove review success");
   };
 
   const handleChange = (event) => {
@@ -89,8 +125,21 @@ function Review() {
   };
 
   return (
-    // <div className="review-container">
-    //     <h1>Reviews of {movie.title}</h1>
+    <>
+    <Stack spacing={2}>
+      {filteredReviews.map((review) => (
+        <Box>
+          <ReviewItem key={review._id} review={review} onRemoved={onRemoved} />
+          <Divider sx={{
+                display: { xs: "block", md: "none" }
+              }} />
+        </Box>
+      ))}
+        {filteredReviews.length < listReviews.length && (
+          <Button onClick={onLoadMore}>load more</Button>
+        )}
+    </Stack>
+  
     <Box sx={{ marginTop: 2 }}>
         
       {!showReviewForm && (
@@ -138,6 +187,7 @@ function Review() {
         </form>
       )}
     </Box>
+    </>
   );
 }
 

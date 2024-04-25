@@ -14,7 +14,7 @@ const PersonDetail = () => {
   let backGroundImg = "";
   let birthToDeath = "";
   useEffect(() => {
-    const getPerson = async (personId ) => {
+    const getPerson = async (personId) => {
       try {
         const response = await personApi.getDetails(personId);
         if (response) setPerson(response);
@@ -25,7 +25,7 @@ const PersonDetail = () => {
         console.error(error);
       }
     };
-    getPerson( personId );
+    getPerson(personId);
   }, [personId]);
   if (person) {
     if (person.biography) {
@@ -58,6 +58,8 @@ const PersonDetail = () => {
                 position: "relative",
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
+                alignItems: { xs: "center", md: "flex-start" },
+                transition: "all 0.3s ease",
               }}
             >
               <Box
@@ -72,6 +74,7 @@ const PersonDetail = () => {
                     backgroundPosition: "center",
                     backgroundColor: "darkgrey",
                     backgroundImage: `url(${backGroundImg})`,
+                    transition: "all 0.3s ease",
                   }}
                 />
               </Box>
@@ -91,12 +94,14 @@ const PersonDetail = () => {
                 </Stack>
               </Box>
             </Box>
-            <Container header="casts">
-              <PersonMovieGrid personId={personId} type="cast" />
-            </Container>
-            <Container header="crews">
-              <PersonMovieGrid personId={personId} type="crew" />
-            </Container>
+            <Stack spacing={5} sx={{ marginTop: "5rem" }}>
+              <Container header="casts">
+                <PersonMovieGrid personId={personId} type="cast" />
+              </Container>
+              <Container header="crews">
+                <PersonMovieGrid personId={personId} type="crew" />
+              </Container>
+            </Stack>
           </Box>
         </>
       )}

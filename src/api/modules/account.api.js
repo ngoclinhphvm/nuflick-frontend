@@ -1,6 +1,5 @@
 import publicClient from "../client/public.client.js";
-import privateClient from "../client/private.client.js";
-import axios from "axios";
+
 
 const accountApi = {
     login : async (data) => {

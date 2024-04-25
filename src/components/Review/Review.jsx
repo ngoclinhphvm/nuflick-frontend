@@ -14,7 +14,7 @@ import ReviewItem from "../common/ReviewItem";
 
 
 const Review = ({reviews}) => {
-  //const [reviews, setReviews] = useState([]);
+ // const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const navigate = useNavigate();
@@ -104,7 +104,6 @@ const Review = ({reviews}) => {
     } else {
       setFilteredReviews([...filteredReviews].filter(e => e._id !== id));
     }
-
 
     toast.success("Remove review success");
   };

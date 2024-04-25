@@ -28,6 +28,7 @@ import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -353,7 +354,6 @@ function MovieDetail() {
           {reviews &&  
             // <ReviewItem key={index} review={review}></ReviewItem>
             <Review reviews={reviews}></Review>
-
           }
           </Container>
         </Box>       

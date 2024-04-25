@@ -3,7 +3,7 @@ import "./footer.css";
 export default function Footer() {
   return (
     <footer>
-      <div className="footer-message-container">
+      <div style={{ marginTop: "3em" }} className="footer-message-container">
         <p className="footer-message">
           All copyrighted content (i.e. film posters) on this website are owned
           by their respective owners. Data is provided by TMDB.

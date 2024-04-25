@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PersonMovieGrid from "../components/common/PersonMovieGrid";
 import uiConfigs from "../configs/ui.configs";
-import Container from "../components/common/Container/Container.jsx";
+import Container from "../components/common/Container.jsx";
 import personApi from "../api/modules/person.api";
 //import { useDispatch } from "react-redux";
 
@@ -95,10 +95,10 @@ const PersonDetail = () => {
               </Box>
             </Box>
             <Stack spacing={5} sx={{ marginTop: "5rem" }}>
-              <Container header="casts">
+              <Container header="Starred in">
                 <PersonMovieGrid personId={personId} type="cast" />
               </Container>
-              <Container header="crews">
+              <Container header="Partook in">
                 <PersonMovieGrid personId={personId} type="crew" />
               </Container>
             </Stack>

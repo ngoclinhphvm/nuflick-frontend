@@ -10,7 +10,7 @@ import PersonDetail from "./pages/PersonDetail.jsx";
 import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import MovieSearch from "./pages/MediaSearch.jsx";
-import Footer from "./components/common/Footer/Footer.jsx";
+import Footer from "./components/common/Footer.jsx";
 import { Box } from "@mui/material";
 
 function App() {

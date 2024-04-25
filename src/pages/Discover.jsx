@@ -76,7 +76,9 @@ function SortFilterContainer({
           onLanguageOptionChange={onLanguageOptionChange}
           onReleaseYearOptionChange={onReleaseYearOptionChange}
         />
-        <button onClick={onSearch}>Search</button>
+        <Button sx={{ margin: "1rem" }} onClick={onSearch}>
+          Search
+        </Button>
       </Box>
     </>
   );
@@ -140,7 +142,14 @@ export default function Discover() {
 
   return (
     <>
-      <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: { md: "row", xs: "column" },
+          alignContent: "center",
+        }}
+      >
         <SortFilterContainer
           onSortOptionChange={setSortOption}
           onGenreOptionChange={setGenreOption}
@@ -153,7 +162,7 @@ export default function Discover() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            margin: "20px",
+            margin: "2em",
             justifyContent: "start",
             flexGrow: "1",
           }}

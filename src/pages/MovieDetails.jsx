@@ -5,30 +5,23 @@ import ImageHeader from "../components/common/ImageHeader";
 import CircularRate from "../components/common/CircularRate";
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import MediaGrid from "../components/common/MediaGrid.jsx";
-import LoadingButton from "@mui/lab/LoadingButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import MediaSlider from "../components/common/MediaSlider.jsx";
 import VideosSlide from "../components/common/VideosSlide.jsx";
 import BackdropSlide from "../components/common/BackdropSlide.jsx";
 import PosterSlide from "../components/common/PosterSlide.jsx";
 import ReviewItem from "../components/common/ReviewItem.jsx";
 import Review from "../components/Review/Review.jsx";
-import { useNavigate} from "react-router-dom"; 
-
+import { useNavigate } from "react-router-dom";
 import reviewApi from "../api/modules/review.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
-
-
+import IconButton from "@mui/material/IconButton";
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
@@ -42,17 +35,19 @@ function MovieDetail() {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
-  const [value, setValue] = React.useState('one');
-
+  const [value, setValue] = React.useState("one");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
-  const user = localStorage.getItem("user") ?  localStorage.getItem("user") : null;
- 
+  const token = localStorage.getItem("token")
+    ? localStorage.getItem("token")
+    : null;
+  const user = localStorage.getItem("user")
+    ? localStorage.getItem("user")
+    : null;
+
   const username = user ? JSON.parse(user).username : "null";
-  
 
   let poster_path = "";
   let backdrop_path = "";
@@ -85,14 +80,13 @@ function MovieDetail() {
       } catch (error) {
         console.error("Error fetching movie:", error);
       }
-      
-      const reviewList = await reviewApi.getReviews(movieId);
-     
-      if(reviewList){
-        //console.log(reviewList.length);
-        setReviews(reviewList);
-      }else{
 
+      const reviewList = await reviewApi.getReviews(movieId);
+
+      if (reviewList) {
+        console.log(reviewList.length);
+        setReviews(reviewList);
+      } else {
         console.log("Error fetching reviews");
       }
 
@@ -103,15 +97,13 @@ function MovieDetail() {
       } else if (backdrops.err) {
         console.error("Error fetching movie images:", backdrops.err);
       }
-      
+
       const similars = await movieAPI.getSimilar(movieId);
       if (similars.response) {
         setSimilars(similars.response.data.results);
       } else if (similars.err) {
         console.error("Error fetching movie images:", similars.err);
       }
-     
-      
     };
     getDetails(movieId);
   }, [movieId]);
@@ -119,28 +111,28 @@ function MovieDetail() {
     poster_path =
       (movie.poster_path &&
         `https://image.tmdb.org/t/p/original${movie.poster_path}`) ||
-      "/no_image.jpg";
+      "/film.jpg";
     backdrop_path =
       (movie.backdrop_path &&
         `https://image.tmdb.org/t/p/original${movie.backdrop_path}`) ||
       "/no_image.jpg";
   }
   const handleNewReview = (newReview) => {
-    setReviews(prevReviews => [...prevReviews, newReview]);
+    setReviews((prevReviews) => [...prevReviews, newReview]);
   };
-  if(token){
-    const favoriteData = user? user.favoriteFilm : null;
+  if (token) {
+    const favoriteData = user ? user.favoriteFilm : null;
     //console.log(favoriteData);
-    if(favoriteData){
+    if (favoriteData) {
       setFavoriteList(favoriteData);
-      if(favoriteData.find((item) => item === movieId)){
+      if (favoriteData.find((item) => item === movieId)) {
         setIsFavorite(true);
       }
-    }else{
+    } else {
       console.log("Error fetching favorite list");
     }
     console.log(favoriteList);
-  } 
+  }
   return (
     movie && (
       <>
@@ -163,6 +155,8 @@ function MovieDetail() {
               sx={{
                 paddingTop: "140%",
                 ...uiConfigs.style.backgroundImage(poster_path),
+                transition: "height 0.3s ease",
+                height: "100%",
               }}
             />
           </Box>
@@ -173,7 +167,7 @@ function MovieDetail() {
               padding: { xs: "1rem", md: "2rem" },
             }}
           >
-            <Stack spacing={4}>
+            <Stack spacing={4} maxHeight={"200%"}>
               {/* title */}
               <Typography
                 variant="h4"
@@ -191,7 +185,9 @@ function MovieDetail() {
               {/* rate and genres */}
               <Stack direction="row" spacing={1} alignItems="center">
                 {/* rate */}
-                <CircularRate value={movie.vote_average} />
+                {movie.vote_average > 0 && (
+                  <CircularRate value={movie.vote_average} />
+                )}
                 {/* rate */}
                 <Divider orientation="vertical" />
                 {/* genres */}
@@ -206,6 +202,7 @@ function MovieDetail() {
                       fontWeight: "5", // Thiết lập độ đậm cho kiểu chữ
                       color: "white", // Thiết lập màu sắc cho kiểu chữ
                       backgroundColor: "darkred", // Thiết lập màu sắc cho nền
+                      fontFamily: "'Arial', 'sans-serif'",
                     }}
                   />
                 ))}
@@ -221,34 +218,42 @@ function MovieDetail() {
                 {movie.overview}
               </Typography>
 
-              <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={2}
+                sx={{
+                  alignItems: { xs: "center" },
+                }}
+              >
                 <IconButton
                   variant="none"
                   sx={{
-                   
                     color: isFavorite ? "red" : "inherit",
                   }}
                   size="large"
-                  onClick={ async () =>{
-                    if(token){
-                      if(!isFavorite){
+                  onClick={async () => {
+                    if (token) {
+                      if (!isFavorite) {
                         console.log("Add to favorite");
                         await accountApi.addFavorite(username, movie.id, token);
                         setIsFavorite(true);
                       } else {
                         console.log("Remove from favorite");
-                        await accountApi.removeFavorite(username, movie.id, token);
+                        await accountApi.removeFavorite(
+                          username,
+                          movie.id,
+                          token
+                        );
                         setIsFavorite(false);
                       }
-                    }else {
-                      navigate('/login');
+                    } else {
+                      navigate("/login");
                     }
-                  }
-                }
+                  }}
                   loadingPosition="start"
                   loading={false}
                 >
-                <FavoriteBorderOutlinedIcon />
+                  <FavoriteBorderOutlinedIcon />
 
                   {/* Không có văn bản */}
                 </IconButton>
@@ -269,8 +274,10 @@ function MovieDetail() {
                   }}
                   startIcon={<PlayArrowIcon />}
                   size="large"
-                  onClick={() => videoRef.current.scrollIntoView()}
-                 // onClick={() => console.log("Watch trailer")}
+                  onClick={() => {
+                    if (videoRef.current)
+                      return videoRef.current.scrollIntoView();
+                  }}
                 >
                   Watch Trailer
                 </Button>
@@ -300,86 +307,113 @@ function MovieDetail() {
             </Container>
           </Box>
         )}} */}
-        <Box padding={4}>
-          <Box sx={{ width: '100%' }}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        textColor="black"
-        indicatorColor="primary"
-        aria-label="secondary tabs example"
-        sx={{ marginBottom: '0px' }} // Thêm một khoảng cách dưới Tabs
-      >
-        <Tab value="zero" label={<Typography variant="h5" fontWeight="700" text-decoration="underline">MEDIAS</Typography>} disabled="true"  />
-        <Tab value="one" label={<Typography variant="h6" fontWeight="bold">VIDEOS</Typography>} />
-        <Tab value="two" label={<Typography variant="h6" fontWeight="bold">POSTERS</Typography>} />
-        <Tab value="three" label={<Typography variant="h6" fontWeight="bold">BACKDROPS</Typography>} />
-      </Tabs>
+        {(videos.length != 0 ||
+          backdrops.length != 0 ||
+          posters.length != 0) && (
+          <Box padding={4}>
+            <Box sx={{ width: "100%" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="black"
+                indicatorColor="primary"
+                aria-label="secondary tabs example"
+                sx={{ marginBottom: "0px" }} // Thêm một khoảng cách dưới Tabs
+              >
+                <Tab
+                  value="zero"
+                  label={
+                    <Typography
+                      variant="h5"
+                      fontWeight="700"
+                      text-decoration="underline"
+                    >
+                      MEDIAS
+                    </Typography>
+                  }
+                  disabled="true"
+                />
+                <Tab
+                  value="one"
+                  label={
+                    <Typography variant="h6" fontWeight="bold">
+                      VIDEOS
+                    </Typography>
+                  }
+                />
+                <Tab
+                  value="two"
+                  label={
+                    <Typography variant="h6" fontWeight="bold">
+                      POSTERS
+                    </Typography>
+                  }
+                />
+                <Tab
+                  value="three"
+                  label={
+                    <Typography variant="h6" fontWeight="bold">
+                      BACKDROPS
+                    </Typography>
+                  }
+                />
+              </Tabs>
 
-      {value === 'one' && (
-        videos.length !== 0 && (
-          <div ref={videoRef}>
-            <Box padding={4}>
-              <VideosSlide videos={videos}></VideosSlide>
+              {value === "one" && videos.length !== 0 && (
+                <div ref={videoRef}>
+                  <Box padding={4}>
+                    <VideosSlide videos={videos}></VideosSlide>
+                  </Box>
+                </div>
+              )}
+
+              {value === "two" && posters.length !== 0 && (
+                <Box padding={4}>
+                  <PosterSlide posters={posters}></PosterSlide>
+                </Box>
+              )}
+
+              {value === "three" && backdrops.length !== 0 && (
+                <Box padding={4}>
+                  <BackdropSlide backdrops={backdrops}></BackdropSlide>
+                </Box>
+              )}
             </Box>
-          </div>
-        )
-      )}
-
-      {value === 'two' && (
-        posters.length !== 0 && (
-          <Box padding={4}>
-              <PosterSlide posters={posters}></PosterSlide>
           </Box>
-        )
-      )}
-
-      {value === 'three' && (
-        backdrops.length !== 0 && (
-          <Box padding={4}>
-              <BackdropSlide backdrops={backdrops}></BackdropSlide>
-          </Box>
-        )
-      )}
-    </Box>
-        </Box>
-        
-
+        )}
 
         {/*Reviews*/}
         <Box padding={4}>
-          <Container header={"Reviews"} padding="center" >
-          {reviews && reviews.map((review, index) => (
-            <ReviewItem key={index} review={review}></ReviewItem>
-          ))}
-          <Review movieId={movieId} reviews={reviews}></Review>
+          <Container header={"Reviews"} padding="center">
+            {reviews &&
+              reviews.map((review, index) => (
+                <ReviewItem key={index} review={review}></ReviewItem>
+              ))}
+            <Review movieId={movieId} reviews={reviews}></Review>
           </Container>
           <Button
-                  variant="none"
-                  sx={{
-                    width: "fit-content",
-                    minWidth: 0,
-                    p: 0,
-                  }}
-                  startIcon={<AddIcon/>}
-                  size="large"
-                  loadingPosition="start"
-                  loading={false}
-                  onClick={() => {
-                    if(token){
-                      navigate('/reviews/' + movieId);
-                    }else {
-                      navigate('/login');
-                    
-                  }}
-                }
-                >
-                  {/* Không có văn bản */}
-                </Button>
+            variant="none"
+            sx={{
+              width: "fit-content",
+              minWidth: 0,
+              p: 0,
+            }}
+            startIcon={<AddIcon />}
+            size="large"
+            loadingPosition="start"
+            loading={false}
+            onClick={() => {
+              if (token) {
+                navigate("/reviews/" + movieId);
+              } else {
+                navigate("/login");
+              }
+            }}
+          >
+            {/* Không có văn bản */}
+          </Button>
+        </Box>
 
-        </Box>       
-        
-       
         {similars.length !== 0 && (
           <Box padding={4}>
             <Container header={"You may also like"} padding="center">
@@ -388,7 +422,6 @@ function MovieDetail() {
           </Box>
         )}
       </>
-
     )
   );
 }

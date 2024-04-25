@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
-import tmdbConfigs from "../../api/configs/tmdb.configs";
+
 
 const BackdropSlide = ({backdrops}) => {
     return (

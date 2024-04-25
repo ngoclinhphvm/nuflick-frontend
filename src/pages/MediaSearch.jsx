@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import movieApi from "../api/modules/movie.api";
 import MediaItem from "../components/common/MediaItem";
 import uiConfigs from "../configs/ui.configs";
-
+import Logo from "../components/common/Logo.jsx";
 let timer;
 const timeout = 500;
 const skip = 12;
@@ -27,7 +27,6 @@ const MediaSearch = () => {
       const mediasSorted = filterMedias.sort(
         (a, b) => getReleaseDate(b) - getReleaseDate(a)
       );
-      console.log(mediasSorted);
       setMedias([...mediasSorted]);
       setFilteredMedias([...mediasSorted.slice(0, skip)]);
     }
@@ -71,19 +70,21 @@ const MediaSearch = () => {
   return (
     <>
       <Toolbar />
-      <Box sx={{ ...uiConfigs.style.mainContent }}>
+      <Box sx={{ ...uiConfigs.style.mainContent, width:"100%", marginTop:"-2rem" }}>
         <Stack spacing={2}>
           <Stack
             spacing={2}
             direction="row"
             justifyContent="center"
+            alignContent="flex-start"
             sx={{ width: "100%" }}
           >
-            Search
+    
+            <Logo/>
           </Stack>
           <TextField
             color="success"
-            placeholder="Search SunFlix"
+            placeholder="Search NewFlick"
             sx={{ width: "100%" }}
             autoFocus
             onChange={onQueryChange}
@@ -91,7 +92,7 @@ const MediaSearch = () => {
 
           <Grid container spacing={1}>
             {filteredMedias.map((media, index) => (
-              <Grid item key={index} xs={5} sm={4} md={3}>
+              <Grid item key={index} xs={4} sm={3} md={2}>
                 <MediaItem media={media} mediaType={media.media_type} />
               </Grid>
             ))}

@@ -33,3 +33,12 @@ nav {
     color: black;
     border-radius: 5px;
 }
+
+.fixed {
+    position: fixed;
+    z-index: 2;
+}
+
+.column {
+    height: 5em;
+}

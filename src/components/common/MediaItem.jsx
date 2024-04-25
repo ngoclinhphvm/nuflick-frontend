@@ -1,20 +1,19 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import uiConfigs from "../../configs/ui.configs";
 import CircularRate from "./CircularRate";
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
   typography: {
     title: {
-      fontSize: '2rem',
-      fontWeight: '400',
+      fontSize: "2rem",
+      fontWeight: "400",
       fontFamily: "TiemposTextWeb-Regular,Georgia,serif",
     },
   },
 });
-
 
 const MediaItem = ({ media, mediaType }) => {
   const [title, setTitle] = useState("");
@@ -26,7 +25,11 @@ const MediaItem = ({ media, mediaType }) => {
   const [videosId, setVideosId] = useState(null);
   let src = "";
   useEffect(() => {
-    setTitle(media.title || media.name);
+    setTitle(
+      media.title
+        ? media.title + " (" + media.release_date.split("-")[0] + ")"
+        : media.name
+    );
     setPosterPath(
       media.poster_path || media.backdrop_path || media.profile_path
     );
@@ -43,82 +46,83 @@ const MediaItem = ({ media, mediaType }) => {
   if (posterPath !== "") {
     src =
       (posterPath && `https://image.tmdb.org/t/p/original${posterPath}`) ||
-      "/no_image.jpg";
+      (mediaType === "movie" ? "film.jpg" : "actor.jpg");
   }
   return (
     <>
       {mediaType === "movie" && (
         <ThemeProvider theme={theme}>
-        <Link to={`/movie/${media.id}`}>
-          <Box
-            sx={{
-              ...uiConfigs.style.backgroundImage(src),
-              paddingTop: "160%",
-              height: "22.5vw",
-              "&:hover .other-content": { opacity: 1, bottom: 0 },
-              "&:hover .media-back-drop, &:hover .media-play-btn": {
-                opacity: 1,
-              },
-              "&:hover": { border: "3px solid green" },
-              color: "primary.contrastText",
-              borderRadius: "5px"
-            }}
-          >
-            <>
-              <Box
-                className="media-back-drop"
-                sx={{
-                  opacity: { xs: 1, md: 0 },
-                  transition: "all 0.3s ease",
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  backgroundImage:
-                    "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-                }}
-              />
-              <Box
-                className="media-info"
-                sx={{
-                  transition: "all 0.3s ease",
-                  position: "absolute",
+          <Link to={`/movie/${media.id}`}>
+            <Box
+              title={title}
+              sx={{
+                ...uiConfigs.style.backgroundImage(src),
+                paddingTop: "160%",
+                height: "22.5vw",
+                "&:hover .other-content": { opacity: 1, bottom: 0 },
+                "&:hover .media-back-drop, &:hover .media-play-btn": {
                   opacity: 1,
-                  bottom: 0,
-                  bottom: { xs: 0, md: "-20px" },
-                  width: "100%",
-                  height: "max-content",
-                  boxSizing: "border-box",
-                  padding: { xs: "10px", md: "2rem 1rem" },
-                }}
-              >
-                <Stack spacing={{ xs: 1, md: 2 }}>
-                  <Box className="other-content" sx={{ opacity: 0 }}>
-                    {rating > 0 && <CircularRate value={rating} />}
-                  </Box>
+                },
+                "&:hover": { outline: "3px solid rgba(128, 128, 128, 0.8)" },
+                color: "primary.contrastText",
+                borderRadius: "5px",
+              }}
+            >
+              <>
+                <Box
+                  className="media-back-drop"
+                  sx={{
+                    opacity: { xs: 1, md: 0 },
+                    transition: "all 0.3s ease",
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    backgroundImage:
+                      "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
+                  }}
+                />
+                <Box
+                  className="media-info"
+                  sx={{
+                    transition: "all 0.3s ease",
+                    position: "absolute",
+                    opacity: 1,
+                    bottom: 0,
+                    bottom: { xs: 0, md: "-20px" },
+                    width: "100%",
+                    height: "max-content",
+                    boxSizing: "border-box",
+                    padding: { xs: "10px", md: "2rem 1rem" },
+                  }}
+                >
+                  <Stack spacing={{ xs: 1, md: 2 }}>
+                    <Box className="other-content" sx={{ opacity: 0 }}>
+                      {rating > 0 && <CircularRate value={rating} />}
+                    </Box>
 
-                  <Typography className="other-content" sx={{ opacity: 0 }}>
-                    {releaseDate}
-                  </Typography>
+                    <Typography className="other-content" sx={{ opacity: 0 }}>
+                      {releaseDate}
+                    </Typography>
 
-                  <Typography
-                    className="title"
-                    variant="title"
-                    fontWeight="700"
-                    sx={{
-                      fontSize: "1rem",
-                      ...uiConfigs.style.typoLines(1, "left"),
-                      opacity: 1,
-                    }}
-                  >
-                    {title}
-                  </Typography>
-                </Stack>
-              </Box>
-            </>
-          </Box>
-        </Link>
+                    <Typography
+                      className="title"
+                      variant="title"
+                      fontWeight="700"
+                      sx={{
+                        fontSize: "1rem",
+                        ...uiConfigs.style.typoLines(1, "left"),
+                        opacity: 1,
+                      }}
+                    >
+                      {title}
+                    </Typography>
+                  </Stack>
+                </Box>
+              </>
+            </Box>
+          </Link>
         </ThemeProvider>
       )}
 

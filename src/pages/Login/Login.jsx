@@ -1,4 +1,5 @@
-import styles from "./Login.module.scss";
+
+import styles from "./Login.module.css";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import accountApi from "../../api/modules/account.api.js";
@@ -78,4 +79,11 @@ function FormLogin({ onLoginSuccess }) {
     )
 }
 
-export default FormLogin;
+const Login = () => (
+    <div className={styles['Login']}>
+        <h1 className={styles['headingLogin']}>Đăng Nhập</h1>
+        <FormLogin />
+    </div>
+);
+
+export default Login;

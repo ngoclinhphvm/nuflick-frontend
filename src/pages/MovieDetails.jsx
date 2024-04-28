@@ -311,9 +311,9 @@ function MovieDetail() {
             </Container>
           </Box>
         )}} */}
-        {(videos.length != 0 ||
-          backdrops.length != 0 ||
-          posters.length != 0) && (
+        {(videos.length !== 0 ||
+          backdrops.length !== 0 ||
+          posters.length !== 0) && (
           <Box padding={4}>
             <Box sx={{ width: "100%" }}>
               <Tabs

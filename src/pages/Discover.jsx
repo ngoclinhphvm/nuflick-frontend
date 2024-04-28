@@ -27,27 +27,71 @@ function FilterPanel({
   onLanguageOptionChange,
   onReleaseYearOptionChange,
 }) {
-  let genres = ["Any", ...Object.keys(tmdbConfigs.movieGenreIds)];
-  let languages = ["Any", ...Object.keys(tmdbConfigs.movieLanguageTags)];
-  let years = ["Any", 2002, 2024];
+  const genres = Object.keys(tmdbConfigs.movieGenreIds);
+  const languages = Object.keys(tmdbConfigs.movieLanguageTags);
+  const decades = [
+    "1870s",
+    "1880s",
+    "1890s",
+    "1900s",
+    "1910s",
+    "1920s",
+    "1930s",
+    "1940s",
+    "1950s",
+    "1960s",
+    "1970s",
+    "1980s",
+    "1990s",
+    "2000s",
+    "2000s",
+    "2010s",
+    "2020s",
+  ];
+  const [decadeOption, setDecadeOption] = useState("");
+
+  let years = [];
+  if (decadeOption !== "") {
+    let startYear = parseInt(decadeOption.substring(0, 4));
+    console.log("startYear", startYear);
+    for (let i = 0; i < 10; i++) {
+      years.push(startYear++);
+    }
+  }
   return (
     <Box>
       <ToggleablePanel title="filter">
         <FilterBox
           title="genre"
           options={genres}
+          defaultOption="Any"
           onOptionChange={onGenreOptionChange}
         />
         <FilterBox
           title="language"
           options={languages}
+          defaultOption="Any"
           onOptionChange={onLanguageOptionChange}
         />
-        <FilterBox
-          title="year"
-          options={years}
-          onOptionChange={onReleaseYearOptionChange}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <FilterBox
+            title="decade"
+            defaultOption="Any"
+            options={decades}
+            onOptionChange={setDecadeOption}
+          />
+          <FilterBox
+            title="year"
+            defaultOption="Any"
+            options={years}
+            onOptionChange={onReleaseYearOptionChange}
+          />
+        </Box>
       </ToggleablePanel>
     </Box>
   );
@@ -68,6 +112,7 @@ function SortFilterContainer({
           flexDirection: "column",
           margin: "20px",
           justifyContent: "start",
+          gap: "0.5em",
         }}
       >
         <SortPanel onOptionChange={onSortOptionChange} />

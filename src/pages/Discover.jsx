@@ -16,6 +16,7 @@ function SortPanel({ onOptionChange }) {
           title="Sort Results by"
           options={sortOptions}
           onOptionChange={onOptionChange}
+          defaultOption="Popularity Descending"
         />
       </ToggleablePanel>
     </Box>
@@ -112,6 +113,7 @@ function SortFilterContainer({
           flexDirection: "column",
           margin: "20px",
           justifyContent: "start",
+          alignItems: "center",
           gap: "0.5em",
         }}
       >
@@ -121,7 +123,11 @@ function SortFilterContainer({
           onLanguageOptionChange={onLanguageOptionChange}
           onReleaseYearOptionChange={onReleaseYearOptionChange}
         />
-        <Button sx={{ margin: "1rem" }} onClick={onSearch}>
+        <Button
+          sx={{ fontWeight: "650", borderRadius: "50px", width: "100%" }}
+          variant="contained"
+          onClick={onSearch}
+        >
           Search
         </Button>
       </Box>
@@ -131,9 +137,9 @@ function SortFilterContainer({
 
 export default function Discover() {
   const [sortOption, setSortOption] = useState("Popularity Descending");
-  const [genreOption, setGenreOption] = useState("");
-  const [languageOption, setLanguageOption] = useState("");
-  const [releaseYearOption, setRealeaseYearOption] = useState("");
+  const [genreOption, setGenreOption] = useState("Any");
+  const [languageOption, setLanguageOption] = useState("Any");
+  const [releaseYearOption, setRealeaseYearOption] = useState("Any");
 
   const [searchParams, setSearchParams] = useState({
     sort_by: "",

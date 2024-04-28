@@ -1,23 +1,42 @@
 import { Select, MenuItem, FormHelperText, FormControl } from "@mui/material";
 
-export default function FilterBox({ title, options, onOptionChange }) {
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
+export default function FilterBox({
+  title,
+  options,
+  defaultOption,
+  onOptionChange,
+}) {
+  const ITEM_HEIGHT = 50;
+  const ITEM_PADDING_TOP = 10;
   const MenuProps = {
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
+        width: 235,
       },
     },
   };
   return (
     <FormControl>
-      <FormHelperText>{title}</FormHelperText>
+      <FormHelperText
+        sx={{
+          fontFamily: '"Roboto", san serif',
+          fontWeight: "500",
+          textTransform: "capitalize",
+          margin: "0.3em 0 0.3em 0.4em",
+        }}
+      >
+        {title}
+      </FormHelperText>
       <Select
+        sx={{margin: "0 0.3em 0.3em"}}
+        size="small"
         MenuProps={MenuProps}
         onChange={(event) => onOptionChange(event.target.value)}
       >
+        <MenuItem key={0} value={defaultOption}>
+          {defaultOption}
+        </MenuItem>
         {options.map((option, index) => (
           <MenuItem key={index} value={option}>
             {option}

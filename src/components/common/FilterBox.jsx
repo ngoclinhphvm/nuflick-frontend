@@ -29,14 +29,14 @@ export default function FilterBox({
         {title}
       </FormHelperText>
       <Select
-        sx={{margin: "0 0.3em 0.3em"}}
+        defaultValue={defaultOption}
+        displayEmpty
+        sx={{ margin: "0 0.3em 0.3em" }}
         size="small"
         MenuProps={MenuProps}
         onChange={(event) => onOptionChange(event.target.value)}
       >
-        <MenuItem key={0} value={defaultOption}>
-          {defaultOption}
-        </MenuItem>
+        <MenuItem value={defaultOption}>{defaultOption}</MenuItem>
         {options.map((option, index) => (
           <MenuItem key={index} value={option}>
             {option}

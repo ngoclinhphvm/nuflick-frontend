@@ -3,8 +3,9 @@ import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import uiConfigs from "../configs/ui.configs";
 import ImageHeader from "../components/common/ImageHeader";
 import CircularRate from "../components/common/CircularRate";
-import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
@@ -15,12 +16,15 @@ import BackdropSlide from "../components/common/BackdropSlide.jsx";
 import PosterSlide from "../components/common/PosterSlide.jsx";
 import ReviewItem from "../components/common/ReviewItem.jsx";
 import Review from "../components/Review/Review.jsx";
-import { useNavigate } from "react-router-dom";
+
 import reviewApi from "../api/modules/review.api.js";
 import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import { ToastContainer } from "react-toastify";
+import { useAuth } from "../hooks/AuthContext.js";
 import IconButton from "@mui/material/IconButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,11 +44,14 @@ function MovieDetail() {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
-  const [value, setValue] = React.useState("one");
+  const [value, setValue] = React.useState('one');
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+  const user = useAuth().getUser();
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
@@ -54,7 +61,9 @@ function MovieDetail() {
   // console.log("user in MovieDetail", user );
   // console.log("user parse in MovieDetail", JSON.parse(user));
 
-  const username = user ? JSON.parse(user).username : "null";
+ 
+  const username = user ? user.username : "null";
+  
 
   let poster_path = "";
   let backdrop_path = "";
@@ -89,9 +98,9 @@ function MovieDetail() {
       }
 
       const reviewList = await reviewApi.getReviews(movieId);
-
-      if (reviewList) {
-        //  console.log(reviewList.length);
+     
+      if(reviewList){
+        ////  console.log(reviewList.length);
         setReviews(reviewList);
       } else {
         console.log("Error fetching reviews");
@@ -111,6 +120,20 @@ function MovieDetail() {
       } else if (similars.err) {
         console.error("Error fetching movie images:", similars.err);
       }
+      if(token){
+        console.log(user);
+        const favoriteData = user? user.favoriteFilm : null;
+        //console.log(favoriteData);
+        if(favoriteData){
+          setFavoriteList(favoriteData);
+          if(favoriteData.find((item) => item === movieId)){
+            setIsFavorite(true);
+          }
+        }else{
+          console.log("Error fetching favorite list");
+        }
+        console.log(favoriteList);
+      } 
     };
 
     getDetails(movieId);
@@ -120,14 +143,14 @@ function MovieDetail() {
     poster_path =
       (movie.poster_path &&
         `https://image.tmdb.org/t/p/original${movie.poster_path}`) ||
-      "/film.jpg";
+      "/no_image.jpg";
     backdrop_path =
       (movie.backdrop_path &&
         `https://image.tmdb.org/t/p/original${movie.backdrop_path}`) ||
       "/no_image.jpg";
   }
   const handleNewReview = (newReview) => {
-    setReviews((prevReviews) => [...prevReviews, newReview]);
+    setReviews(prevReviews => [...prevReviews, newReview]);
   };
 
   useEffect(() => {
@@ -343,9 +366,9 @@ function MovieDetail() {
             </Container>
           </Box>
         )}} */}
-        {(videos.length != 0 ||
-          backdrops.length != 0 ||
-          posters.length != 0) && (
+        {(videos.length !== 0 ||
+          backdrops.length !== 0 ||
+          posters.length !== 0) && (
           <Box padding={4}>
             <Box sx={{ width: "100%" }}>
               <Tabs
@@ -428,28 +451,31 @@ function MovieDetail() {
             <Review movieId={movieId} reviews={reviews}></Review>
           </Container>
           <Button
-            variant="none"
-            sx={{
-              width: "fit-content",
-              minWidth: 0,
-              p: 0,
-            }}
-            startIcon={<AddIcon />}
-            size="large"
-            loadingPosition="start"
-            loading={false}
-            onClick={() => {
-              if (token) {
-                navigate("/reviews/" + movieId);
-              } else {
-                navigate("/login");
-              }
-            }}
-          >
-            {/* Không có văn bản */}
-          </Button>
-        </Box>
+                  variant="none"
+                  sx={{
+                    width: "fit-content",
+                    minWidth: 0,
+                    p: 0,
+                  }}
+                  startIcon={<AddIcon/>}
+                  size="large"
+                  loadingPosition="start"
+                  loading={false}
+                  onClick={() => {
+                    if(token){
+                      navigate('/reviews/' + movieId);
+                    }else {
+                      navigate('/login');
+                    
+                  }}
+                }
+                >
+                  {/* Không có văn bản */}
+                </Button>
 
+        </Box>       
+        
+       
         {similars.length !== 0 && (
           <Box padding={4}>
             <Container header={"You may also like"} padding="center">

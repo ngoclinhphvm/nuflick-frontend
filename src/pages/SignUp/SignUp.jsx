@@ -1,4 +1,4 @@
-import styles from "./SignUp.module.scss";
+import styles from "./SignUp.module.css";
 import accountApi from "../../api/modules/account.api.js";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
@@ -52,7 +52,7 @@ function FormSignup() {
     }
     return (
         <form className={styles['formGroup']} onSubmit={handleSubmit}>
-          
+
             <div className={styles['formInput']}>
                 <span className={styles['headInput']}>Email của bạn là gì?</span>
                 <input type={'email'} name='email' className={styles['inputData']} placeholder='Nhập email của bạn.'
@@ -103,5 +103,15 @@ function FormSignup() {
         </form>
     )
 }
+function SignUp() {
+    return (
+            <div className={styles['SignUp']}>
+                <h1 className={styles['headingSignUp']}>
+                Đăng ký tài khoản
+                </h1>
+                <FormSignup/>
+            </div>
+    );
+}
 
-export default FormSignup;
+export default SignUp;

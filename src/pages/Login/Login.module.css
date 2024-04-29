@@ -20,84 +20,6 @@
     margin: 20px 0 20px 0;
   }
   
-  .btnLoginFacebook {
-    height: 50px;
-    width: 400px;
-    border-radius: 40px;
-    background-color: #405a93;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 40px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border:none;
-  }
-  
-  .btnLoginFacebook:hover {
-    transform: scale(1.02);
-    background-color: #384f81;
-  }
-  
-  .iconLogin {
-      position: relative;
-      margin-right: 16px;
-      font-size: 24px;
-      top: 2px;
-  }
-  
-  .btnLoginGoogle {
-    height: 50px;
-    width: 400px;
-    border-radius: 40px;
-    background-color: white;
-    color: #535353;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 40px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border: 2px solid #535353;
-  }
-  
-  .btnLoginGoogle:hover {
-    transform: scale(1.02);
-  }
-  
-  .iconGoogleLogin {
-    position: relative;
-    margin-right: 16px;
-    font-size: 22px;
-    top: 2px;
-  }
-  
-  .spanOr {
-    position: relative;
-    font-size: 16px;
-    color: #7f8387;
-    z-index: 1;
-  }
-  
-  .spanOr::after{
-    content: "";
-    position: absolute;
-    right: -150px;
-    top: 10px;
-    height: 1px;
-    width: 140px;
-    background-color: #7f8387;
-  }
-  
-  .spanOr::before{
-    content: "";
-    position: absolute;
-    left: -150px;
-    top: 10px;
-    height: 1px;
-    width: 140px;
-    background-color: #7f8387;
-  }
-  
   .formGroup {
     margin: 20px 0;
     width: 100%;
@@ -139,7 +61,7 @@
     height: 60px;
     width: 150px;
     border-radius: 60px;
-    background-color: #1ed760;
+    background-color: #1dade6;
     color: #111;
     font-size: 18px;
     font-weight: 600;
@@ -161,7 +83,7 @@
   }
   
   .rulesLoginLink {
-    color:#1c9646;
+    color:#1dade6;
     cursor: pointer;
   }
   
@@ -172,7 +94,7 @@
   }
   
   .hasAccountLink{
-    color:#1c9646;
+    color:#1dade6;
   }
 
   .login-status {

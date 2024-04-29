@@ -23,9 +23,7 @@ import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
-import { ToastContainer } from "react-toastify";
 import { useAuth } from "../hooks/AuthContext.js";
-import IconButton from "@mui/material/IconButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -52,12 +50,10 @@ function MovieDetail() {
 
   const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
   const user = useAuth().getUser();
-  const token = localStorage.getItem("token")
-    ? localStorage.getItem("token")
-    : null;
-  const user = localStorage.getItem("user")
-    ? localStorage.getItem("user")
-    : null;
+ 
+  // const user = localStorage.getItem("user")
+  //   ? localStorage.getItem("user")
+  //   : null;
   // console.log("user in MovieDetail", user );
   // console.log("user parse in MovieDetail", JSON.parse(user));
 

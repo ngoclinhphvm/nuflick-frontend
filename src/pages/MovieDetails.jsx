@@ -93,14 +93,14 @@ function MovieDetail() {
         console.error("Error fetching movie:", error);
       }
 
-      const reviewList = await reviewApi.getReviews(movieId);
+      // const reviewList = await reviewApi.getReviews(movieId);
      
-      if(reviewList){
-        ////  console.log(reviewList.length);
-        setReviews(reviewList);
-      } else {
-        console.log("Error fetching reviews");
-      }
+      // if(reviewList){
+      //   console.log("reviewList", reviewList);
+      //   setReviews(reviewList);
+      // } else {
+      //   console.log("Error fetching reviews");
+      // }
 
       const imagesData = await movieAPI.getImages(movieId);
       if (imagesData.response) {
@@ -117,9 +117,7 @@ function MovieDetail() {
         console.error("Error fetching movie images:", similars.err);
       }
       if(token){
-        console.log(user);
         const favoriteData = user? user.favoriteFilm : null;
-        //console.log(favoriteData);
         if(favoriteData){
           setFavoriteList(favoriteData);
           if(favoriteData.find((item) => item === movieId)){
@@ -128,7 +126,6 @@ function MovieDetail() {
         }else{
           console.log("Error fetching favorite list");
         }
-        console.log(favoriteList);
       } 
     };
 
@@ -145,9 +142,7 @@ function MovieDetail() {
         `https://image.tmdb.org/t/p/original${movie.backdrop_path}`) ||
       "/no_image.jpg";
   }
-  const handleNewReview = (newReview) => {
-    setReviews(prevReviews => [...prevReviews, newReview]);
-  };
+  
 
   useEffect(() => {
     const fetchData = async (username) => {
@@ -168,7 +163,11 @@ function MovieDetail() {
     };
 
     fetchData(username);
-  }, [movieId, username, token]); // Ensure dependencies are listed
+  }, [movieId, username, token]);
+
+  const handleNewReview = (newReview) => {
+    setReviews(prevReviews => [...prevReviews, newReview]);
+  };
 
   return (
     movie && (
@@ -440,11 +439,7 @@ function MovieDetail() {
         {/*Reviews*/}
         <Box padding={4}>
           <Container header={"Reviews"} padding="center">
-            {reviews &&
-              reviews.map((review, index) => (
-                <ReviewItem key={index} review={review}></ReviewItem>
-              ))}
-            <Review movieId={movieId} reviews={reviews}></Review>
+            <Review movieId={movie.id}></Review>
           </Container>
 
         </Box>       

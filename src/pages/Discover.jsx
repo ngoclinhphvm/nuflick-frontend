@@ -27,9 +27,10 @@ function FilterPanel({
   onLanguageOptionChange,
   onReleaseYearOptionChange,
 }) {
-  const genres = ["Any",...Object.keys(tmdbConfigs.movieGenreIds)];
-  const languages = ["Any",...Object.keys(tmdbConfigs.movieLanguageTags)];
-  const decades = ["Any",
+  const genres = ["Any", ...Object.keys(tmdbConfigs.movieGenreIds)];
+  const languages = ["Any", ...Object.keys(tmdbConfigs.movieLanguageTags)];
+  const decades = [
+    "Any",
     "1870s",
     "1880s",
     "1890s",
@@ -53,7 +54,6 @@ function FilterPanel({
   let years = [];
   if (decadeOption !== "") {
     let startYear = parseInt(decadeOption.substring(0, 4));
-    console.log("startYear", startYear);
     for (let i = 0; i < 10; i++) {
       years.push(startYear++);
     }
@@ -145,6 +145,7 @@ export default function Discover() {
 
   const [resultMovies, setResultMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoadMoreButtonEnabled, setIsLoadMoreButtonEnabled] = useState(true);
 
   useEffect(() => {
     const getMovies = async () => {
@@ -156,8 +157,12 @@ export default function Discover() {
         searchParams.sort_by
       );
       if (response) {
-        const allMovies = response.results;
-        setResultMovies((resultMovies) => [...resultMovies, ...allMovies]);
+        if (currentPage >= response.total_pages) {
+          setIsLoadMoreButtonEnabled(false);
+        } else {
+          const allMovies = response.results;
+          setResultMovies([...resultMovies, ...allMovies]);
+        }
       }
       if (err) {
         toast.error(err.message);
@@ -209,12 +214,26 @@ export default function Discover() {
             display: "flex",
             flexDirection: "column",
             margin: "2em",
-            justifyContent: "start",
+            justifyContent: "center",
+            alignItems: "center",
             flexGrow: "1",
           }}
         >
           <MediaGrid mediaList={resultMovies} mediaType="movie"></MediaGrid>
-          <Button onClick={handleLoadMoreButtonClick}>Load More</Button>
+          {isLoadMoreButtonEnabled && (
+            <Button
+              sx={{
+                marginTop: "2rem",
+                fontWeight: "650",
+                borderRadius: "50px",
+                width: "70%",
+              }}
+              variant="contained"
+              onClick={handleLoadMoreButtonClick}
+            >
+              Load more
+            </Button>
+          )}
         </Box>
       </Box>
     </>

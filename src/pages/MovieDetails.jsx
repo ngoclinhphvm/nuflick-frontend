@@ -22,8 +22,9 @@ import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 //test
 
@@ -50,12 +51,15 @@ function MovieDetail() {
   const user = localStorage.getItem("user")
     ? localStorage.getItem("user")
     : null;
+ // console.log("user in MovieDetail", user );
+ // console.log("user parse in MovieDetail", JSON.parse(user));
 
   const username = user ? JSON.parse(user).username : "null";
 
   let poster_path = "";
   let backdrop_path = "";
   const videoRef = useRef(null);
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -88,7 +92,7 @@ function MovieDetail() {
       const reviewList = await reviewApi.getReviews(movieId);
 
       if (reviewList) {
-        console.log(reviewList.length);
+      //  console.log(reviewList.length);
         setReviews(reviewList);
       } else {
         console.log("Error fetching reviews");
@@ -107,10 +111,14 @@ function MovieDetail() {
         setSimilars(similars.response.data.results);
       } else if (similars.err) {
         console.error("Error fetching movie images:", similars.err);
-      }
+      } 
     };
+    
+    
     getDetails(movieId);
   }, [movieId]);
+
+  
   if (movie) {
     poster_path =
       (movie.poster_path &&
@@ -124,19 +132,28 @@ function MovieDetail() {
   const handleNewReview = (newReview) => {
     setReviews((prevReviews) => [...prevReviews, newReview]);
   };
-  if (token) {
-    const favoriteData = user ? user.favoriteFilm : null;
-    //console.log(favoriteData);
-    if (favoriteData) {
-      setFavoriteList(favoriteData);
-      if (favoriteData.find((item) => item === movieId)) {
-        setIsFavorite(true);
+
+ useEffect(() => {
+    const fetchData = async (username) => {
+      try {
+        if (token) {
+          const favouriteData = await accountApi.getFavorite(username,token);
+          console.log("favouriteData", favouriteData);
+          if (favouriteData) {
+            setFavoriteList(favouriteData);
+            if (favouriteData.includes(movieId)) {
+              setIsFavorite(true);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching movie details:", error);
       }
-    } else {
-      console.log("Error fetching favorite list");
-    }
-    console.log(favoriteList);
-  }
+    };
+  
+    fetchData(username);
+  }, [movieId, username, token]); // Ensure dependencies are listed
+  
   return (
     movie && (
       <>
@@ -231,35 +248,39 @@ function MovieDetail() {
               >
                 <IconButton
                   variant="none"
-                  sx={{
-                    color: isFavorite ? "red" : "inherit",
-                  }}
                   size="large"
+                  sx = {{
+                    color: isFavorite ? "darkred" : "inherit",
+                  }}
                   onClick={async () => {
                     if (token) {
-                      if (!isFavorite) {
-                        console.log("Add to favorite");
-                        await accountApi.addFavorite(username, movie.id, token);
-                        setIsFavorite(true);
+                      if (isFavorite) {
+                        const res = await accountApi.removeFavorite(username, movieId, token);
+                        if (res) {
+                          setIsFavorite(false);
+                          toast.success("Removed from favorite list");
+                        } else {
+                          toast.error("Error removing from favorite list");
+                        }
                       } else {
-                        console.log("Remove from favorite");
-                        await accountApi.removeFavorite(
-                          username,
-                          movie.id,
-                          token
-                        );
-                        setIsFavorite(false);
+                        const res = await accountApi.addFavorite(username, movieId, token);
+                        if (res) {
+                          setIsFavorite(true);
+                          toast.success("Added to favorite list");
+                        } else {
+                          toast.error("Error adding to favorite list");
+                        }
                       }
                     } else {
+                      toast.error("Please login to add to favorite list");
                       navigate("/login");
                     }
                   }}
                   loadingPosition="start"
                   loading={false}
                 >
-                  <FavoriteBorderOutlinedIcon />
+                  {isFavorite ? <FavoriteIcon/> : <FavoriteBorderOutlinedIcon />}
 
-                  {/* Không có văn bản */}
                 </IconButton>
 
                 <IconButton

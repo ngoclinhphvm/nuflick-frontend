@@ -3,7 +3,6 @@ import { Select, MenuItem, FormHelperText, FormControl } from "@mui/material";
 export default function FilterBox({
   title,
   options,
-  defaultOption,
   onOptionChange,
 }) {
   const ITEM_HEIGHT = 50;
@@ -29,14 +28,13 @@ export default function FilterBox({
         {title}
       </FormHelperText>
       <Select
-        defaultValue={defaultOption}
+        defaultValue={options[0]}
         displayEmpty
         sx={{ margin: "0 0.3em 0.3em" }}
         size="small"
         MenuProps={MenuProps}
         onChange={(event) => onOptionChange(event.target.value)}
       >
-        <MenuItem value={defaultOption}>{defaultOption}</MenuItem>
         {options.map((option, index) => (
           <MenuItem key={index} value={option}>
             {option}

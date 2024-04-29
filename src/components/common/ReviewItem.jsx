@@ -1,15 +1,4 @@
-// function ReviewItem({ review }) {
-   
 
-//     return (
-//         <div style={{border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
-//             <h2 style={{color: '#333', fontSize: '1.5rem', fontWeight: '600px'}}>Written by: {review.username}</h2>
-//             <p style={{color: '#666'}}>{review.text}</p>
-//             <p style={{color: '#666'}}>Posted on: {review.created_at}</p>
-//         </div>
-//     );
-// }
-//test
 import React from 'react';
 import { Avatar, Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
@@ -30,13 +19,11 @@ const ReviewItem = ({ review, onRemoved }) => {
     ? localStorage.getItem("token")
     : null;
 
-   // console.log("token in ReviewItem",token);
 
   const user = localStorage.getItem("user")
     ? localStorage.getItem("user")
     : null;
 
-  //  console.log("user in ReviewItem",user);
 
   const username = user ? JSON.parse(user).username : "null";
     const navigate = useNavigate();

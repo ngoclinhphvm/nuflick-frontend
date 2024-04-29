@@ -12,11 +12,11 @@ import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { TextField, Stack, Divider } from "@mui/material";
 import { toast } from "react-toastify";
 import ReviewItem from "../common/ReviewItem";
+import { useAuth } from "../../hooks/AuthContext.js";
 
-
-const Review = ({reviews}) => {
+const Review = ({ movieId}) => {
  // const [reviews, setReviews] = useState([]);
-  const { movieId } = useParams();
+ // const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const navigate = useNavigate();
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -24,19 +24,27 @@ const Review = ({reviews}) => {
   const [listReviews, setListReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [page, setPage] = useState(1);
+  const [reviews, setReviews] = useState([]);
 
   const skip = 5;
   useEffect(() => {
     const getDetails = async (movieId) => {
-      const movieData = await movieApi.getInfo(movieId);
-      if (movieData.response) {
-        setMovie(movieData.response.data);
-      } else {
-        console.log(movieData.err);
+      try {
+        const reviewList = await reviewApi.getReviews(movieId);
+        if (reviewList) {
+          console.log("reviewList", reviewList);
+          setReviews(reviewList);
+        } else {
+          console.log("Error fetching reviews");
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
       }
     };
+  
     getDetails(movieId);
-  }, []);
+  }, [movieId]);
+  
 
   useEffect(() => {
     setListReviews([...reviews]);
@@ -46,12 +54,15 @@ const Review = ({reviews}) => {
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
-  const user = localStorage.getItem("user")
-    ? localStorage.getItem("user")
-    : null;
+  // const user = localStorage.getItem("user")
+  //   ? localStorage.getItem("user")
+  //   : null;
+  
+  const user = useAuth().getUser();
+  const username = user.username;
 
-  const username = user ? JSON.parse(user).username : "null";
-  // console.log(user);
+  //const username = user ? JSON.parse(user).username : "null";
+
   const [newReview, setNewReview] = useState({
     username: username,
     movieId: movieId,
@@ -82,9 +93,12 @@ const Review = ({reviews}) => {
           text: "",
           create_at: "",
         });
-        setFilteredReviews([...reviews, res.review]);
+      setReviews([...reviews, res.review]);
 
-       // navigate(`/movie/${movieId}`);
+      setListReviews([...reviews, res.review]);
+      setFilteredReviews([...reviews, res.review]);
+
+        navigate(`/movie/${movieId}`);
       } else {
         toast.error("Failed to create review");
         console.log("error");
@@ -97,17 +111,23 @@ const Review = ({reviews}) => {
     setPage(page + 1);
   };
 
-  const onRemoved = (id) => {
-    if (listReviews.findIndex(e => e._id === id) !== -1) {
-      const newListReviews = [...listReviews].filter(e => e._id !== id);
+  const onRemoved = (_id) => {
+    let newFilteredReviews = [];
+    if (listReviews.findIndex(e => e._id === _id) !== -1) {
+      const newListReviews = [...listReviews].filter(e => e._id !== _id);
+      setReviews(newListReviews);
       setListReviews(newListReviews);
-      setFilteredReviews([...newListReviews].splice(0, page * skip));
+  
+      newFilteredReviews = [...newListReviews].splice(0, page * skip);
     } else {
-      setFilteredReviews([...filteredReviews].filter(e => e._id !== id));
+      newFilteredReviews = [...filteredReviews].filter(e => e._id !== _id);
     }
-
+  
+    setFilteredReviews(newFilteredReviews);
+  
     toast.success("Remove review success");
   };
+  
 
   const handleChange = (event) => {
     setNewReview({
@@ -128,7 +148,7 @@ const Review = ({reviews}) => {
     <>
     <Stack spacing={2}>
       {filteredReviews.map((review) => (
-        <Box>
+        <Box key={review._id}>
           <ReviewItem key={review._id} review={review} onRemoved={onRemoved} />
           <Divider sx={{
                 display: { xs: "block", md: "none" }

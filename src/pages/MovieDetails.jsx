@@ -446,28 +446,6 @@ function MovieDetail() {
               ))}
             <Review movieId={movieId} reviews={reviews}></Review>
           </Container>
-          <Button
-                  variant="none"
-                  sx={{
-                    width: "fit-content",
-                    minWidth: 0,
-                    p: 0,
-                  }}
-                  startIcon={<AddIcon/>}
-                  size="large"
-                  loadingPosition="start"
-                  loading={false}
-                  onClick={() => {
-                    if(token){
-                      navigate('/reviews/' + movieId);
-                    }else {
-                      navigate('/login');
-                    
-                  }}
-                }
-                >
-                  {/* Không có văn bản */}
-                </Button>
 
         </Box>       
         

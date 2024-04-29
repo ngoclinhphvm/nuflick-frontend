@@ -16,7 +16,6 @@ function SortPanel({ onOptionChange }) {
           title="Sort Results by"
           options={sortOptions}
           onOptionChange={onOptionChange}
-          defaultOption="Popularity Descending"
         />
       </ToggleablePanel>
     </Box>
@@ -28,9 +27,9 @@ function FilterPanel({
   onLanguageOptionChange,
   onReleaseYearOptionChange,
 }) {
-  const genres = Object.keys(tmdbConfigs.movieGenreIds);
-  const languages = Object.keys(tmdbConfigs.movieLanguageTags);
-  const decades = [
+  const genres = ["Any",...Object.keys(tmdbConfigs.movieGenreIds)];
+  const languages = ["Any",...Object.keys(tmdbConfigs.movieLanguageTags)];
+  const decades = ["Any",
     "1870s",
     "1880s",
     "1890s",
@@ -65,13 +64,11 @@ function FilterPanel({
         <FilterBox
           title="genre"
           options={genres}
-          defaultOption="Any"
           onOptionChange={onGenreOptionChange}
         />
         <FilterBox
           title="language"
           options={languages}
-          defaultOption="Any"
           onOptionChange={onLanguageOptionChange}
         />
         <Box
@@ -82,13 +79,11 @@ function FilterPanel({
         >
           <FilterBox
             title="decade"
-            defaultOption="Any"
             options={decades}
             onOptionChange={setDecadeOption}
           />
           <FilterBox
             title="year"
-            defaultOption="Any"
             options={years}
             onOptionChange={onReleaseYearOptionChange}
           />

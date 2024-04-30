@@ -1,27 +1,50 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+} */
 
 nav {
+    background-color: #000000;
     width: 100%;
     font-family: "Rubik", sans-serif;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    height: 3.5em;
+}
+.logo {
+    margin-right: 0px ;
+}
+.nav ul {
+    width: 100%;
+}
+.nav ul li{
+    display: inline-block;
+    list-style: none;
+    margin: 10px 20px;
+}
+nav ul li Link {
+    color: rgb(255, 255, 255);
+    text-decoration: none  ;
 }
 
 .navbar {
     display: flex;
-    flex-flow: row nowrap;
+    justify-content: space-between;
     text-transform: uppercase;
+    flex-direction: row;
     background-color: #130f14;
-    height: 3.5em;
 }
+.nar_items{
+    margin: 10px auto;
 
+}
 .nav_list {
-    display: flex;
-    flex-flow: row nowrap;
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav_list auth {
@@ -33,12 +56,77 @@ nav {
     color: black;
     border-radius: 5px;
 }
+.container-menu{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 7vh;
+    margin-right: 10px;
 
-.fixed {
-    position: fixed;
-    z-index: 2;
+}
+.button{
+    background-color: #130f14;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+}
+.button:hover{
+    background-color: #f5f5f5;
+    color: black;
+    border-radius: 5px;
 }
 
-.column {
-    height: 5em;
+.dropdown-down-profile {
+    position: absolute;
+    background-color: rgb(176, 71, 71);
+    top: 100%;
+    right: 10%;
+    width: 320px;
+    max-height: 500px;
+    overflow: hidden;
+    display: inline-block;
+    transition: max-height 0.5s;
+}
+
+
+.menu-sub{
+    padding: 10px;
+    margin-right: 0px;
+    border-bottom: 1px solid #000000;
+    /* max-width: 500px; */
+    display: flex;
+    flex-direction: column;
+    
+}
+.user-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    margin-right: 10px;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+    align-items: center;
+}
+.user-info h1{
+    font-weight: 500px;
+}
+.menu_items_link{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+.menu_items_link:hover{
+    background-color: #cd7373;
+
 }

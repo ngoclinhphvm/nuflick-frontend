@@ -13,9 +13,13 @@ import MovieSearch from "./pages/MediaSearch.jsx";
 import Footer from "./components/common/Footer.jsx";
 import { Box } from "@mui/material";
 
+
 function App() {
+  const token = localStorage.getItem("token");
   return (
+    
     <BrowserRouter>
+   
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <NavBar />
         <Box flex="1">
@@ -23,15 +27,17 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/movie/:movieId" element={<MovieDetail />} />
             <Route path="/movie" element={<Discover />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={token ? <HomePage/> : <Login />}/>
+            <Route path="/signup" element={token ? <HomePage/> : <SignUp />} />
             <Route path="/account/:username" element={<AccountDetail />} />
             <Route path="/person/:personId" element={<PersonDetail />} />
             <Route path="/search" element={<MovieSearch />} />
           </Routes>
         </Box>
+        
         <Footer style={{ marginTop: "auto" }} />
       </Box>
+      
     </BrowserRouter>
   );
 }

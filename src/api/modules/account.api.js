@@ -73,7 +73,66 @@ const accountApi = {
         } catch (err) {
             return { err };
         }
-    }
+    },
+    updatePassword: async (username, data, accessToken) => {
+        const url = `account/${username}/update-password`;
+        try {
+            const response = await publicClient.put(
+                url,
+                data,
+                {
+                    headers: {
+                        token: `Bearer ${accessToken}`
+                    }
+                }
+            );
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    },
+    updateProfile: async (username, data, accessToken) => {
+        const url = `account/${username}/update-profile`;
+        try {
+            const response = await publicClient.put(
+                url,
+                data,
+                {
+                    headers: {
+                        token: `Bearer ${accessToken}`
+                    }
+                }
+            );
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    },
+    deleteAccount: async (username, accessToken) => {
+        const url = `account/${username}`;
+        try {
+            const response = await publicClient.delete(
+                url,
+                {
+                    headers: {
+                        token: `Bearer ${accessToken}`
+                    }
+                }
+            );
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    },
+    resetPassword: async (data) => {
+        const url = '/account/reset-password';
+        try {
+            const response = await publicClient.post(url, data);
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    },
 
 }
 export default accountApi;

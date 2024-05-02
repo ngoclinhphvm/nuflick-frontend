@@ -11,6 +11,8 @@ import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import MovieSearch from "./pages/MediaSearch.jsx";
 import Footer from "./components/common/Footer.jsx";
+import UpdateProfile from "./pages/UpdateProfile/UpdateProfile.jsx";
+import UpdatePassword from "./pages/UpdatePassword/UpdatePassword.jsx";
 import { Box } from "@mui/material";
 
 
@@ -32,6 +34,8 @@ function App() {
             <Route path="/account/:username" element={<AccountDetail />} />
             <Route path="/person/:personId" element={<PersonDetail />} />
             <Route path="/search" element={<MovieSearch />} />
+            <Route path="/account/:username/update-profile" element={<UpdateProfile />} />
+            <Route path="/account/:username/update-password" element={<UpdatePassword />} />
           </Routes>
         </Box>
         

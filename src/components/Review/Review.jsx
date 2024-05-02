@@ -54,9 +54,6 @@ const Review = ({ movieId}) => {
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
-  // const user = localStorage.getItem("user")
-  //   ? localStorage.getItem("user")
-  //   : null;
   
   const user = useAuth().getUser();
   const username = user.username;

@@ -77,7 +77,7 @@ const accountApi = {
     updatePassword: async (username, data, accessToken) => {
         const url = `account/${username}/update-password`;
         try {
-            const response = await publicClient.put(
+            const response = await publicClient.post(
                 url,
                 data,
                 {
@@ -94,7 +94,7 @@ const accountApi = {
     updateProfile: async (username, data, accessToken) => {
         const url = `account/${username}/update-profile`;
         try {
-            const response = await publicClient.put(
+            const response = await publicClient.post(
                 url,
                 data,
                 {

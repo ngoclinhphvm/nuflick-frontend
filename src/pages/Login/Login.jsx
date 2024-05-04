@@ -4,7 +4,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import accountApi from "../../api/modules/account.api.js";
 import {useAuth} from "../../hooks/AuthContext.js";
-
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function FormLogin({ onLoginSuccess }) {
     // console.log("re-render login");
     const [showMess, setShowMess] = useState(false);
@@ -13,14 +14,14 @@ function FormLogin({ onLoginSuccess }) {
     const [formData, setFormData] = useState(
         {email: '', password: ''}
     );
-   // const onLoginSuccess = () => {  };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = {
             email: formData.email,
             password: formData.password
         }
-        const username = data.email.substring(0, data.email.indexOf('@'));
+        // const username = data.email.substring(0, data.email.indexOf('@'));
         accountApi.login(data).then((res) => {
             console.log(res);
             if (!res.success) {
@@ -34,8 +35,9 @@ function FormLogin({ onLoginSuccess }) {
                 }else{
                     console.log("not function");
                 }
-                
-                navigate('/account/' + username);
+             
+                navigate('/');
+                toast.success("Đăng nhập thành công");
             }
         })
 
@@ -66,7 +68,7 @@ function FormLogin({ onLoginSuccess }) {
                 Đăng nhập thất bại, email hoặc mật khẩu không đúng
             </span>}
             <div className={styles['footerLogin']}>
-                <span className={styles['fogotPassword']}>Bạn đã quên mật khẩu?</span>
+                <Link className={styles['fogotPassword']} to={'/reset-password'}>Bạn đã quên mật khẩu?</Link>
                 <button type='submit' className={styles['submitLogin']}>
                     Đăng nhập
                 </button>

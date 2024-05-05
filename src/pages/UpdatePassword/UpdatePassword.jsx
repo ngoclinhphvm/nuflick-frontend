@@ -18,7 +18,6 @@ import { FilledInput } from "@mui/material";
 
 function UpdatePassword() {
   const { username } = useParams();
-  console.log(username);
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({ oldPassword: "", newPassword: "", confirmNewPassword: ""});
   const [showOldPassword, setShowOldPassword] = React.useState(false);
@@ -48,13 +47,17 @@ function UpdatePassword() {
     }
     
     const data = {
-      password: formData.newPassword,
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+
+      //password: formData.newPassword,
     };
     accountApi.updatePassword(username, data, token).then((res) => {
       console.log(res);
       if (!res.success) {
+        console.log("res.message",res.message)
         console.log("update failed");
-        toast.error("Update failed");
+        toast.error(res.message);
       } else {
         console.log("update success");
         toast.success("Update success");
@@ -112,7 +115,7 @@ function UpdatePassword() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showNewPassword ? 'text' : 'password'}
-            name="oldPassword"
+            name="newPassword"
             value={formData.newPassword}
             onChange={handleChange}
             
@@ -137,7 +140,7 @@ function UpdatePassword() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showConfirmNewPassword ? 'text' : 'password'}
-            name="oldPassword"
+            name="confirmNewPassword"
             value={formData.confirmNewPassword}
             onChange={handleChange}
             

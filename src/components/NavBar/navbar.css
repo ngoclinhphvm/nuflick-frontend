@@ -59,62 +59,60 @@ nav ul li Link {
 .container-menu{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; 
+    align-items: end;
     height: 7vh;
-    margin-right: 10px;
-
+    margin-right: 0px;
+    /* background-color:#cb6e6e */
 }
+
+
 .button{
-    background-color: #130f14;
-    color: white;
+    background-color: #000000;
     border: none;
-    text-align: center;
-    text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
+    margin: 4px 15px;
+    padding: auto;
     position: relative;
 }
 .button:hover{
-    background-color: #f5f5f5;
-    color: black;
-    border-radius: 5px;
+    cursor: pointer;
 }
 
 .dropdown-down-profile {
     position: absolute;
-    background-color: rgb(176, 71, 71);
     top: 100%;
     right: 10%;
     width: 320px;
     max-height: 500px;
     overflow: hidden;
-    display: inline-block;
     transition: max-height 0.5s;
+    /* margin: 5px 50px; */
 }
 
 
 .menu-sub{
     padding: 10px;
-    margin-right: 0px;
+    margin-right:5px 10px;
     border-bottom: 1px solid #000000;
     /* max-width: 500px; */
     display: flex;
     flex-direction: column;
+    background-color: #3e3d3d;
+    border-radius: 5px;
     
 }
 .user-info{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     padding: 10px;
     margin-right: 10px;
-    border-bottom: 1px solid #000000;
+    /* border-bottom: 1px solid #000000; */
     text-align: center;
     align-items: center;
+    font-size: 20px;
+    font-weight: 600;
 }
 .user-info h1{
     font-weight: 500px;
@@ -123,10 +121,12 @@ nav ul li Link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #525252;
+    color: #ffffff;
     margin: 12px 0;
+    padding: 10px;
 }
 .menu_items_link:hover{
-    background-color: #cd7373;
-
+    background-color: #f5f5f5;
+    color: black;
+    border-radius: 5px;
 }

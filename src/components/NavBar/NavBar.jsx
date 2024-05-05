@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useRef,useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../common/Logo.jsx";
 import "./navbar.css";
@@ -12,15 +12,20 @@ const NavBar = () => {
     };
     const username = user ? user.username : "";
     const [showMenu, setShowMenu] = useState(false);
+    const menuRef = useRef();
+    const handleClickOutside = (event) => {
+        // setShowMenu(!showMenu);
+        if(menuRef.current && !menuRef.current.contains(event.target)){
+            setShowMenu(!showMenu);
+        }else {
+            setShowMenu(!showMenu);
+        }
+        
+    }
+    const handleButtonClick = () => {
+        setShowMenu(!showMenu);
+    }
     
-   function toggleMenu() {
-    const element = document.getElementById('sub-menu-wrap');
-    if (element) {
-        element.classList.toggle('open-class');
-    } else {
-        console.error('Element with id "sub-menu-wrap" not found');
-    }
-    }
     // const [isFixed, setIsFixed] = useState(false);
     // const [flexDirection, setFlexDirection] = useState(
     //     window.innerWidth < 768 ? "column" : "row"
@@ -102,13 +107,11 @@ const NavBar = () => {
                     </li>
                 </>
                 ) : (
-                <li className="nav_items">
-                    <button className="button" onClick={() => {
-                        setShowMenu(prev => !prev);
-                    }}>
+                    <button className="button" onClick={handleClickOutside} ref={menuRef}>    
+                       
+                    
                         <TextAvatar text={user.username} />
                     </button>
-                </li>
                 )}
             </ul>
             
@@ -117,7 +120,8 @@ const NavBar = () => {
                 <div className="drop-down-profile" id="sub-menu-wrap">
                     <div className="menu-sub">
                         <div className="user-info">
-                            <h1>Welcome, {user.username}</h1>
+                            <p>Welcome</p>
+                            <p>{user.username}</p>
                         </div>
                         <hr></hr>
                         <Link className="menu_items_link" to={`/account/${username}`}>

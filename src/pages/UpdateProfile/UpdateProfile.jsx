@@ -10,11 +10,13 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { ToastContainer, toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom';
 
 function UpdateProfile() {
   const { username } = useParams();
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({ name: "", gender: "" });
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
@@ -29,6 +31,7 @@ function UpdateProfile() {
       } else {
         console.log("update success");
         toast.success("Update success");
+        navigate('/account/' + username);
       }
     });
   };

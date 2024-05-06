@@ -14,11 +14,11 @@ import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Input } from "@mui/material";
 import { FilledInput } from "@mui/material";
-
+import {useNavigate} from 'react-router-dom';
 
 function UpdatePassword() {
   const { username } = useParams();
-  console.log(username);
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({ oldPassword: "", newPassword: "", confirmNewPassword: ""});
   const [showOldPassword, setShowOldPassword] = React.useState(false);
@@ -48,7 +48,8 @@ function UpdatePassword() {
     }
     
     const data = {
-      password: formData.newPassword,
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
     };
     accountApi.updatePassword(username, data, token).then((res) => {
       console.log(res);
@@ -58,6 +59,7 @@ function UpdatePassword() {
       } else {
         console.log("update success");
         toast.success("Update success");
+        navigate('/');
       }
     });
   };
@@ -112,7 +114,7 @@ function UpdatePassword() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showNewPassword ? 'text' : 'password'}
-            name="oldPassword"
+            name="newPassword"
             value={formData.newPassword}
             onChange={handleChange}
             
@@ -137,7 +139,7 @@ function UpdatePassword() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showConfirmNewPassword ? 'text' : 'password'}
-            name="oldPassword"
+            name="confirmNewPassword"
             value={formData.confirmNewPassword}
             onChange={handleChange}
             

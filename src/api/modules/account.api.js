@@ -77,7 +77,7 @@ const accountApi = {
     updatePassword: async (username, data, accessToken) => {
         const url = `account/${username}/update-password`;
         try {
-            const response = await publicClient.post(
+            const response = await publicClient.put(
                 url,
                 data,
                 {
@@ -94,7 +94,7 @@ const accountApi = {
     updateProfile: async (username, data, accessToken) => {
         const url = `account/${username}/update-profile`;
         try {
-            const response = await publicClient.post(
+            const response = await publicClient.put(
                 url,
                 data,
                 {
@@ -127,12 +127,30 @@ const accountApi = {
     resetPassword: async (data) => {
         const url = '/account/reset-password';
         try {
+            const response = await publicClient.put(url, data);
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    },
+    sendOTPVerify: async (data) => {
+        const url = '/account/send-otp';
+        try {
             const response = await publicClient.post(url, data);
             return response;
         } catch (err) {
             return { err };
         }
     },
+    verifyOTP: async (data) => {
+        const url = '/account/verify-otp';
+        try {
+            const response = await publicClient.post(url, data);
+            return response;
+        } catch (err) {
+            return { err };
+        }
+    }
 
 }
 export default accountApi;

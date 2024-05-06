@@ -54,8 +54,9 @@ function UpdatePassword() {
     accountApi.updatePassword(username, data, token).then((res) => {
       console.log(res);
       if (!res.success) {
+        console.log("res.message",res.message)
         console.log("update failed");
-        toast.error("Update failed");
+        toast.error(res.message);
       } else {
         console.log("update success");
         toast.success("Update success");

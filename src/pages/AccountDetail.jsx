@@ -44,14 +44,14 @@ function AccountDetail() {
        
     }, [username]);
     return (
-        <div >
+        <div style={{margin: "2% 0 0 5%"}}>
             <Container header={'Account Detail'}>
                 {account && (
                     <>
                         {/* <header>
                             <Link to={`/account/${account.username}`}>{account.username}</Link>
                         </header> */}
-                        <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", margin: "auto"}}>
+                        <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", margin: "0 0 2% 0"}}>
                             <img
                             src={account.avatar}
                             alt="avatar"
@@ -74,7 +74,7 @@ function AccountDetail() {
                 )}
             </Container>
             {/* Favorite list */}
-            <Container header={'Favorite'}>
+            <Container header={'Favorites'}>
                 <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row"}}>
                     <MediaGrid mediaList={favorite} mediaType="movie" />
                 </div>

@@ -5,6 +5,7 @@
 } */
 
 nav {
+    text-transform: uppercase;
     background-color: #000000;
     width: 100%;
     font-family: "Rubik", sans-serif;
@@ -15,6 +16,7 @@ nav {
     position: relative;
     height: 3.5em;
 }
+
 .logo {
     margin-right: 0px ;
 }
@@ -56,6 +58,7 @@ nav ul li Link {
     color: black;
     border-radius: 5px;
 }
+
 .container-menu{
     display: flex;
     flex-direction: column;
@@ -66,15 +69,27 @@ nav ul li Link {
     /* background-color:#cb6e6e */
 }
 
-
-.button{
+.profile {
     background-color: #000000;
     border: none;
-    display: inline-block;
-    margin: 4px 15px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: auto;
+}
+
+.profile:hover {
+    cursor: pointer;
+}
+
+.profile-picture {
+    background-color: #000000;
+    border: none;
+    margin: 5%;
     padding: auto;
     position: relative;
 }
+
 .button:hover{
     cursor: pointer;
 }
@@ -125,6 +140,7 @@ nav ul li Link {
     margin: 12px 0;
     padding: 10px;
 }
+
 .menu_items_link:hover{
     background-color: #f5f5f5;
     color: black;

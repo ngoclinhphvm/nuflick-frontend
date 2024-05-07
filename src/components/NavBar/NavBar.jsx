@@ -11,6 +11,7 @@ const NavBar = () => {
     auth.handleLogout();
   };
   const username = user ? user.username : "";
+  const admin = user ? user.admin : false;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef();
   const handleClickOutside = (event) => {
@@ -57,95 +58,101 @@ const NavBar = () => {
   //     };
   // }, [isFixed]);
 
-  return (
-    <nav
-    // style={{
-    //     display: "flex",
-    //     flexDirection: "row",
-    //     justifyContent: "space-between",
-    //     alignItems: "center",
-    //     textAlign: "center",
-    // }}
-    //className={`navbar ${isFixed ? "fixed" : ""} ${flexDirection}`}
-    //  className="navbar"
-    >
-      <ul className="nav_list">
-        <li className="nav_items logo">
-          <Logo />
-        </li>
-        <li className="nav_items">
-          <Link className="nav_items_name" to="/">
-            Home
-          </Link>
-        </li>
-        <li className="nav_items">
-          <Link className="nav_items_name" to="/movie">
-            Discover
-          </Link>
-        </li>
-        <li className="nav_items">
-          <Link className="nav_items_name" to="/search">
-            Search
-          </Link>
-        </li>
-      </ul>
-      <div className="container-menu">
-        <ul className="nav_list auth">
-          {!user ? (
-            <>
-              <li className="nav_items">
-                <Link className="nav_items_name" to="/login">
-                  Login
+    return (
+        
+        <nav
+        // style={{
+        //     display: "flex",
+        //     flexDirection: "row",
+        //     justifyContent: "space-between",
+        //     alignItems: "center",
+        //     textAlign: "center",
+        // }}
+        //className={`navbar ${isFixed ? "fixed" : ""} ${flexDirection}`}
+        //  className="navbar"
+        >
+        <ul  className="nav_list">
+            <li className="nav_items logo">
+            <Logo/>
+            </li>
+            <li className="nav_items">
+            <Link className="nav_items_name" to="/">
+                Home
+            </Link>
+            </li>
+            <li className="nav_items">
+            <Link className="nav_items_name" to="/movie">
+                Discover
+            </Link>
+            </li>
+            <li className="nav_items">
+            <Link className="nav_items_name" to="/search">
+                Search
+            </Link>
+            </li>
+            {admin && (
+            <li className="nav_items">
+                <Link className="nav_items_name" to="/admin">
+                Admin
                 </Link>
               </li>
-              <li className="nav_items">
-                <Link className="nav_items_name" to="/signup">
-                  Register
-                </Link>
-              </li>
-            </>
-          ) : (
-            <div className="profile" onMouseEnter={handleButtonClick} onClickOutside={handleClickOutside} ref={menuRef}>
-              <button className="profile-picture">
-                <TextAvatar text={user.username} />
-              </button>
-              <label>{user.username}</label>
-            </div>
-          )}
+            )}
         </ul>
-
-        {user && showMenu && (
-          <div className="drop-down-profile" id="sub-menu-wrap">
-            <div className="menu-sub">
-              <div className="user-info">
-                <p>Welcome</p>
-                <p>{user.username}</p>
-              </div>
-              <hr></hr>
-              <Link className="menu_items_link" to={`/account/${username}`}>
-                Profile
-              </Link>
-              <Link
-                className="menu_items_link"
-                to={`/account/${username}/update-profile`}
-              >
-                Update Profile
-              </Link>
-              <Link
-                className="menu_items_link"
-                to={`/account/${username}/update-password`}
-              >
-                Update Password
-              </Link>
-              <Link className="menu_items_link" to="/" onClick={handleLogout}>
-                Sign Out
-              </Link>
+        <div className="container-menu">
+            <ul className="nav_list auth">
+                {!user ? (
+                <>
+                    <li className="nav_items">
+                    <Link className="nav_items_name" to="/login">
+                        Login
+                    </Link>
+                    </li>
+                    <li className="nav_items">
+                    <Link className="nav_items_name" to="/signup">
+                        Register
+                    </Link>
+                    </li>
+                </>
+                ) : (
+                    <button className="button" onClick={handleClickOutside} ref={menuRef}>    
+                       
+                    
+                        <TextAvatar text={user.username} />
+                    </button>
+                )}
+            </ul>
+            
+            
+            {user&&showMenu && (
+                <div className="drop-down-profile" id="sub-menu-wrap">
+                    <div className="menu-sub">
+                        <div className="user-info">
+                            <p>Welcome</p>
+                            <p>{user.username}</p>
+                        </div>
+                        <hr></hr>
+                        <Link className="menu_items_link" to={`/account/${username}`}>
+                            Profile
+                        </Link>
+                        <Link className="menu_items_link" to={`/account/${username}/update-profile`}>
+                        Update Profile
+                        </Link>
+                        <Link className="menu_items_link" to={`/account/${username}/update-password`}>
+                        Update Password
+                        </Link>
+                        <Link className="menu_items_link" to="/" onClick={handleLogout}>
+                        Sign Out
+                        </Link>
+                        
+                    </div>
+                </div>
+                )
+                }
             </div>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-};
+            </nav>
+            
+        
+    );
+    };
 
 export default NavBar;

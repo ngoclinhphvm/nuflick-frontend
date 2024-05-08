@@ -12,7 +12,6 @@
     "@mui/material": "^5.15.15",
     "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "css-select": "^5.1.0",
@@ -34,12 +33,16 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "@testing-library/react": "^15.0.7",
+    "babel-jest": "^29.7.0",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!client)/\" --env=jsdom --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

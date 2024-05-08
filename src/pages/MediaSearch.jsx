@@ -1,5 +1,13 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Stack, TextField, Toolbar, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Toolbar,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import movieApi from "../api/modules/movie.api";
@@ -15,7 +23,7 @@ const MediaSearch = () => {
   const [medias, setMedias] = useState([]);
   const [page, setPage] = useState(1);
   const [filteredMedias, setFilteredMedias] = useState([]);
-
+  const [isSearch, setIsSearch] = useState(false)
   const search = useCallback(async () => {
     setOnSearch(true);
 
@@ -23,7 +31,9 @@ const MediaSearch = () => {
     setOnSearch(false);
     if (err) toast.error(err.message);
     if (response) {
-      const filterMedias = response.data.results.filter((media) => media.media_type != "tv")
+      const filterMedias = response.data.results.filter(
+        (media) => media.media_type != "tv"
+      );
       const mediasSorted = filterMedias.sort(
         (a, b) => getReleaseDate(b) - getReleaseDate(a)
       );
@@ -48,10 +58,13 @@ const MediaSearch = () => {
   const onQueryChange = (e) => {
     const newQuery = e.target.value;
     clearTimeout(timer);
-
+    setIsSearch(false);
     timer = setTimeout(() => {
       setQuery(newQuery);
     }, timeout);
+    timer = setTimeout(() => {
+      setIsSearch(true);
+    }, timeout + 100);
   };
 
   const getReleaseDate = (movie) => {
@@ -70,7 +83,13 @@ const MediaSearch = () => {
   return (
     <>
       <Toolbar />
-      <Box sx={{ ...uiConfigs.style.mainContent, width:"100%", marginTop:"-2rem" }}>
+      <Box
+        sx={{
+          ...uiConfigs.style.mainContent,
+          width: "100%",
+          marginTop: "-2rem",
+        }}
+      >
         <Stack spacing={2}>
           <Stack
             spacing={2}
@@ -79,8 +98,7 @@ const MediaSearch = () => {
             alignContent="flex-start"
             sx={{ width: "100%" }}
           >
-    
-            <Logo/>
+            <Logo />
           </Stack>
           <TextField
             color="success"
@@ -97,6 +115,15 @@ const MediaSearch = () => {
               </Grid>
             ))}
           </Grid>
+          {query && !medias.length && isSearch && (
+            <Stack>
+              <Typography
+                sx={{ ...uiConfigs.style.typoLines(2, "center"), fontStyle: "italic" }}
+              >
+                No matching results
+              </Typography>
+            </Stack>
+          )}
 
           {filteredMedias.length < medias.length && (
             <LoadingButton loading={onSearch} onClick={onLoadMore}>

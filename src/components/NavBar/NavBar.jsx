@@ -100,7 +100,7 @@ const NavBar = () => {
         </ul>
         <div className="container-menu">
             <ul className="nav_list auth">
-                {!user ? (
+                {!user.length ? (
                 <>
                     <li className="nav_items">
                     <Link className="nav_items_name" to="/login">

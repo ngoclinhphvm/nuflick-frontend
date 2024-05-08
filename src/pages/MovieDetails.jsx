@@ -22,7 +22,7 @@ import movieAPI from "../api/modules/movie.api.js";
 import accountApi from "../api/modules/account.api.js";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 import { useAuth } from "../hooks/AuthContext.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -42,24 +42,24 @@ function MovieDetail() {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
-  const [value, setValue] = React.useState('one');
+  const [value, setValue] = React.useState("one");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+  const token = localStorage.getItem("token")
+    ? localStorage.getItem("token")
+    : null;
   const user = useAuth().getUser();
- 
+
   // const user = localStorage.getItem("user")
   //   ? localStorage.getItem("user")
   //   : null;
   // console.log("user in MovieDetail", user );
   // console.log("user parse in MovieDetail", JSON.parse(user));
 
- 
   const username = user ? user.username : "null";
-  
 
   let poster_path = "";
   let backdrop_path = "";
@@ -94,7 +94,7 @@ function MovieDetail() {
       }
 
       // const reviewList = await reviewApi.getReviews(movieId);
-     
+
       // if(reviewList){
       //   console.log("reviewList", reviewList);
       //   setReviews(reviewList);
@@ -116,17 +116,17 @@ function MovieDetail() {
       } else if (similars.err) {
         console.error("Error fetching movie images:", similars.err);
       }
-      if(token){
-        const favoriteData = user? user.favoriteFilm : null;
-        if(favoriteData){
+      if (token) {
+        const favoriteData = user ? user.favoriteFilm : null;
+        if (favoriteData) {
           setFavoriteList(favoriteData);
-          if(favoriteData.find((item) => item === movieId)){
+          if (favoriteData.find((item) => item === movieId)) {
             setIsFavorite(true);
           }
-        }else{
+        } else {
           console.log("Error fetching favorite list");
         }
-      } 
+      }
     };
 
     getDetails(movieId);
@@ -136,13 +136,12 @@ function MovieDetail() {
     poster_path =
       (movie.poster_path &&
         `https://image.tmdb.org/t/p/original${movie.poster_path}`) ||
-      "/no_image.jpg";
+      "/film.jpg";
     backdrop_path =
       (movie.backdrop_path &&
         `https://image.tmdb.org/t/p/original${movie.backdrop_path}`) ||
       "/no_image.jpg";
   }
-  
 
   useEffect(() => {
     const fetchData = async (username) => {
@@ -166,7 +165,7 @@ function MovieDetail() {
   }, [movieId, username, token]);
 
   const handleNewReview = (newReview) => {
-    setReviews(prevReviews => [...prevReviews, newReview]);
+    setReviews((prevReviews) => [...prevReviews, newReview]);
   };
 
   return (
@@ -189,10 +188,8 @@ function MovieDetail() {
           >
             <Box
               sx={{
-                paddingTop: "140%",
+               paddingTop: "150%",
                 ...uiConfigs.style.backgroundImage(poster_path),
-                transition: "height 0.3s ease",
-                height: "100%",
               }}
             />
           </Box>
@@ -295,9 +292,11 @@ function MovieDetail() {
                         }
                       }
                     } else {
-                      toast.error("Please login to add to favorite list. Directing to login page...");
+                      toast.error(
+                        "Please login to add to favorite list. Directing to login page..."
+                      );
 
-                      await new Promise(resolve => setTimeout(resolve, 3000));
+                      await new Promise((resolve) => setTimeout(resolve, 3000));
 
                       navigate("/login");
                     }
@@ -310,14 +309,6 @@ function MovieDetail() {
                   ) : (
                     <FavoriteBorderOutlinedIcon />
                   )}
-                </IconButton>
-
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  onClick={() => console.log("Add to watchlist")}
-                >
-                  <BookmarkBorderOutlinedIcon />
                 </IconButton>
 
                 <Button
@@ -441,10 +432,8 @@ function MovieDetail() {
           <Container header={"Reviews"} padding="center">
             <Review movieId={movie.id}></Review>
           </Container>
+        </Box>
 
-        </Box>       
-        
-       
         {similars.length !== 0 && (
           <Box padding={4}>
             <Container header={"You may also like"} padding="center">

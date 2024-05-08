@@ -38,6 +38,17 @@ const accountApi = {
         return { err };
     }
     },
+    getAllUsers: async () => {
+    const url = '/account/all';
+    try{
+        const response = await publicClient.get(url);
+        return response;
+    }
+    catch(err){
+        return {err};
+    }
+    }
+    ,
     addFavorite: async (username, movieId, accessToken) => {
         const url = `account/${username}/addfavorite/${movieId}`;
         console.log(url);

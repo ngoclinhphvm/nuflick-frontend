@@ -26,18 +26,26 @@ export default function Footer() {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          height: "10em",
+          height: "5em",
           justifyContent: "center",
         }}
       >
-        <FooterMessage>
-          All copyrighted content (i.e. film posters)
+        <FooterMessage
+        style={
+          {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+          }
+        }>
+          {/* All copyrighted content (i.e. film posters)
           <br />
           are owned by their respective owners.
           <br />
-          Data is provided by TMDB.
-          <br />© 2024 NuFlick. All rights reserved.
-          <br />
+          Data is provided by TMDB. */}
+         
+          
           {/* TODO: Link backend */}
           <a href="https://github.com/nlphvm/nuflick-frontend" >
             <img
@@ -51,6 +59,7 @@ export default function Footer() {
               }}
             ></img>
           </a>
+          <p>© 2024 NuFlick. All rights reserved.</p>
         </FooterMessage>
       </Box>
     </footer>

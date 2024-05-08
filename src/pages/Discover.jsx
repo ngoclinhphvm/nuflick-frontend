@@ -135,6 +135,7 @@ export default function Discover() {
   const [genreOption, setGenreOption] = useState("Any");
   const [languageOption, setLanguageOption] = useState("Any");
   const [releaseYearOption, setRealeaseYearOption] = useState("Any");
+  const [RedundantMovies, setRedundantMovies] = useState([]);
 
   const [searchParams, setSearchParams] = useState({
     sort_by: "",
@@ -161,7 +162,13 @@ export default function Discover() {
           setIsLoadMoreButtonEnabled(false);
         } else {
           const allMovies = response.results;
-          setResultMovies([...resultMovies, ...allMovies]);
+          const length = (RedundantMovies.length + allMovies.length) % 6;
+          setRedundantMovies([...allMovies.slice(-length)]);
+          setResultMovies([
+            ...resultMovies,
+            ...RedundantMovies,
+            ...allMovies.slice(0, allMovies.length - length),
+          ]);
         }
       }
       if (err) {

@@ -46,7 +46,7 @@ const MediaItem = ({ media, mediaType }) => {
   if (posterPath !== "") {
     src =
       (posterPath && `https://image.tmdb.org/t/p/original${posterPath}`) ||
-      (mediaType === "movie" ? "film.jpg" : "actor.jpg");
+      (mediaType === "movie" ? "/film.jpg" : "/actor.jpg");
   }
   return (
     <>

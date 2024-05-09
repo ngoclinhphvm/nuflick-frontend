@@ -1,5 +1,6 @@
 import {createContext, useContext, useState} from "react";
-
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -8,7 +9,7 @@ export const AuthProvider = ({children}) => {
     );
 
     const handleLogin = (data) => {
-        // console.log(data);
+        
         const user = data;
         localStorage.setItem("user", JSON.stringify(user));
         setIsLoggedIn(true);
@@ -17,7 +18,9 @@ export const AuthProvider = ({children}) => {
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.clear();
         setIsLoggedIn(false);
+        toast.success("Đăng xuất thành công");
     };
 
     const getUser = () => {

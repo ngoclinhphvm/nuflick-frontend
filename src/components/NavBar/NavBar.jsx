@@ -127,7 +127,7 @@ const NavBar = () => {
             
             
             {user&&showMenu && (
-                <div className="drop-down-profile" id="sub-menu-wrap">
+                <div className="drop-down-profile" id="sub-menu-wrap" style={{ zIndex: 999 }}>
                     <div className="menu-sub">
                         <div className="user-info">
                             <p>Welcome</p>

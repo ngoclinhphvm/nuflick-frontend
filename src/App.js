@@ -22,7 +22,7 @@ import { Box } from "@mui/material";
 function App() {
   const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
   const user =JSON.parse(localStorage.getItem("user"));;
-  const admin = user ? user.admin: false;
+  const admin = user ? user.admin : false;
 
   return (
     
@@ -34,15 +34,15 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/movie/:movieId" element={<MovieDetail />} />
             <Route path="/movie" element={<Discover />} />
-            <Route path="/login" element={token ? <NotFoundPage/> : <Login />}/>
-            <Route path="/signup" element={token ? <NotFoundPage/> : <SignUp />} />
+            <Route path="/login" element={<Login />}/>
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/account/:username" element={<AccountDetail />} />
             <Route path="/person/:personId" element={<PersonDetail />} />
             <Route path="/search" element={<MovieSearch />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/account/:username/update-profile" element={<UpdateProfile />} />
             <Route path="/account/:username/update-password" element={<UpdatePassword />} />
-            <Route path="/admin" element={admin? <AdminPage/> : <NotFoundPage/> } />
+            <Route path="/admin" element={<AdminPage/> } />
           </Routes>
         </Box>
         

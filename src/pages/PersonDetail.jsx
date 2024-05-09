@@ -35,7 +35,7 @@ const PersonDetail = () => {
     }
     backGroundImg = person.profile_path
       ? `https://image.tmdb.org/t/p/original${person.profile_path}`
-      : "/no_image.jpg";
+      : "/actor.jpg";
 
     if (person.birthday) {
       birthToDeath = `(${person.birthday.split("-")[0]})`;

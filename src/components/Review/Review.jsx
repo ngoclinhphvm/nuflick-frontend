@@ -15,8 +15,7 @@ import ReviewItem from "../common/ReviewItem";
 import { useAuth } from "../../hooks/AuthContext.js";
 
 const Review = ({ movieId}) => {
- // const [reviews, setReviews] = useState([]);
- // const { movieId } = useParams();
+
   const [movie, setMovie] = useState({});
   const navigate = useNavigate();
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -56,7 +55,7 @@ const Review = ({ movieId}) => {
     : null;
   
   const user = useAuth().getUser();
-  const username = user.username;
+  const username = user ? user.username : null;
 
   //const username = user ? JSON.parse(user).username : "null";
 

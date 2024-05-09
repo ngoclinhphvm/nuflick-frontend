@@ -10,7 +10,6 @@ import PersonDetail from "./pages/PersonDetail.jsx";
 import Discover from "./pages/Discover.jsx";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import MovieSearch from "./pages/MediaSearch.jsx";
-import AccountSettings from "./pages/AccountSettings.jsx";
 import ResetPassword from "./pages/ResetPassword/ResetPassWord.jsx";
 import Footer from "./components/common/Footer.jsx";
 import UpdateProfile from "./pages/UpdateProfile/UpdateProfile.jsx";
@@ -21,14 +20,13 @@ import { Box } from "@mui/material";
 
 
 function App() {
-  const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
   const user =JSON.parse(localStorage.getItem("user"));;
   const admin = user ? user.admin: false;
 
   return (
     
     <BrowserRouter>
-   
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <NavBar />
         <Box flex="1">
@@ -42,7 +40,6 @@ function App() {
             <Route path="/person/:personId" element={<PersonDetail />} />
             <Route path="/search" element={<MovieSearch />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/account/:username/update-profile" element={<UpdateProfile />} />
             <Route path="/account/:username/update-password" element={<UpdatePassword />} />
             <Route path="/admin" element={admin? <AdminPage/> : <NotFoundPage/> } />

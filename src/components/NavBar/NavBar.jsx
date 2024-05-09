@@ -13,15 +13,20 @@ const NavBar = () => {
   const username = user ? user.username : "";
   const admin = user ? user.admin : false;
   const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef();
-  const handleClickOutside = (event) => {
-    // setShowMenu(!showMenu);
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setShowMenu(!showMenu);
-    } else {
-      setShowMenu(!showMenu);
-    }
-  };
+  const buttonRef = useRef();
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+                setShowMenu(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
   const handleButtonClick = () => {
     setShowMenu(!showMenu);
   };
@@ -100,7 +105,7 @@ const NavBar = () => {
         </ul>
         <div className="container-menu">
             <ul className="nav_list auth">
-                {!user.length ? (
+                {!user ? (
                 <>
                     <li className="nav_items">
                     <Link className="nav_items_name" to="/login">
@@ -114,9 +119,7 @@ const NavBar = () => {
                     </li>
                 </>
                 ) : (
-                    <button className="button" onClick={handleClickOutside} ref={menuRef}>    
-                       
-                    
+                    <button className="button" onClick={handleButtonClick} ref={buttonRef}>
                         <TextAvatar text={user.username} />
                     </button>
                 )}

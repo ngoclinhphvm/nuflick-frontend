@@ -10,17 +10,18 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { ToastContainer, toast } from "react-toastify";
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 function UpdateProfile() {
   const { username } = useParams();
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({ name: "", gender: "" });
   const navigate = useNavigate();
+
+  // Hàm xử lý khi người dùng ấn nút Update
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      name: formData.displayName,
+      name: formData.name,
       gender: formData.gender,
     };
     accountApi.updateProfile(username, data, token).then((res) => {
@@ -31,11 +32,34 @@ function UpdateProfile() {
       } else {
         console.log("update success");
         toast.success("Update success");
-        navigate('/account/' + username);
+        navigate("/account/" + username);
       }
     });
   };
 
+  // Lấy thông tin tài khoản từ API khi component được render
+  useEffect(() => {
+    const getInfo = async (username) => {
+      try {
+        const accountInfo = await accountApi.getInfo(username);
+        console.log("Account info:", accountInfo);
+        if (accountInfo) {
+          setFormData((prevData) => ({
+            ...prevData,
+            name: accountInfo.name,
+            gender: accountInfo.gender,
+          }));
+        } else {
+          console.error("Account info is null");
+        }
+      } catch (error) {
+        console.error("Error fetching account:", error);
+      }
+    };
+    getInfo(username);
+  }, [username]);
+
+  // Hàm xử lý khi có sự thay đổi trong TextField hoặc Select
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -45,57 +69,60 @@ function UpdateProfile() {
 
   return (
     <>
-    <Box padding="20px" paddingLeft={"50px"} 
-    paddingRight={"50px"} display="flex" justifyContent="left" alignItems="left" sx={{ height: "100vh" }
-  }
-    
-    >
-    <Stack direction="column" spacing={4}>
-    <Container header="Update Profile">
-    <form className={styles["formGroup"]} onSubmit={handleSubmit}>
-        <Stack direction="column" spacing={2}>
-        <Typography variant="h6">Display name</Typography>
-        <TextField
-            className="review-text"
-            id="outlined-basic"
-            name="displayName"
-            label="Tên hiển thị"
-            variant="outlined"
-            value={formData.displayName}
-            onChange={handleChange}
-            multiline
-            rows={2}
-            
-        />
-      <Typography variant="h6">Gender</Typography>
-  <Select
-    name="gender"
-    value={formData.gender}
-    label="Age"
-    onChange={handleChange}
-  >
-    <MenuItem value={"Female"}>Female</MenuItem>
-    <MenuItem value={"Male"}>Male</MenuItem>
-    <MenuItem value={"Non-binary"}>Non-binary</MenuItem>
-    <MenuItem value={"-"}>-</MenuItem>
-  </Select>
+      <Box
+        padding="2em"
+        display="flex"
+        justifyContent="left"
+        alignItems="left"
+        sx={{ height: "100vh" }}
+      >
+        <Stack direction="column" spacing={4} width="100%">
+          <Container header="Update Profile">
+            <form className={styles["formGroup"]} onSubmit={handleSubmit}>
+              <Stack direction="column" spacing={2}>
+                <Typography variant="h6">Display name</Typography>
+                <TextField
+                  sx={{ height: "5em",
+                      width: "30%"
+                   }}
+                  className="review-text"
+                  id="outlined-basic"
+                  name="name"
+                  variant="outlined"
+                  value={formData.name}
+                  onChange={handleChange}
+                  multiline
+                  rows={1}
+                />
+                <Typography variant="h6">Gender</Typography>
+                <Select
+                  sx={{ height: "4em", width: "30%" }}
+                  name="gender"
+                  value={formData.gender}
+                  label="Gender"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"Female"}>Female</MenuItem>
+                  <MenuItem value={"Male"}>Male</MenuItem>
+                  <MenuItem value={"Non-binary"}>Non-binary</MenuItem>
+                </Select>
 
-  <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            sx={{ width: "max-content", backgroundColor: "darkred" }}
-            startIcon={<SendOutlinedIcon />}
-            loadingPosition="start"
-        >
-            Submit
-        </Button>
-    </Stack>
-    </form>
-    </Container>
-    </Stack>
-    </Box>
-    <ToastContainer />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  sx={{ width: "max-content", backgroundColor: "darkred" }}
+                  startIcon={<SendOutlinedIcon />}
+                  loadingPosition="start"
+                >
+                  Update
+                </Button>
+              </Stack>
+            </form>
+          </Container>
+        </Stack>
+      </Box>
+      <ToastContainer />
     </>
   );
 }

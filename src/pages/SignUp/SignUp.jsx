@@ -20,12 +20,17 @@ function FormSignup() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (formData.password.length < 6) {
-      setMessage("Mật khẩu tối thiểu 6 kí tự");
+      setMessage("Password must be at least 6 characters");
       setShowMessage(true);
     } else if (formData.password !== formData.confirmPassword) {
-      setMessage("Mật khẩu xác nhận không khớp");
+      setMessage("Password and confirm password are not the same");
       setShowMessage(true);
-    } else {
+    }else if(formData.gender === null){
+      setMessage("Please choose gender");
+      setShowMessage(true);
+
+    }
+     else {
       const data = {
         username: formData.username,
         email: formData.email,
@@ -34,18 +39,24 @@ function FormSignup() {
         gender: formData.gender,
       };
       accountApi.signUp(data).then((res) => {
-        if (res === 0) {
-          setMessage("Email đã được sử dụng");
-          setShowMessage(true);
+        if (!res.success) {
+          if(!res.email){
+            setMessage("Email is existed");
+            setShowMessage(true);
+          }
+          else if(!res.username){
+            setMessage("Username is existed");
+            setShowMessage(true);
+          }
         } else {
-          accountApi.sendOTPVerify({ email: formData.email }).then((res) => {
-            if (res.success === "true") {
-              toast.success("Mã xác nhận đã được gửi đến email của bạn");
-              navigate("/verify-otp");
-            } else {
-              toast.error("Có lỗi xảy ra");
-            }
-          });
+          // accountApi.sendOTPVerify({ email: formData.email }).then((res) => {
+          //   if (res.success === "true") {
+          //     toast.success("Mã xác nhận đã được gửi đến email của bạn");
+          //     navigate("/verify-otp");
+          //   } else {
+          //     toast.error("Có lỗi xảy ra");
+          //   }
+          // });
           const user = { email: res.email, _id: res._id };
           localStorage.setItem("user", JSON.stringify(user));
           toast.success("Đăng ký thành công");

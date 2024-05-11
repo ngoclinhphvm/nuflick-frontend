@@ -95,14 +95,27 @@ const AdminPage = () => {
   };
 
   const HandleDeleteAccounts = async (usersToDelete) => {
-    console.log(usersToDelete)
     try {
       if (Array.isArray(usersToDelete)) {
         for (const user of usersToDelete) {
-          await accountApi.deleteAccount(user.username);
+          console.log("th1: " + user);
+          const data ={
+            username: user,
+          };
+          await accountApi.adminDeleteAccount(JSON.stringify(data));
         }
       } else {
-        await accountApi.deleteAccount(usersToDelete);
+        console.log("th2: "+ usersToDelete);
+        const data ={
+          username: usersToDelete,
+        };
+        await accountApi.adminDeleteAccount(data).then((res) => {
+              if(res.success){
+                console.log("Delete success");
+              }else{
+                console.log("Delete failed");
+              }
+        });
       }
       const response = await accountApi.getAllUsers();
       setUsers(response.data);

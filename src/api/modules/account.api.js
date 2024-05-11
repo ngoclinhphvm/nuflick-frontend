@@ -119,17 +119,11 @@ const accountApi = {
             return { err };
         }
     },
-    deleteAccount: async (username, accessToken) => {
-        const url = `account/${username}`;
+    adminDeleteAccount: async (data) => {
+        const url = '/account/admin-delete';
         try {
-            const response = await publicClient.delete(
-                url,
-                {
-                    headers: {
-                        token: `Bearer ${accessToken}`
-                    }
-                }
-            );
+            const response = await publicClient.delete(url, { data: data });
+            console.log(response);
             return response;
         } catch (err) {
             return { err };

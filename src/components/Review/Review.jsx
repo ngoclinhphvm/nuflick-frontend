@@ -14,8 +14,7 @@ import { toast } from "react-toastify";
 import ReviewItem from "../common/ReviewItem";
 import { useAuth } from "../../hooks/AuthContext.js";
 
-const Review = ({ movieId}) => {
-
+const Review = ({ movieId }) => {
   const [movie, setMovie] = useState({});
   const navigate = useNavigate();
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -40,20 +39,19 @@ const Review = ({ movieId}) => {
         console.error("Error fetching reviews:", error);
       }
     };
-  
+
     getDetails(movieId);
   }, [movieId]);
-  
 
   useEffect(() => {
     setListReviews([...reviews]);
-    setFilteredReviews([...reviews].splice(0,skip));
+    setFilteredReviews([...reviews].splice(0, skip));
   }, [reviews]);
 
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
-  
+
   const user = useAuth().getUser();
   const username = user ? user.username : null;
 
@@ -80,7 +78,6 @@ const Review = ({ movieId}) => {
     reviewApi.createReview(data, token).then((res) => {
       console.log(res);
       if (res.success) {
-        toast.success("Review created successfully");
         console.log("success");
         setShowReviewForm(false);
         setNewReview({
@@ -89,10 +86,10 @@ const Review = ({ movieId}) => {
           text: "",
           create_at: "",
         });
-      setReviews([...reviews, res.review]);
+        setReviews([...reviews, res.review]);
 
-      setListReviews([...reviews, res.review]);
-      setFilteredReviews([...reviews, res.review]);
+        setListReviews([...reviews, res.review]);
+        setFilteredReviews([...reviews, res.review]);
 
         navigate(`/movie/${movieId}`);
       } else {
@@ -103,27 +100,27 @@ const Review = ({ movieId}) => {
   };
 
   const onLoadMore = () => {
-    setFilteredReviews([...filteredReviews, ...[...listReviews].splice(page * skip, skip)]);
+    setFilteredReviews([
+      ...filteredReviews,
+      ...[...listReviews].splice(page * skip, skip),
+    ]);
     setPage(page + 1);
   };
 
   const onRemoved = (_id) => {
     let newFilteredReviews = [];
-    if (listReviews.findIndex(e => e._id === _id) !== -1) {
-      const newListReviews = [...listReviews].filter(e => e._id !== _id);
+    if (listReviews.findIndex((e) => e._id === _id) !== -1) {
+      const newListReviews = [...listReviews].filter((e) => e._id !== _id);
       setReviews(newListReviews);
       setListReviews(newListReviews);
-  
+
       newFilteredReviews = [...newListReviews].splice(0, page * skip);
     } else {
-      newFilteredReviews = [...filteredReviews].filter(e => e._id !== _id);
+      newFilteredReviews = [...filteredReviews].filter((e) => e._id !== _id);
     }
-  
+
     setFilteredReviews(newFilteredReviews);
-  
-    toast.success("Remove review success");
   };
-  
 
   const handleChange = (event) => {
     setNewReview({
@@ -132,79 +129,90 @@ const Review = ({ movieId}) => {
     });
   };
   const handleWriteReviewClick = () => {
-    if(token){
-        setShowReviewForm(true);
+    if (token) {
+      setShowReviewForm(true);
       //  navigate('/reviews/' + movieId);
-      }else {
-        navigate('/login');
-        }
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
     <>
-    <Stack spacing={2}>
-      {filteredReviews.map((review) => (
-        <Box key={review._id}>
-          <ReviewItem key={review._id} review={review} onRemoved={onRemoved} />
-          <Divider sx={{
-                display: { xs: "block", md: "none" }
-              }} />
-        </Box>
-      ))}
+      <Stack spacing={2}>
+        {filteredReviews.map((review) => (
+          <Box key={review._id}>
+            <ReviewItem
+              key={review._id}
+              review={review}
+              onRemoved={onRemoved}
+            />
+            <Divider
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
+            />
+          </Box>
+        ))}
         {filteredReviews.length < listReviews.length && (
           <Button onClick={onLoadMore}>load more</Button>
         )}
-    </Stack>
-  
-    <Box sx={{ marginTop: 2 }}>
-        
-      {!showReviewForm && (
-        <Button
-          variant="contained"
-          sx = {{backgroundColor: "darkred"}}
-          startIcon={<CreateOutlinedIcon />}
-          onClick={handleWriteReviewClick}
-        >
-          Write Review
-        </Button>
-      )}
+      </Stack>
 
-      {showReviewForm && (
-        <form
-          className="review-form"
-          onSubmit={handleSubmit}
-          direction="column"
-          spacing={2}
-        >
-          <Stack direction="column" spacing={2}>
-        <TextField
-            className="review-text"
-            id="outlined-basic"
-            name="text"
-            label="Write your review"
-            variant="outlined"
-            value={newReview.text}
-            onChange={handleChange}
-            multiline
-            rows={3}
-            required
-        />
-        <Button
-            type="submit"
+      <Box sx={{ marginTop: 2 }}>
+        {!showReviewForm && (
+          <Button
             variant="contained"
-            size="large"
-            sx={{ width: "max-content", backgroundColor: "darkred" }}
-            startIcon={<SendOutlinedIcon />}
-            loadingPosition="start"
-        >
-            Submit
-        </Button>
-    </Stack>
-        </form>
-      )}
-    </Box>
+            sx={{ backgroundColor: "darkred" }}
+            startIcon={<CreateOutlinedIcon />}
+            onClick={handleWriteReviewClick}
+          >
+            Write Review
+          </Button>
+        )}
+
+        {showReviewForm && (
+          <form
+            className="review-form"
+            onSubmit={handleSubmit}
+            direction="column"
+            spacing={2}
+          >
+            <Stack direction="column" spacing={2}>
+              <TextField
+                className="review-text"
+                id="outlined-basic"
+                name="text"
+                label="Write your review"
+                variant="outlined"
+                value={newReview.text}
+                onChange={handleChange}
+                multiline
+                rows={3}
+                required
+                onKeyPress={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey && !event.ctrlKey) {
+                    event.preventDefault();
+                    handleSubmit(event);
+                  }
+                }}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{ width: "max-content", backgroundColor: "darkred" }}
+                startIcon={<SendOutlinedIcon />}
+                loadingPosition="start"
+              >
+                Submit
+              </Button>
+            </Stack>
+          </form>
+        )}
+      </Box>
     </>
   );
-}
+};
 
 export default Review;

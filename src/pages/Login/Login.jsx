@@ -83,7 +83,7 @@ function FormLogin({ onLoginSuccess }) {
           Forgot your password?
         </Link>
         <button type="submit" className={styles["submitLogin"]}>
-          Sign in
+          Log in
         </button>
         <span className={styles["hasAccount"]}>
           Create a new account

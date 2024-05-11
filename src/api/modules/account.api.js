@@ -122,7 +122,8 @@ const accountApi = {
     adminDeleteAccount: async (data) => {
         const url = '/account/admin-delete';
         try {
-            const response = await publicClient.delete(url, data);
+            const response = await publicClient.delete(url, { data: data });
+            console.log(response);
             return response;
         } catch (err) {
             return { err };

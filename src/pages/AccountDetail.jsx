@@ -44,7 +44,7 @@ function AccountDetail() {
        
     }, [username]);
     return (
-        <div style={{margin: "2% 0 0 5%"}}>
+        <div style={{margin: "2em 1.5em 0 2em"}}>
             <Container header={'Account Detail'}>
                 {account && (
                     <>

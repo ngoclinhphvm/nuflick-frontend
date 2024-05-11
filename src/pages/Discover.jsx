@@ -45,7 +45,6 @@ function FilterPanel({
     "1980s",
     "1990s",
     "2000s",
-    "2000s",
     "2010s",
     "2020s",
   ];
@@ -192,6 +191,7 @@ export default function Discover() {
     });
     setResultMovies([]);
     setCurrentPage(1);
+    setRedundantMovies([])
   }
 
   function handleLoadMoreButtonClick() {

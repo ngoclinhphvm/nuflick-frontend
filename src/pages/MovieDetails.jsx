@@ -64,8 +64,8 @@ function MovieDetail() {
   let poster_path = "";
   let backdrop_path = "";
   const videoRef = useRef(null);
-
   useEffect(() => {
+    setIsFavorite(false)
     window.scrollTo(0, 0);
     const getDetails = async (movieId) => {
       try {
@@ -122,7 +122,7 @@ function MovieDetail() {
           setFavoriteList(favoriteData);
           if (favoriteData.find((item) => item === movieId)) {
             setIsFavorite(true);
-          }
+          } 
         } else {
           console.log("Error fetching favorite list");
         }
@@ -131,7 +131,7 @@ function MovieDetail() {
 
     getDetails(movieId);
   }, [movieId]);
-
+  // console.log(isFavorite);
   if (movie) {
     poster_path =
       (movie.poster_path &&
@@ -274,7 +274,7 @@ function MovieDetail() {
                         );
                         if (res) {
                           setIsFavorite(false);
-                          toast.success("Removed from favorite list");
+                          toast.success("Removed from favorite list", {autoClose: 500});
                         } else {
                           toast.error("Error removing from favorite list");
                         }
@@ -286,7 +286,7 @@ function MovieDetail() {
                         );
                         if (res) {
                           setIsFavorite(true);
-                          toast.success("Added to favorite list");
+                          toast.success("Added to favorite list", {autoClose: 500});
                         } else {
                           toast.error("Error adding to favorite list");
                         }

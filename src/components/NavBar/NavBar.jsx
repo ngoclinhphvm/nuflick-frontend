@@ -4,6 +4,7 @@ import Logo from "../common/Logo.jsx";
 import "./navbar.css";
 import { useAuth } from "../../hooks/AuthContext.js";
 import TextAvatar from "../common/TextAvatar.jsx";
+import {Box, Button} from "@mui/material/";
 const NavBar = () => {
   const auth = useAuth();
   const user = auth.getUser();
@@ -119,15 +120,15 @@ const NavBar = () => {
                     </li>
                 </>
                 ) : (
-                    <button className="button" onClick={handleButtonClick} ref={buttonRef}>
+                    <Button className="button" onClick={handleButtonClick} ref={buttonRef}>
                         <TextAvatar text={user.username} />
-                    </button>
+                    </Button>
                 )}
             </ul>
             
             
             {user&&showMenu && (
-                <div className="drop-down-profile" id="sub-menu-wrap" style={{ zIndex: 999 }}>
+                <Box sx={{marginRight: "0.9em"}}className="drop-down-profile" id="sub-menu-wrap" style={{ zIndex: 999 }}>
                     <div className="menu-sub">
                         <div className="user-info">
                             <p>Welcome</p>
@@ -148,7 +149,7 @@ const NavBar = () => {
                         </Link>
                         
                     </div>
-                </div>
+                </Box>
                 )
                 }
             </div>

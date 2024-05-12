@@ -352,9 +352,9 @@ function MovieDetail() {
             </Container>
           </Box>
         )}} */}
-        {(videos.length !== 0 ||
-          backdrops.length !== 0 ||
-          posters.length !== 0) && (
+        {(videos ||
+          backdrops ||
+          posters) && (
           <Box padding={4}>
             <Box sx={{ width: "100%" }}>
               <Tabs
@@ -404,7 +404,7 @@ function MovieDetail() {
                 />
               </Tabs>
 
-              {value === "one" && videos.length !== 0 && (
+              {value === "one" && videos && videos.length !== 0 && (
                 <div ref={videoRef}>
                   <Box padding={4}>
                     <VideosSlide videos={videos}></VideosSlide>
@@ -412,13 +412,13 @@ function MovieDetail() {
                 </div>
               )}
 
-              {value === "two" && posters.length !== 0 && (
+              {value === "two" && posters && posters.length !== 0 && (
                 <Box padding={4}>
                   <PosterSlide posters={posters}></PosterSlide>
                 </Box>
               )}
 
-              {value === "three" && backdrops.length !== 0 && (
+              {value === "three" && backdrops && backdrops.length !== 0 && (
                 <Box padding={4}>
                   <BackdropSlide backdrops={backdrops}></BackdropSlide>
                 </Box>

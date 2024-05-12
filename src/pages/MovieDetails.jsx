@@ -65,7 +65,7 @@ function MovieDetail() {
   let backdrop_path = "";
   const videoRef = useRef(null);
   useEffect(() => {
-    setIsFavorite(false)
+    setIsFavorite(false);
     window.scrollTo(0, 0);
     const getDetails = async (movieId) => {
       try {
@@ -122,7 +122,7 @@ function MovieDetail() {
           setFavoriteList(favoriteData);
           if (favoriteData.find((item) => item === movieId)) {
             setIsFavorite(true);
-          } 
+          }
         } else {
           console.log("Error fetching favorite list");
         }
@@ -188,7 +188,7 @@ function MovieDetail() {
           >
             <Box
               sx={{
-               paddingTop: "150%",
+                paddingTop: "150%",
                 ...uiConfigs.style.backgroundImage(poster_path),
               }}
             />
@@ -274,7 +274,9 @@ function MovieDetail() {
                         );
                         if (res) {
                           setIsFavorite(false);
-                          toast.success("Removed from favorite list", {autoClose: 500});
+                          toast.success("Removed from favorite list", {
+                            autoClose: 500,
+                          });
                         } else {
                           toast.error("Error removing from favorite list");
                         }
@@ -286,7 +288,9 @@ function MovieDetail() {
                         );
                         if (res) {
                           setIsFavorite(true);
-                          toast.success("Added to favorite list", {autoClose: 500});
+                          toast.success("Added to favorite list", {
+                            autoClose: 500,
+                          });
                         } else {
                           toast.error("Error adding to favorite list");
                         }
@@ -352,80 +356,83 @@ function MovieDetail() {
             </Container>
           </Box>
         )}} */}
-        {(videos ||
-          backdrops ||
-          posters) && (
-          <Box padding={4}>
-            <Box sx={{ width: "100%" }}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                textColor="black"
-                indicatorColor="primary"
-                aria-label="secondary tabs example"
-                sx={{ marginBottom: "0px" }} // Thêm một khoảng cách dưới Tabs
-              >
-                <Tab
-                  value="zero"
-                  label={
-                    <Typography
-                      variant="h5"
-                      fontWeight="700"
-                      text-decoration="underline"
-                    >
-                      MEDIAS
-                    </Typography>
-                  }
-                  disabled="true"
-                />
-                <Tab
-                  value="one"
-                  label={
-                    <Typography variant="h6" fontWeight="bold">
-                      VIDEOS
-                    </Typography>
-                  }
-                />
-                <Tab
-                  value="two"
-                  label={
-                    <Typography variant="h6" fontWeight="bold">
-                      POSTERS
-                    </Typography>
-                  }
-                />
-                <Tab
-                  value="three"
-                  label={
-                    <Typography variant="h6" fontWeight="bold">
-                      BACKDROPS
-                    </Typography>
-                  }
-                />
-              </Tabs>
+        {(videos || backdrops || posters) &&
+          (
+            videos.length !== 0 ||
+            backdrops.length !== 0 ||
+            posters.length !== 0
+          ) && (
+            <Box padding={4}>
+              <Box sx={{ width: "100%" }}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  textColor="black"
+                  indicatorColor="primary"
+                  aria-label="secondary tabs example"
+                  sx={{ marginBottom: "0px" }} // Thêm một khoảng cách dưới Tabs
+                >
+                  <Tab
+                    value="zero"
+                    label={
+                      <Typography
+                        variant="h5"
+                        fontWeight="700"
+                        text-decoration="underline"
+                      >
+                        MEDIAS
+                      </Typography>
+                    }
+                    disabled="true"
+                  />
+                  <Tab
+                    value="one"
+                    label={
+                      <Typography variant="h6" fontWeight="bold">
+                        VIDEOS
+                      </Typography>
+                    }
+                  />
+                  <Tab
+                    value="two"
+                    label={
+                      <Typography variant="h6" fontWeight="bold">
+                        POSTERS
+                      </Typography>
+                    }
+                  />
+                  <Tab
+                    value="three"
+                    label={
+                      <Typography variant="h6" fontWeight="bold">
+                        BACKDROPS
+                      </Typography>
+                    }
+                  />
+                </Tabs>
 
-              {value === "one" && videos && videos.length !== 0 && (
-                <div ref={videoRef}>
+                {value === "one" && videos && videos.length !== 0 && (
+                  <div ref={videoRef}>
+                    <Box padding={4}>
+                      <VideosSlide videos={videos}></VideosSlide>
+                    </Box>
+                  </div>
+                )}
+
+                {value === "two" && posters && posters.length !== 0 && (
                   <Box padding={4}>
-                    <VideosSlide videos={videos}></VideosSlide>
+                    <PosterSlide posters={posters}></PosterSlide>
                   </Box>
-                </div>
-              )}
+                )}
 
-              {value === "two" && posters && posters.length !== 0 && (
-                <Box padding={4}>
-                  <PosterSlide posters={posters}></PosterSlide>
-                </Box>
-              )}
-
-              {value === "three" && backdrops && backdrops.length !== 0 && (
-                <Box padding={4}>
-                  <BackdropSlide backdrops={backdrops}></BackdropSlide>
-                </Box>
-              )}
+                {value === "three" && backdrops && backdrops.length !== 0 && (
+                  <Box padding={4}>
+                    <BackdropSlide backdrops={backdrops}></BackdropSlide>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
 
         {/*Reviews*/}
         <Box padding={4}>
